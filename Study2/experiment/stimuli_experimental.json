@@ -1,0 +1,4106 @@
+var stimuli_experimental = [
+    {
+        "SEGMENTS": [
+            {
+                "text": "Charles-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a strawberry"
+            }
+        ],
+        "SENTENCE": "Charles-the-Urbanite wants to eat a strawberry",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "dislikes",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "SC0",
+        "ITEM1": "a strawberry",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Charles-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Charles-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Michael-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a grapefruit"
+            }
+        ],
+        "SENTENCE": "Michael-the-Urbanite wants to eat a grapefruit",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "dislikes",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "SC1",
+        "ITEM1": "a grapefruit",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Michael-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Michael-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Christopher-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cranberry"
+            }
+        ],
+        "SENTENCE": "Christopher-the-Urbanite wants to eat a cranberry",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "dislikes",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "SC2",
+        "ITEM1": "a cranberry",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Christopher-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Christopher-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Dorothy-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatball"
+            }
+        ],
+        "SENTENCE": "Dorothy-the-Urbanite wants to eat a meatball",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "accepts",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "SC3",
+        "ITEM1": "a meatball",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Dorothy-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Dorothy-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Barbara-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a sausage"
+            }
+        ],
+        "SENTENCE": "Barbara-the-Urbanite wants to eat a sausage",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "accepts",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "SC4",
+        "ITEM1": "a sausage",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Barbara-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Barbara-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Elizabeth-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatloaf"
+            }
+        ],
+        "SENTENCE": "Elizabeth-the-Urbanite wants to eat a meatloaf",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "accepts",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "SC5",
+        "ITEM1": "a meatloaf",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Elizabeth-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Elizabeth-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Nancy-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a muffin"
+            }
+        ],
+        "SENTENCE": "Nancy-the-Urbanite wants to eat a muffin",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "wants",
+        "ORDER": "single",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "SC6",
+        "ITEM1": "a muffin",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Nancy-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Nancy-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Daniel-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "caramel"
+            }
+        ],
+        "SENTENCE": "Daniel-the-Urbanite wants to eat caramel",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "wants",
+        "ORDER": "single",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "SC7",
+        "ITEM1": "caramel",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Daniel-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Daniel-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "William-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a donut"
+            }
+        ],
+        "SENTENCE": "William-the-Urbanite wants to eat a donut",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "wants",
+        "ORDER": "single",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "SC8",
+        "ITEM1": "a donut",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. William-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. William-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Margaret-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a brownie"
+            }
+        ],
+        "SENTENCE": "Margaret-the-Nomad wants to eat a brownie",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "dislikes",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "SC9",
+        "ITEM1": "a brownie",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Margaret-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Margaret-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Patricia-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a chocolate"
+            }
+        ],
+        "SENTENCE": "Patricia-the-Nomad wants to eat a chocolate",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "dislikes",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "SC10",
+        "ITEM1": "a chocolate",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Patricia-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Patricia-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sarah-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cookie"
+            }
+        ],
+        "SENTENCE": "Sarah-the-Nomad wants to eat a cookie",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "dislikes",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "SC11",
+        "ITEM1": "a cookie",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Sarah-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Sarah-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Linda-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a kebab"
+            }
+        ],
+        "SENTENCE": "Linda-the-Nomad wants to eat a kebab",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "accepts",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "SC12",
+        "ITEM1": "a kebab",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Linda-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Linda-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Andrew-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatball"
+            }
+        ],
+        "SENTENCE": "Andrew-the-Nomad wants to eat a meatball",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "accepts",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "SC13",
+        "ITEM1": "a meatball",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Andrew-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Andrew-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Matthew-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a sausage"
+            }
+        ],
+        "SENTENCE": "Matthew-the-Nomad wants to eat a sausage",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "accepts",
+        "ORDER": "single",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "SC14",
+        "ITEM1": "a sausage",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Matthew-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Matthew-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sandra-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cherry"
+            }
+        ],
+        "SENTENCE": "Sandra-the-Nomad wants to eat a cherry",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "wants",
+        "ORDER": "single",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "SC15",
+        "ITEM1": "a cherry",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Sandra-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Sandra-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Ashley-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "an orange"
+            }
+        ],
+        "SENTENCE": "Ashley-the-Nomad wants to eat an orange",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "wants",
+        "ORDER": "single",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "SC16",
+        "ITEM1": "an orange",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Ashley-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Ashley-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Susan-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a mango"
+            }
+        ],
+        "SENTENCE": "Susan-the-Nomad wants to eat a mango",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "STRUCTURE": "single",
+        "SUBCONDITION": "wants",
+        "ORDER": "single",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "SC17",
+        "ITEM1": "a mango",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": null,
+        "ITEM2_TYPE": null,
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Susan-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Susan-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Anthony-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a plum or a mango"
+            }
+        ],
+        "SENTENCE": "Anthony-the-Urbanite wants to eat a plum or a mango",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC18",
+        "ITEM1": "a plum",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a mango",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Anthony-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Anthony-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Jennifer-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a peach or a plum"
+            }
+        ],
+        "SENTENCE": "Jennifer-the-Urbanite wants to eat a peach or a plum",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC19",
+        "ITEM1": "a peach",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a plum",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Jennifer-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Jennifer-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Mary-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a strawberry or a peach"
+            }
+        ],
+        "SENTENCE": "Mary-the-Urbanite wants to eat a strawberry or a peach",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC20",
+        "ITEM1": "a strawberry",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a peach",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Mary-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Mary-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Lisa-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a strawberry or a grapefruit"
+            }
+        ],
+        "SENTENCE": "Lisa-the-Urbanite wants to eat a strawberry or a grapefruit",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC21",
+        "ITEM1": "a strawberry",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a grapefruit",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Lisa-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Lisa-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Kimberly-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a grapefruit or a cranberry"
+            }
+        ],
+        "SENTENCE": "Kimberly-the-Urbanite wants to eat a grapefruit or a cranberry",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC22",
+        "ITEM1": "a grapefruit",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a cranberry",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Kimberly-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Kimberly-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Karen-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cranberry or an apple"
+            }
+        ],
+        "SENTENCE": "Karen-the-Urbanite wants to eat a cranberry or an apple",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC23",
+        "ITEM1": "a cranberry",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "an apple",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Karen-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Karen-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Joshua-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a sausage or a meatball"
+            }
+        ],
+        "SENTENCE": "Joshua-the-Urbanite wants to eat a sausage or a meatball",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC24",
+        "ITEM1": "a sausage",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a meatball",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Joshua-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Joshua-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Steven-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatloaf or a sausage"
+            }
+        ],
+        "SENTENCE": "Steven-the-Urbanite wants to eat a meatloaf or a sausage",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC25",
+        "ITEM1": "a meatloaf",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a sausage",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Steven-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Steven-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Donna-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a hotdog or a meatloaf"
+            }
+        ],
+        "SENTENCE": "Donna-the-Urbanite wants to eat a hotdog or a meatloaf",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC26",
+        "ITEM1": "a hotdog",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a meatloaf",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Donna-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Donna-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Betty-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a hotdog or ribs"
+            }
+        ],
+        "SENTENCE": "Betty-the-Urbanite wants to eat a hotdog or ribs",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC27",
+        "ITEM1": "a hotdog",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "ribs",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Betty-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Betty-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Robert-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "ribs or pork"
+            }
+        ],
+        "SENTENCE": "Robert-the-Urbanite wants to eat ribs or pork",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC28",
+        "ITEM1": "ribs",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "pork",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Robert-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Robert-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "James-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "pork or beef"
+            }
+        ],
+        "SENTENCE": "James-the-Urbanite wants to eat pork or beef",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC29",
+        "ITEM1": "pork",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "beef",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. James-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. James-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Emily-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a chocolate or a brownie"
+            }
+        ],
+        "SENTENCE": "Emily-the-Urbanite wants to eat a chocolate or a brownie",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC30",
+        "ITEM1": "a chocolate",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a brownie",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Emily-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Emily-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Jessica-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cookie or a chocolate"
+            }
+        ],
+        "SENTENCE": "Jessica-the-Urbanite wants to eat a cookie or a chocolate",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC31",
+        "ITEM1": "a cookie",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a chocolate",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Jessica-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Jessica-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "David-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a biscuit or a cookie"
+            }
+        ],
+        "SENTENCE": "David-the-Urbanite wants to eat a biscuit or a cookie",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC32",
+        "ITEM1": "a biscuit",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a cookie",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. David-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. David-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Richard-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a biscuit or a lollipop"
+            }
+        ],
+        "SENTENCE": "Richard-the-Urbanite wants to eat a biscuit or a lollipop",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "BA",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC33",
+        "ITEM1": "a biscuit",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a lollipop",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Richard-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Richard-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Thomas-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a lollipop or a cupcake"
+            }
+        ],
+        "SENTENCE": "Thomas-the-Urbanite wants to eat a lollipop or a cupcake",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "BA",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC34",
+        "ITEM1": "a lollipop",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a cupcake",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Thomas-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Thomas-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Mark-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cupcake or a cake"
+            }
+        ],
+        "SENTENCE": "Mark-the-Urbanite wants to eat a cupcake or a cake",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "BA",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "DC35",
+        "ITEM1": "a cupcake",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a cake",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Mark-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Mark-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Donald-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a muffin or a cake"
+            }
+        ],
+        "SENTENCE": "Donald-the-Nomad wants to eat a muffin or a cake",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC36",
+        "ITEM1": "a muffin",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a cake",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Donald-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Donald-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Paul-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "caramel or a muffin"
+            }
+        ],
+        "SENTENCE": "Paul-the-Nomad wants to eat caramel or a muffin",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC37",
+        "ITEM1": "caramel",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a muffin",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Paul-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Paul-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "John-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a donut or caramel"
+            }
+        ],
+        "SENTENCE": "John-the-Nomad wants to eat a donut or caramel",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC38",
+        "ITEM1": "a donut",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "caramel",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. John-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. John-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Joseph-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a donut or a brownie"
+            }
+        ],
+        "SENTENCE": "Joseph-the-Nomad wants to eat a donut or a brownie",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC39",
+        "ITEM1": "a donut",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a brownie",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Joseph-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Joseph-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Charles-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a brownie or a chocolate"
+            }
+        ],
+        "SENTENCE": "Charles-the-Nomad wants to eat a brownie or a chocolate",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC40",
+        "ITEM1": "a brownie",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a chocolate",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Charles-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Charles-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Michael-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a chocolate or a cookie"
+            }
+        ],
+        "SENTENCE": "Michael-the-Nomad wants to eat a chocolate or a cookie",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "dislikes|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC41",
+        "ITEM1": "a chocolate",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a cookie",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Michael-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Michael-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Christopher-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a kebab or a burger"
+            }
+        ],
+        "SENTENCE": "Christopher-the-Nomad wants to eat a kebab or a burger",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC42",
+        "ITEM1": "a kebab",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a burger",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Christopher-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Christopher-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Dorothy-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatball or a kebab"
+            }
+        ],
+        "SENTENCE": "Dorothy-the-Nomad wants to eat a meatball or a kebab",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC43",
+        "ITEM1": "a meatball",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a kebab",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Dorothy-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Dorothy-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Barbara-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a sausage or a meatball"
+            }
+        ],
+        "SENTENCE": "Barbara-the-Nomad wants to eat a sausage or a meatball",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC44",
+        "ITEM1": "a sausage",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a meatball",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Barbara-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Barbara-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Elizabeth-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a sausage or a meatloaf"
+            }
+        ],
+        "SENTENCE": "Elizabeth-the-Nomad wants to eat a sausage or a meatloaf",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC45",
+        "ITEM1": "a sausage",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a meatloaf",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Elizabeth-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Elizabeth-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Nancy-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatloaf or a hotdog"
+            }
+        ],
+        "SENTENCE": "Nancy-the-Nomad wants to eat a meatloaf or a hotdog",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC46",
+        "ITEM1": "a meatloaf",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a hotdog",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Nancy-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Nancy-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Daniel-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a hotdog or ribs"
+            }
+        ],
+        "SENTENCE": "Daniel-the-Nomad wants to eat a hotdog or ribs",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "accepts|accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "DC47",
+        "ITEM1": "a hotdog",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "ribs",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Daniel-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Daniel-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "William-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a plum or a mango"
+            }
+        ],
+        "SENTENCE": "William-the-Nomad wants to eat a plum or a mango",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "DC48",
+        "ITEM1": "a plum",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a mango",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. William-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. William-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Margaret-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a peach or a plum"
+            }
+        ],
+        "SENTENCE": "Margaret-the-Nomad wants to eat a peach or a plum",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "DC49",
+        "ITEM1": "a peach",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a plum",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Margaret-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Margaret-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Patricia-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a strawberry or a peach"
+            }
+        ],
+        "SENTENCE": "Patricia-the-Nomad wants to eat a strawberry or a peach",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "DC50",
+        "ITEM1": "a strawberry",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a peach",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Patricia-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Patricia-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sarah-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a strawberry or a grapefruit"
+            }
+        ],
+        "SENTENCE": "Sarah-the-Nomad wants to eat a strawberry or a grapefruit",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "BA",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "DC51",
+        "ITEM1": "a strawberry",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a grapefruit",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Sarah-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Sarah-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Linda-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a grapefruit or a cranberry"
+            }
+        ],
+        "SENTENCE": "Linda-the-Nomad wants to eat a grapefruit or a cranberry",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "BA",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "DC52",
+        "ITEM1": "a grapefruit",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a cranberry",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Linda-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Linda-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Andrew-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cranberry or an apple"
+            }
+        ],
+        "SENTENCE": "Andrew-the-Nomad wants to eat a cranberry or an apple",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|wants",
+        "ORDER": "BA",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "DC53",
+        "ITEM1": "a cranberry",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "an apple",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Andrew-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Andrew-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Matthew-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a sausage rather than an apple"
+            }
+        ],
+        "SENTENCE": "Matthew-the-Urbanite prefers to eat a sausage rather than an apple",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD54",
+        "ITEM1": "a sausage",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "an apple",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Matthew-the-Urbanite always prefers meat to fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Matthew-the-Urbanite always prefers meat to fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sandra-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatloaf rather than a pear"
+            }
+        ],
+        "SENTENCE": "Sandra-the-Urbanite prefers to eat a meatloaf rather than a pear",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD55",
+        "ITEM1": "a meatloaf",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a pear",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Sandra-the-Urbanite always prefers meat to fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Sandra-the-Urbanite always prefers meat to fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Ashley-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a hotdog rather than a cherry"
+            }
+        ],
+        "SENTENCE": "Ashley-the-Urbanite prefers to eat a hotdog rather than a cherry",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD56",
+        "ITEM1": "a hotdog",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a cherry",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Ashley-the-Urbanite always prefers meat to fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Ashley-the-Urbanite always prefers meat to fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Susan-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "an orange rather than ribs"
+            }
+        ],
+        "SENTENCE": "Susan-the-Urbanite prefers to eat an orange rather than ribs",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "dislikes_vs_accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD57",
+        "ITEM1": "an orange",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "ribs",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Susan-the-Urbanite never prefers fruit to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Susan-the-Urbanite never prefers fruit to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Anthony-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a mango rather than pork"
+            }
+        ],
+        "SENTENCE": "Anthony-the-Urbanite prefers to eat a mango rather than pork",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "dislikes_vs_accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD58",
+        "ITEM1": "a mango",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "pork",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Anthony-the-Urbanite never prefers fruit to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Anthony-the-Urbanite never prefers fruit to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Jennifer-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a plum rather than beef"
+            }
+        ],
+        "SENTENCE": "Jennifer-the-Urbanite prefers to eat a plum rather than beef",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "dislikes_vs_accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD59",
+        "ITEM1": "a plum",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "beef",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Jennifer-the-Urbanite never prefers fruit to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Jennifer-the-Urbanite never prefers fruit to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Mary-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a chocolate rather than beef"
+            }
+        ],
+        "SENTENCE": "Mary-the-Urbanite prefers to eat a chocolate rather than beef",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD60",
+        "ITEM1": "a chocolate",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "beef",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Mary-the-Urbanite always prefers sweets to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Mary-the-Urbanite always prefers sweets to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Lisa-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cookie rather than a steak"
+            }
+        ],
+        "SENTENCE": "Lisa-the-Urbanite prefers to eat a cookie rather than a steak",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD61",
+        "ITEM1": "a cookie",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a steak",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Lisa-the-Urbanite always prefers sweets to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Lisa-the-Urbanite always prefers sweets to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Kimberly-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a biscuit rather than a burger"
+            }
+        ],
+        "SENTENCE": "Kimberly-the-Urbanite prefers to eat a biscuit rather than a burger",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD62",
+        "ITEM1": "a biscuit",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a burger",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Kimberly-the-Urbanite always prefers sweets to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Kimberly-the-Urbanite always prefers sweets to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Karen-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a kebab rather than a lollipop"
+            }
+        ],
+        "SENTENCE": "Karen-the-Urbanite prefers to eat a kebab rather than a lollipop",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_wants",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD63",
+        "ITEM1": "a kebab",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a lollipop",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Karen-the-Urbanite never prefers meat to sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Karen-the-Urbanite never prefers meat to sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Joshua-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatball rather than a cupcake"
+            }
+        ],
+        "SENTENCE": "Joshua-the-Urbanite prefers to eat a meatball rather than a cupcake",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_wants",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD64",
+        "ITEM1": "a meatball",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a cupcake",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Joshua-the-Urbanite never prefers meat to sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Joshua-the-Urbanite never prefers meat to sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Steven-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a sausage rather than a cake"
+            }
+        ],
+        "SENTENCE": "Steven-the-Urbanite prefers to eat a sausage rather than a cake",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_wants",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PD65",
+        "ITEM1": "a sausage",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a cake",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Steven-the-Urbanite never prefers meat to sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Steven-the-Urbanite never prefers meat to sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Donna-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a hotdog rather than a cake"
+            }
+        ],
+        "SENTENCE": "Donna-the-Nomad prefers to eat a hotdog rather than a cake",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "PD66",
+        "ITEM1": "a hotdog",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a cake",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Donna-the-Nomad always prefers meat to sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Donna-the-Nomad always prefers meat to sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Betty-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "ribs rather than a muffin"
+            }
+        ],
+        "SENTENCE": "Betty-the-Nomad prefers to eat ribs rather than a muffin",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "PD67",
+        "ITEM1": "ribs",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a muffin",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Betty-the-Nomad always prefers meat to sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Betty-the-Nomad always prefers meat to sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Robert-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "pork rather than caramel"
+            }
+        ],
+        "SENTENCE": "Robert-the-Nomad prefers to eat pork rather than caramel",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "PD68",
+        "ITEM1": "pork",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "caramel",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Robert-the-Nomad always prefers meat to sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Robert-the-Nomad always prefers meat to sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "James-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a donut rather than beef"
+            }
+        ],
+        "SENTENCE": "James-the-Nomad prefers to eat a donut rather than beef",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "dislikes_vs_accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PD69",
+        "ITEM1": "a donut",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "beef",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. James-the-Nomad never prefers sweets to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. James-the-Nomad never prefers sweets to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Emily-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a brownie rather than a steak"
+            }
+        ],
+        "SENTENCE": "Emily-the-Nomad prefers to eat a brownie rather than a steak",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "dislikes_vs_accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PD70",
+        "ITEM1": "a brownie",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a steak",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Emily-the-Nomad never prefers sweets to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Emily-the-Nomad never prefers sweets to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Jessica-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a chocolate rather than a burger"
+            }
+        ],
+        "SENTENCE": "Jessica-the-Nomad prefers to eat a chocolate rather than a burger",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "dislikes_vs_accepts",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PD71",
+        "ITEM1": "a chocolate",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a burger",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Jessica-the-Nomad never prefers sweets to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Jessica-the-Nomad never prefers sweets to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "David-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cranberry rather than a burger"
+            }
+        ],
+        "SENTENCE": "David-the-Nomad prefers to eat a cranberry rather than a burger",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "PD72",
+        "ITEM1": "a cranberry",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a burger",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. David-the-Nomad always prefers fruit to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. David-the-Nomad always prefers fruit to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Richard-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "an apple rather than a kebab"
+            }
+        ],
+        "SENTENCE": "Richard-the-Nomad prefers to eat an apple rather than a kebab",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "PD73",
+        "ITEM1": "an apple",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a kebab",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Richard-the-Nomad always prefers fruit to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Richard-the-Nomad always prefers fruit to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Thomas-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a pear rather than a meatball"
+            }
+        ],
+        "SENTENCE": "Thomas-the-Nomad prefers to eat a pear rather than a meatball",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y",
+        "LOGICAL_TRUTH": "Y",
+        "TRIBE": "Nomad",
+        "ITEM": "PD74",
+        "ITEM1": "a pear",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a meatball",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "gt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Thomas-the-Nomad always prefers fruit to meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Thomas-the-Nomad always prefers fruit to meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Mark-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a sausage rather than a cherry"
+            }
+        ],
+        "SENTENCE": "Mark-the-Nomad prefers to eat a sausage rather than a cherry",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_wants",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PD75",
+        "ITEM1": "a sausage",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a cherry",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Mark-the-Nomad never prefers meat to fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Mark-the-Nomad never prefers meat to fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Donald-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatloaf rather than an orange"
+            }
+        ],
+        "SENTENCE": "Donald-the-Nomad prefers to eat a meatloaf rather than an orange",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_wants",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PD76",
+        "ITEM1": "a meatloaf",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "an orange",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Donald-the-Nomad never prefers meat to fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Donald-the-Nomad never prefers meat to fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Paul-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a hotdog rather than a mango"
+            }
+        ],
+        "SENTENCE": "Paul-the-Nomad prefers to eat a hotdog rather than a mango",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_DIFFERENT",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_wants",
+        "ORDER": "BA",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PD77",
+        "ITEM1": "a hotdog",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a mango",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "lt",
+        "FEEDBACK_CORRECT": "Your answer is correct. Paul-the-Nomad never prefers meat to fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Paul-the-Nomad never prefers meat to fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "John-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "pork rather than ribs"
+            }
+        ],
+        "SENTENCE": "John-the-Urbanite prefers to eat pork rather than ribs",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PS78",
+        "ITEM1": "pork",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "ribs",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. John-the-Urbanite equally likes pork and ribs.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. John-the-Urbanite equally likes pork and ribs."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Joseph-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "beef rather than pork"
+            }
+        ],
+        "SENTENCE": "Joseph-the-Urbanite prefers to eat beef rather than pork",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PS79",
+        "ITEM1": "beef",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "pork",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Joseph-the-Urbanite equally likes beef and pork.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Joseph-the-Urbanite equally likes beef and pork."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Charles-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a steak rather than beef"
+            }
+        ],
+        "SENTENCE": "Charles-the-Urbanite prefers to eat a steak rather than beef",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PS80",
+        "ITEM1": "a steak",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "beef",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Charles-the-Urbanite equally likes a steak and beef.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Charles-the-Urbanite equally likes a steak and beef."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Michael-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cookie rather than a chocolate"
+            }
+        ],
+        "SENTENCE": "Michael-the-Urbanite prefers to eat a cookie rather than a chocolate",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_wants",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PS81",
+        "ITEM1": "a cookie",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a chocolate",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Michael-the-Urbanite equally likes a cookie and a chocolate.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Michael-the-Urbanite equally likes a cookie and a chocolate."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Christopher-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a biscuit rather than a cookie"
+            }
+        ],
+        "SENTENCE": "Christopher-the-Urbanite prefers to eat a biscuit rather than a cookie",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_wants",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PS82",
+        "ITEM1": "a biscuit",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a cookie",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Christopher-the-Urbanite equally likes a biscuit and a cookie.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Christopher-the-Urbanite equally likes a biscuit and a cookie."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Dorothy-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a lollipop rather than a biscuit"
+            }
+        ],
+        "SENTENCE": "Dorothy-the-Urbanite prefers to eat a lollipop rather than a biscuit",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_wants",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Urbanite",
+        "ITEM": "PS83",
+        "ITEM1": "a lollipop",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a biscuit",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Dorothy-the-Urbanite equally likes a lollipop and a biscuit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Dorothy-the-Urbanite equally likes a lollipop and a biscuit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Barbara-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a sausage rather than a meatball"
+            }
+        ],
+        "SENTENCE": "Barbara-the-Nomad prefers to eat a sausage rather than a meatball",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PS84",
+        "ITEM1": "a sausage",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a meatball",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Barbara-the-Nomad equally likes a sausage and a meatball.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Barbara-the-Nomad equally likes a sausage and a meatball."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Elizabeth-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatloaf rather than a sausage"
+            }
+        ],
+        "SENTENCE": "Elizabeth-the-Nomad prefers to eat a meatloaf rather than a sausage",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PS85",
+        "ITEM1": "a meatloaf",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a sausage",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Elizabeth-the-Nomad equally likes a meatloaf and a sausage.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Elizabeth-the-Nomad equally likes a meatloaf and a sausage."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Nancy-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a hotdog rather than a meatloaf"
+            }
+        ],
+        "SENTENCE": "Nancy-the-Nomad prefers to eat a hotdog rather than a meatloaf",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "accepts_vs_accepts",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PS86",
+        "ITEM1": "a hotdog",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a meatloaf",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Nancy-the-Nomad equally likes a hotdog and a meatloaf.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Nancy-the-Nomad equally likes a hotdog and a meatloaf."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Daniel-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a mango rather than an orange"
+            }
+        ],
+        "SENTENCE": "Daniel-the-Nomad prefers to eat a mango rather than an orange",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_wants",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PS87",
+        "ITEM1": "a mango",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "an orange",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Daniel-the-Nomad equally likes a mango and an orange.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Daniel-the-Nomad equally likes a mango and an orange."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "William-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a plum rather than a mango"
+            }
+        ],
+        "SENTENCE": "William-the-Nomad prefers to eat a plum rather than a mango",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_wants",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PS88",
+        "ITEM1": "a plum",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a mango",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. William-the-Nomad equally likes a plum and a mango.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. William-the-Nomad equally likes a plum and a mango."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Margaret-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "prefers to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a peach rather than a plum"
+            }
+        ],
+        "SENTENCE": "Margaret-the-Nomad prefers to eat a peach rather than a plum",
+        "VERB": "prefer",
+        "CONDITION": "PREFER_SAME",
+        "STRUCTURE": "preference",
+        "SUBCONDITION": "wants_vs_wants",
+        "ORDER": "AB",
+        "CORRECT": "N",
+        "LOGICAL_TRUTH": "N",
+        "TRIBE": "Nomad",
+        "ITEM": "PS89",
+        "ITEM1": "a peach",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a plum",
+        "ITEM2_TYPE": "wants",
+        "RELATION": "eq",
+        "FEEDBACK_CORRECT": "Your answer is correct. Margaret-the-Nomad equally likes a peach and a plum.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Margaret-the-Nomad equally likes a peach and a plum."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Patricia-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a chocolate or a strawberry"
+            }
+        ],
+        "SENTENCE": "Patricia-the-Urbanite wants to eat a chocolate or a strawberry",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX90",
+        "ITEM1": "a chocolate",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a strawberry",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Patricia-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Patricia-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sarah-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cookie or a grapefruit"
+            }
+        ],
+        "SENTENCE": "Sarah-the-Urbanite wants to eat a cookie or a grapefruit",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX91",
+        "ITEM1": "a cookie",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a grapefruit",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Sarah-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Sarah-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Linda-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a biscuit or a cranberry"
+            }
+        ],
+        "SENTENCE": "Linda-the-Urbanite wants to eat a biscuit or a cranberry",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX92",
+        "ITEM1": "a biscuit",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a cranberry",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Linda-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Linda-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Andrew-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "an apple or a lollipop"
+            }
+        ],
+        "SENTENCE": "Andrew-the-Urbanite wants to eat an apple or a lollipop",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX93",
+        "ITEM1": "an apple",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a lollipop",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Andrew-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Andrew-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Matthew-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a pear or a cupcake"
+            }
+        ],
+        "SENTENCE": "Matthew-the-Urbanite wants to eat a pear or a cupcake",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX94",
+        "ITEM1": "a pear",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a cupcake",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Matthew-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Matthew-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sandra-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cherry or a cake"
+            }
+        ],
+        "SENTENCE": "Sandra-the-Urbanite wants to eat a cherry or a cake",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX95",
+        "ITEM1": "a cherry",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a cake",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Sandra-the-Urbanite never wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Sandra-the-Urbanite never wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Ashley-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a muffin or a hotdog"
+            }
+        ],
+        "SENTENCE": "Ashley-the-Urbanite wants to eat a muffin or a hotdog",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX96",
+        "ITEM1": "a muffin",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a hotdog",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Ashley-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Ashley-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Susan-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "caramel or ribs"
+            }
+        ],
+        "SENTENCE": "Susan-the-Urbanite wants to eat caramel or ribs",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX97",
+        "ITEM1": "caramel",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "ribs",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Susan-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Susan-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Anthony-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a donut or pork"
+            }
+        ],
+        "SENTENCE": "Anthony-the-Urbanite wants to eat a donut or pork",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX98",
+        "ITEM1": "a donut",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "pork",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Anthony-the-Urbanite always wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Anthony-the-Urbanite always wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Jennifer-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "beef or a brownie"
+            }
+        ],
+        "SENTENCE": "Jennifer-the-Urbanite wants to eat beef or a brownie",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX99",
+        "ITEM1": "beef",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a brownie",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Jennifer-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Jennifer-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Mary-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a steak or a chocolate"
+            }
+        ],
+        "SENTENCE": "Mary-the-Urbanite wants to eat a steak or a chocolate",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX100",
+        "ITEM1": "a steak",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a chocolate",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Mary-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Mary-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Lisa-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a burger or a cookie"
+            }
+        ],
+        "SENTENCE": "Lisa-the-Urbanite wants to eat a burger or a cookie",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Urbanite",
+        "ITEM": "EX101",
+        "ITEM1": "a burger",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a cookie",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Lisa-the-Urbanite never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Lisa-the-Urbanite never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Kimberly-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cranberry or a biscuit"
+            }
+        ],
+        "SENTENCE": "Kimberly-the-Nomad wants to eat a cranberry or a biscuit",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX102",
+        "ITEM1": "a cranberry",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a biscuit",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Kimberly-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Kimberly-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Karen-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "an apple or a lollipop"
+            }
+        ],
+        "SENTENCE": "Karen-the-Nomad wants to eat an apple or a lollipop",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX103",
+        "ITEM1": "an apple",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a lollipop",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Karen-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Karen-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Joshua-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a pear or a cupcake"
+            }
+        ],
+        "SENTENCE": "Joshua-the-Nomad wants to eat a pear or a cupcake",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX104",
+        "ITEM1": "a pear",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a cupcake",
+        "ITEM2_TYPE": "dislikes",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Joshua-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Joshua-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Steven-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cake or a cherry"
+            }
+        ],
+        "SENTENCE": "Steven-the-Nomad wants to eat a cake or a cherry",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX105",
+        "ITEM1": "a cake",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a cherry",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Steven-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Steven-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Donna-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a muffin or an orange"
+            }
+        ],
+        "SENTENCE": "Donna-the-Nomad wants to eat a muffin or an orange",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX106",
+        "ITEM1": "a muffin",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "an orange",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Donna-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Donna-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Betty-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "caramel or a mango"
+            }
+        ],
+        "SENTENCE": "Betty-the-Nomad wants to eat caramel or a mango",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|dislikes",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX107",
+        "ITEM1": "caramel",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a mango",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Betty-the-Nomad never wants to eat sweets.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Betty-the-Nomad never wants to eat sweets."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Robert-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a plum or pork"
+            }
+        ],
+        "SENTENCE": "Robert-the-Nomad wants to eat a plum or pork",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX108",
+        "ITEM1": "a plum",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "pork",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Robert-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Robert-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "James-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a peach or beef"
+            }
+        ],
+        "SENTENCE": "James-the-Nomad wants to eat a peach or beef",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX109",
+        "ITEM1": "a peach",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "beef",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. James-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. James-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Emily-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a strawberry or a steak"
+            }
+        ],
+        "SENTENCE": "Emily-the-Nomad wants to eat a strawberry or a steak",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "AB",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX110",
+        "ITEM1": "a strawberry",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a steak",
+        "ITEM2_TYPE": "accepts",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Emily-the-Nomad always wants to eat fruit.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Emily-the-Nomad always wants to eat fruit."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Jessica-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a burger or a grapefruit"
+            }
+        ],
+        "SENTENCE": "Jessica-the-Nomad wants to eat a burger or a grapefruit",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX111",
+        "ITEM1": "a burger",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a grapefruit",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Jessica-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Jessica-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "David-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a kebab or a cranberry"
+            }
+        ],
+        "SENTENCE": "David-the-Nomad wants to eat a kebab or a cranberry",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX112",
+        "ITEM1": "a kebab",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a cranberry",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. David-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. David-the-Nomad never wants to eat meat."
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Richard-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatball or an apple"
+            }
+        ],
+        "SENTENCE": "Richard-the-Nomad wants to eat a meatball or an apple",
+        "VERB": "want",
+        "CONDITION": "EXPERIMENTAL",
+        "STRUCTURE": "disjunction",
+        "SUBCONDITION": "wants|accepts",
+        "ORDER": "BA",
+        "CORRECT": "Y/N",
+        "LOGICAL_TRUTH": "NA",
+        "TRIBE": "Nomad",
+        "ITEM": "EX113",
+        "ITEM1": "a meatball",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "an apple",
+        "ITEM2_TYPE": "wants",
+        "RELATION": null,
+        "FEEDBACK_CORRECT": "Your answer is correct. Richard-the-Nomad never wants to eat meat.",
+        "FEEDBACK_INCORRECT": "Your answer is incorrect. Richard-the-Nomad never wants to eat meat."
+    }
+]

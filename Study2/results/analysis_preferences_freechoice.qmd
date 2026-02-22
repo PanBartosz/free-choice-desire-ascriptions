@@ -1,0 +1,747 @@
+---
+title: "Preferences Free-Choice (Study 2)"
+author: "Bartosz Maćkiewicz"
+format:
+  html:
+    theme: readable
+    toc: true
+    toc-location: left
+    number-sections: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+library(readr)
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(sjPlot)
+library(emmeans)
+library(flextable)
+library(scales)
+library(glue)
+```
+
+# Overview
+
+- Task: truth-value judgments (`B` = TRUE, `N` = FALSE) for segmented sentences about food preferences.
+- Design: 32 practice trials (feedback) + 114 main trials (no feedback; break halfway).
+- Main conditions in the experimental session:
+  - Controls: `SINGLE_CONTROL`, `DOUBLE_CONTROL`, `PREFER_DIFFERENT`, `PREFER_SAME` (known truth values).
+  - Critical: `EXPERIMENTAL` (“wants … A or B” with `wants|accepts` vs `wants|dislikes`).
+
+# Data Preparation
+
+```{r data_preparation}
+data_raw <- read_csv("results.csv", show_col_types = FALSE)
+
+data_all <- data_raw %>%
+  mutate(
+    resp = case_when(
+      response %in% c("b", "B") ~ 1,
+      response %in% c("n", "N") ~ 0,
+      TRUE ~ NA_real_
+    ),
+    trial_type = factor(case_when(
+      (item1_type == "accepts" & item2_type == "wants") | (item1_type == "wants" & item2_type == "accepts") ~ "Wants + Accepts",
+      (item1_type == "accepts" & item2_type == "dislikes") | (item1_type == "dislikes" & item2_type == "accepts") ~ "Dislikes + Accepts",
+      (item1_type == "wants" & item2_type == "dislikes") | (item1_type == "dislikes" & item2_type == "wants") ~ "Wants + Dislikes",
+      (item1_type == "wants" & item2_type == "wants") ~ "Wants + Wants",
+      (item1_type == "dislikes" & item2_type == "dislikes") ~ "Dislikes + Dislikes",
+      (item1_type == "accepts" & item2_type == "accepts") ~ "Accepts + Accepts",
+      (item1_type == "wants" & (is.na(item2_type) | item2_type == "")) ~ "Wants",
+      (item1_type == "dislikes" & (is.na(item2_type) | item2_type == "")) ~ "Dislikes",
+      (item1_type == "accepts" & (is.na(item2_type) | item2_type == "")) ~ "Accepts"
+    )),
+    condition_label = factor(
+      case_when(
+        condition == "DOUBLE_CONTROL" ~ "Double Control",
+        condition == "SINGLE_CONTROL" ~ "Single Control",
+        condition == "PREFER_DIFFERENT" ~ "Prefer Different",
+        condition == "PREFER_SAME" ~ "Prefer Same",
+        condition == "EXPERIMENTAL" ~ "Experimental"
+      ),
+      levels = c("Double Control", "Single Control", "Prefer Different", "Prefer Same", "Experimental")
+    ),
+    condition_panel = factor(
+      case_when(
+        condition %in% c("PREFER_DIFFERENT", "PREFER_SAME") ~ "Prefer",
+        condition == "DOUBLE_CONTROL" ~ "Double Control",
+        condition == "SINGLE_CONTROL" ~ "Single Control",
+        condition == "EXPERIMENTAL" ~ "Experimental"
+      ),
+      levels = c("Double Control", "Single Control", "Prefer", "Experimental")
+    ),
+    resp_adj = case_when(
+      correct == "Y" & resp == 1 ~ 1,
+      correct == "N" & resp == 0 ~ 1,
+      correct == "Y/N" & resp == 1 ~ 1,
+      TRUE ~ 0
+    ),
+    participant = factor(PARTICIPANT),
+    item_id = factor(item),
+    tribe = factor(tribe, levels = c("Urbanite", "Nomad")),
+    rt_sec = rt / 1000,
+    log_rt = log(rt_sec)
+  )
+
+data_practice <- data_all %>% filter(SESSION == "PRACTICE")
+data_main <- data_all %>% filter(SESSION == "EXPERIMENTAL")
+
+glue(
+  "Loaded {n_distinct(data_main$participant)} participant(s) with {nrow(data_practice)} practice trials and {nrow(data_main)} main-session trials."
+)
+```
+
+# Stimuli inventory (paper methods)
+
+```{r stimuli_inventory, include=FALSE}
+practice_stimuli <- data_practice %>%
+  distinct(
+    item, condition, condition_label, verb, trial_type, correct, structure,
+    subcondition, order, relation, tribe, item1_type, item2_type
+  )
+
+main_stimuli <- data_main %>%
+  distinct(
+    item, condition, condition_label, verb, trial_type, correct, structure,
+    subcondition, order, relation, tribe, item1_type, item2_type
+  )
+
+stimuli_inventory_text <- glue(
+  "Unique stimuli counts: practice = {nrow(practice_stimuli)} item(s), main session = {nrow(main_stimuli)} item(s)."
+)
+
+main_counts_by_condition <- main_stimuli %>%
+  count(condition_label, name = "N items") %>%
+  arrange(condition_label)
+
+main_counts_by_condition_and_type <- main_stimuli %>%
+  count(condition_label, trial_type, correct, name = "N items") %>%
+  arrange(condition_label, trial_type, correct)
+
+critical_counts <- main_stimuli %>%
+  filter(condition == "EXPERIMENTAL", verb == "want") %>%
+  mutate(
+    other_type = if_else(item1_type == "wants", item2_type, item1_type),
+    other_type = factor(other_type, levels = c("accepts", "dislikes")),
+    wants_first = item1_type == "wants"
+  ) %>%
+  count(other_type, wants_first, name = "N items") %>%
+  arrange(other_type, desc(wants_first))
+
+NULL
+```
+
+`r stimuli_inventory_text`
+
+Main-session items by condition (unique stimuli):
+
+```{r stimuli_inventory_main_by_condition, results='asis'}
+main_counts_by_condition %>% flextable() %>% autofit()
+```
+
+Main-session items by condition and item type (unique stimuli):
+
+```{r stimuli_inventory_main_detail, results='asis'}
+main_counts_by_condition_and_type %>% flextable() %>% autofit()
+```
+
+Critical (EXPERIMENTAL) items by subcondition and order (unique stimuli):
+
+```{r stimuli_inventory_critical, results='asis'}
+critical_counts %>%
+  mutate(
+    other_type = as.character(other_type),
+    wants_first = if_else(wants_first, "wants-first", "wants-second")
+  ) %>%
+  rename(
+    `Non-wanted option` = other_type,
+    `Order` = wants_first
+  ) %>%
+  flextable() %>%
+  autofit()
+```
+
+# Plotting Theme and Palettes
+
+```{r theme_and_palettes}
+pal_trial_type <- c(
+  "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+  "#0072B2", "#D55E00", "#CC79A7", "#999999", "#000000"
+)
+
+theme_report <- function(base_size = 14) {
+  theme_minimal(base_size = base_size) +
+    theme(
+      panel.grid.minor = element_blank(),
+      panel.grid.major.x = element_blank(),
+      axis.line = element_line(colour = "grey40"),
+      strip.background = element_rect(fill = "grey95", colour = "grey80"),
+      strip.text = element_text(face = "bold", size = rel(0.7)),
+      legend.title = element_text(face = "bold"),
+      plot.title = element_text(face = "bold", size = rel(1.2)),
+      plot.subtitle = element_text(size = rel(0.9), color = "grey30"),
+      plot.caption = element_text(hjust = 0, size = rel(0.8), color = "grey50")
+    )
+}
+
+theme_set(theme_report())
+```
+
+# Demographics (Prolific export)
+
+```{r}
+prolific_files <- list.files(".", pattern = "^prolific_export_.*\\.csv$", full.names = TRUE)
+if (length(prolific_files) == 0) stop("No Prolific export CSV found in the results folder.")
+prolific_path <- prolific_files[which.max(file.info(prolific_files)$mtime)]
+
+prolific <- read_csv(prolific_path, show_col_types = FALSE) %>%
+  rename(
+    PROLIFIC_PID = `Participant id`,
+    Submission_ID = `Submission id`,
+    Status = Status,
+    Time_taken_sec = `Time taken`,
+    Age_years = Age,
+    Sex = Sex,
+    Ethnicity = `Ethnicity simplified`,
+    Country_birth = `Country of birth`,
+    Country_residence = `Country of residence`,
+    Nationality = Nationality,
+    Language = Language,
+    Student_status = `Student status`,
+    Employment_status = `Employment status`
+  ) %>%
+  mutate(Age_years = suppressWarnings(as.numeric(Age_years)))
+
+matched_ids <- unique(data_main$PARTICIPANT)
+demog <- prolific %>% filter(PROLIFIC_PID %in% matched_ids)
+missing_demog <- setdiff(matched_ids, demog$PROLIFIC_PID)
+
+demog_summary <- demog %>%
+  summarise(
+    Matched = n_distinct(PROLIFIC_PID),
+    Mean_age = mean(Age_years, na.rm = TRUE),
+    SD_age = sd(Age_years, na.rm = TRUE),
+    Min_age = min(Age_years, na.rm = TRUE),
+    Max_age = max(Age_years, na.rm = TRUE)
+  )
+
+list(
+  prolific_path = prolific_path,
+  demog_summary = demog_summary,
+  missing_demog = missing_demog
+)
+```
+
+```{r}
+demog_summary %>% flextable() %>% autofit()
+```
+
+```{r}
+demog %>%
+  count(Sex, name = "Count") %>%
+  mutate(Percent = percent(Count / sum(Count))) %>%
+  flextable() %>%
+  autofit()
+```
+
+```{r}
+if (length(missing_demog) > 0) {
+  tibble(`Unmatched participant ID` = missing_demog) %>% flextable() %>% autofit()
+} else {
+  cat("All participants with data matched to Prolific demographics.")
+}
+```
+
+# Paper-ready summaries
+
+## Descriptive TRUE-response rates by item type (main session)
+
+```{r paper_descriptives, include=FALSE}
+paper_condition_levels <- c(
+  "Single control: wants (true)",
+  "Single control: accepts (false)",
+  "Single control: dislikes (false)",
+  "Double control: wants ∨ wants (true)",
+  "Double control: accepts ∨ accepts (false)",
+  "Double control: dislikes ∨ dislikes (false)",
+  "Prefer different: wants > accepts (true)",
+  "Prefer different: wants < accepts (false)",
+  "Prefer different: accepts > dislikes (true)",
+  "Prefer different: accepts < dislikes (false)",
+  "Prefer same: wants = wants (false)",
+  "Prefer same: accepts = accepts (false)",
+  "Experimental: wants ∨ accepts (wants-first)",
+  "Experimental: wants ∨ accepts (wants-second)",
+  "Experimental: wants ∨ dislikes (wants-first)",
+  "Experimental: wants ∨ dislikes (wants-second)"
+)
+
+paper_conditions <- data_main %>%
+  mutate(
+    other_type = if_else(item1_type == "wants", item2_type, item1_type),
+    wants_first = item1_type == "wants",
+    paper_condition = case_when(
+      condition == "SINGLE_CONTROL" & item1_type == "wants" ~ "Single control: wants (true)",
+      condition == "SINGLE_CONTROL" & item1_type == "accepts" ~ "Single control: accepts (false)",
+      condition == "SINGLE_CONTROL" & item1_type == "dislikes" ~ "Single control: dislikes (false)",
+      condition == "DOUBLE_CONTROL" & trial_type == "Wants + Wants" ~ "Double control: wants ∨ wants (true)",
+      condition == "DOUBLE_CONTROL" & trial_type == "Accepts + Accepts" ~ "Double control: accepts ∨ accepts (false)",
+      condition == "DOUBLE_CONTROL" & trial_type == "Dislikes + Dislikes" ~ "Double control: dislikes ∨ dislikes (false)",
+      condition == "PREFER_DIFFERENT" & trial_type == "Wants + Accepts" & correct == "Y" ~ "Prefer different: wants > accepts (true)",
+      condition == "PREFER_DIFFERENT" & trial_type == "Wants + Accepts" & correct == "N" ~ "Prefer different: wants < accepts (false)",
+      condition == "PREFER_DIFFERENT" & trial_type == "Dislikes + Accepts" & correct == "Y" ~ "Prefer different: accepts > dislikes (true)",
+      condition == "PREFER_DIFFERENT" & trial_type == "Dislikes + Accepts" & correct == "N" ~ "Prefer different: accepts < dislikes (false)",
+      condition == "PREFER_SAME" & trial_type == "Wants + Wants" ~ "Prefer same: wants = wants (false)",
+      condition == "PREFER_SAME" & trial_type == "Accepts + Accepts" ~ "Prefer same: accepts = accepts (false)",
+      condition == "EXPERIMENTAL" & other_type == "accepts" & wants_first ~ "Experimental: wants ∨ accepts (wants-first)",
+      condition == "EXPERIMENTAL" & other_type == "accepts" & !wants_first ~ "Experimental: wants ∨ accepts (wants-second)",
+      condition == "EXPERIMENTAL" & other_type == "dislikes" & wants_first ~ "Experimental: wants ∨ dislikes (wants-first)",
+      condition == "EXPERIMENTAL" & other_type == "dislikes" & !wants_first ~ "Experimental: wants ∨ dislikes (wants-second)",
+      TRUE ~ NA_character_
+    ),
+    paper_condition = factor(paper_condition, levels = paper_condition_levels)
+  ) %>%
+  filter(!is.na(paper_condition)) %>%
+  group_by(participant, paper_condition) %>%
+  summarise(mean_true = mean(resp, na.rm = TRUE), .groups = "drop")
+
+paper_descriptives <- paper_conditions %>%
+  group_by(paper_condition) %>%
+  summarise(
+    n_participants = n_distinct(participant),
+    mean = mean(mean_true, na.rm = TRUE),
+    sd = sd(mean_true, na.rm = TRUE),
+    se = sd / sqrt(n_participants),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    ci_mult = qt(0.975, df = n_participants - 1),
+    ci_low = mean - ci_mult * se,
+    ci_high = mean + ci_mult * se,
+    `Mean TRUE` = percent(mean, accuracy = 0.1),
+    `SD` = percent(sd, accuracy = 0.1),
+    `95% CI` = paste0("[", percent(ci_low, accuracy = 0.1), ", ", percent(ci_high, accuracy = 0.1), "]")
+  ) %>%
+  select(
+    Condition = paper_condition,
+    `Mean TRUE`,
+    SD,
+    `95% CI`,
+    `N participants` = n_participants
+  )
+
+NULL
+```
+
+```{r paper_descriptives_table, results='asis'}
+paper_descriptives %>% flextable() %>% autofit()
+```
+
+```{r paper_descriptives_plot}
+paper_plot_data <- paper_conditions %>%
+  group_by(paper_condition) %>%
+  summarise(
+    mean = mean(mean_true, na.rm = TRUE),
+    se = sd(mean_true, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  )
+
+ggplot(paper_plot_data, aes(paper_condition, mean)) +
+  geom_col(fill = "#5DADE2", width = 0.75) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2, linewidth = 0.6) +
+  coord_flip() +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  labs(
+    title = "TRUE-response rates by item type (main session)",
+    subtitle = "Participant means; error bars are SEM across participants",
+    x = NULL,
+    y = "Mean TRUE-response rate"
+  )
+```
+
+# Part 1: Response Analysis
+
+### Proportion of "TRUE" Responses (Raw Data)
+
+```{r raw_response_plot}
+subject_means_raw <- data_main %>%
+  group_by(PARTICIPANT, condition_panel, verb, trial_type, correct) %>%
+  summarise(mean_resp = mean(resp, na.rm = TRUE), .groups = "drop")
+
+summary_means_raw <- subject_means_raw %>%
+  group_by(condition_panel, verb, trial_type, correct) %>%
+  summarise(
+    mean = mean(mean_resp),
+    se = sd(mean_resp) / sqrt(n()),
+    .groups = "drop"
+  )
+
+ggplot(summary_means_raw, aes(x = correct, y = mean, fill = trial_type)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    position = position_dodge(width = 0.8),
+    width = 0.2,
+    linewidth = 0.6
+  ) +
+  facet_wrap(~condition_panel, ncol = 2) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  labs(
+    title = "Percentage of 'TRUE' Responses",
+    subtitle = "Participant means; error bars are standard errors.",
+    x = "Correctness Category",
+    y = "Mean 'TRUE' Response Rate"
+  )
+```
+
+### Proportion of "TRUE" Responses (Raw Data) (better plots)
+
+```{r raw_response_plot_ghosted}
+ggplot(summary_means_raw, aes(x = correct, y = mean, fill = trial_type, alpha = condition_panel == "Experimental")) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    position = position_dodge(width = 0.8),
+    width = 0.2,
+    linewidth = 0.6
+  ) +
+  facet_wrap(~condition_panel, ncol = 2) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_alpha_manual(values = c(`TRUE` = 1, `FALSE` = 0.25), guide = "none") +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  labs(
+    title = "Percentage of 'TRUE' Responses",
+    subtitle = "Experimental highlighted; other conditions ghosted",
+    x = "Correctness Category",
+    y = "Mean 'TRUE' Response Rate"
+  )
+```
+
+### Want Controls (Sanity Check)
+
+```{r}
+want_controls <- data_main %>%
+  filter(condition %in% c("SINGLE_CONTROL", "DOUBLE_CONTROL")) %>%
+  filter(verb == "want") %>%
+  mutate(
+    item1_type = factor(item1_type, levels = c("wants", "accepts", "dislikes"))
+  )
+
+want_summary <- want_controls %>%
+  group_by(condition, item1_type, correct) %>%
+  summarise(
+    n = n(),
+    true_rate = mean(resp, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(condition, item1_type)
+
+want_summary %>%
+  mutate(
+    true_rate = percent(true_rate, accuracy = 0.1)
+  ) %>%
+  flextable() %>%
+  autofit()
+```
+
+```{r}
+want_subj <- want_controls %>%
+  group_by(participant, condition, item1_type) %>%
+  summarise(mean_true = mean(resp, na.rm = TRUE), .groups = "drop")
+
+want_plot <- want_subj %>%
+  group_by(condition, item1_type) %>%
+  summarise(
+    mean = mean(mean_true),
+    se = sd(mean_true) / sqrt(n()),
+    .groups = "drop"
+  )
+
+ggplot(want_plot, aes(x = item1_type, y = mean, fill = item1_type)) +
+  geom_col(width = 0.7) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2, linewidth = 0.6) +
+  facet_wrap(~ condition, nrow = 1) +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  scale_fill_manual(values = c(wants = "#2C7FB8", accepts = "#FDAE61", dislikes = "#D7191C"), guide = "none") +
+  labs(
+    title = "TRUE-response rate on 'want' controls by item type",
+    subtitle = "Error bars = SEM over participant means",
+    x = NULL,
+    y = NULL
+  )
+```
+
+## Distribution of Responses in Experimental Condition
+
+```{r distribution_plot}
+prop_by_part <- data_main %>%
+  filter(condition == "EXPERIMENTAL", verb == "want") %>%
+  group_by(PARTICIPANT, trial_type) %>%
+  summarise(p = mean(resp, na.rm = TRUE), .groups = "drop")
+
+ggplot(prop_by_part, aes(x = p)) +
+  geom_histogram(bins = 12, fill = "#5DADE2", color = "white", alpha = 0.9) +
+  geom_vline(xintercept = c(.10, .90), linetype = "dashed", color = "firebrick") +
+  scale_x_continuous(labels = percent_format()) +
+  facet_wrap(~trial_type) +
+  labs(
+    title = "Distribution of 'TRUE' Response Rates per Participant",
+    subtitle = "Condition: EXPERIMENTAL (want). Dashed lines at 10% and 90%.",
+    x = "Participant Mean TRUE-response Rate",
+    y = "Number of Participants"
+  )
+```
+
+### Experimental Condition (Critical Trials)
+
+```{r}
+critical <- data_main %>%
+  filter(condition == "EXPERIMENTAL", verb == "want") %>%
+  mutate(
+    other_type = if_else(item1_type == "wants", item2_type, item1_type),
+    other_type = factor(other_type, levels = c("accepts", "dislikes")),
+    wants_first = item1_type == "wants"
+  )
+
+subj_means <- critical %>%
+  group_by(participant, other_type, wants_first) %>%
+  summarise(mean_true = mean(resp, na.rm = TRUE), .groups = "drop")
+
+summary_means <- subj_means %>%
+  group_by(other_type, wants_first) %>%
+  summarise(
+    mean = mean(mean_true),
+    se = sd(mean_true) / sqrt(n()),
+    .groups = "drop"
+  )
+
+ggplot(summary_means, aes(x = other_type, y = mean, fill = wants_first)) +
+  geom_col(position = position_dodge(width = 0.7), width = 0.6) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    position = position_dodge(width = 0.7),
+    width = 0.15,
+    linewidth = 0.6
+  ) +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  scale_fill_manual(values = c("TRUE" = "#2C7FB8", "FALSE" = "#F03B20")) +
+  labs(
+    title = "Proportion of TRUE responses on critical trials",
+    subtitle = "Error bars = SEM over participant means",
+    x = "Non-wanted option type",
+    y = NULL,
+    fill = "Wanted option first"
+  )
+```
+
+### Mixed-Effects Model (Critical Trials)
+
+```{r}
+critical_model <- glmer(
+  resp ~ other_type * wants_first + tribe + (1 | participant) + (1 | item_id),
+  data = critical,
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))
+)
+tab_model(critical_model)
+```
+
+```{r}
+emm <- emmeans(critical_model, ~ other_type * wants_first, type = "response")
+as.data.frame(summary(emm, infer = c(TRUE, TRUE))) %>%
+  mutate(across(c(prob, asymp.LCL, asymp.UCL), ~ scales::percent(.x, accuracy = 0.1))) %>%
+  select(other_type, wants_first, prob, asymp.LCL, asymp.UCL, z.ratio, p.value) %>%
+  flextable() %>%
+  autofit()
+```
+
+#### Midpoint (50%) tests (model-based; emmeans)
+
+```{r}
+# Midpoint (50%) tests using the fitted mixed-effects model.
+# Note: tests are performed on the logit scale (so 0 corresponds to 50% on the response scale).
+emm_midpoint <- emmeans(critical_model, ~ other_type, weights = "proportional")
+
+midpoint_model_tbl <- as.data.frame(
+  summary(emm_midpoint, type = "response", infer = c(TRUE, TRUE))
+) %>%
+  mutate(
+    `Disjunction type` = if_else(
+      other_type == "accepts",
+      "wants ∨ accepts (W+A)",
+      "wants ∨ dislikes (W+D)"
+    ),
+    Direction = if_else(prob > 0.5, "above 50%", "below 50%"),
+    `Predicted TRUE` = percent(prob, accuracy = 0.1),
+    `95% CI` = paste0(
+      "[",
+      percent(asymp.LCL, accuracy = 0.1),
+      ", ",
+      percent(asymp.UCL, accuracy = 0.1),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(`Disjunction type`, Direction, `Predicted TRUE`, `95% CI`, z, p)
+
+midpoint_model_tbl %>% flextable() %>% autofit()
+```
+
+#### Midpoint (50%) tests (participant means; descriptive)
+
+```{r}
+# Midpoint (50%) tests on participant-mean TRUE-response rates, collapsed over disjunct order.
+subj_means_by_other <- critical %>%
+  group_by(participant, other_type) %>%
+  summarise(mean_true = mean(resp, na.rm = TRUE), .groups = "drop")
+
+midpoint_tests_tbl <- subj_means_by_other %>%
+  group_by(other_type) %>%
+  group_modify(~{
+    tt <- t.test(.x$mean_true, mu = 0.5)
+    tibble(
+      N = nrow(.x),
+      Mean = mean(.x$mean_true),
+      SD = sd(.x$mean_true),
+      CI_low = tt$conf.int[1],
+      CI_high = tt$conf.int[2],
+      t = unname(tt$statistic),
+      df = unname(tt$parameter),
+      p = tt$p.value
+    )
+  }) %>%
+  ungroup() %>%
+  mutate(
+    `Disjunction type` = if_else(
+      other_type == "accepts",
+      "wants ∨ accepts (W+A)",
+      "wants ∨ dislikes (W+D)"
+    ),
+    Direction = if_else(Mean > 0.5, "above 50%", "below 50%"),
+    Mean = percent(Mean, accuracy = 0.1),
+    SD = percent(SD, accuracy = 0.1),
+    `95% CI` = paste0(
+      "[",
+      percent(CI_low, accuracy = 0.1),
+      ", ",
+      percent(CI_high, accuracy = 0.1),
+      "]"
+    ),
+    t = round(t, 2),
+    df = round(df, 0),
+    p = format.pval(p, digits = 3, eps = .001)
+  ) %>%
+  select(`Disjunction type`, N, Direction, Mean, SD, `95% CI`, t, df, p)
+
+midpoint_tests_tbl %>% flextable() %>% autofit()
+```
+
+```{r}
+emm_other_by_order <- emmeans(critical_model, ~ other_type | wants_first)
+other_contrasts <- summary(pairs(emm_other_by_order), infer = c(TRUE, TRUE))
+
+other_contrasts_tbl <- as.data.frame(other_contrasts) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    wants_first = if_else(wants_first, "wants-first", "wants-second"),
+    `OR (95% CI)` = paste0(
+      round(OR, 2),
+      " [",
+      round(OR_low, 2),
+      ", ",
+      round(OR_high, 2),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(
+    `Order` = wants_first,
+    Contrast = contrast,
+    `OR (95% CI)`,
+    z,
+    p
+  )
+
+other_contrasts_tbl %>% flextable() %>% autofit()
+```
+
+```{r}
+emm_order_by_other <- emmeans(critical_model, ~ wants_first | other_type)
+order_contrasts <- summary(pairs(emm_order_by_other), infer = c(TRUE, TRUE))
+
+order_contrasts_tbl <- as.data.frame(order_contrasts) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    `OR (95% CI)` = paste0(
+      round(OR, 2),
+      " [",
+      round(OR_low, 2),
+      ", ",
+      round(OR_high, 2),
+      "]"
+    ),
+    contrast = if_else(contrast == "FALSE - TRUE", "wants-second - wants-first", contrast),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(
+    `Non-wanted option` = other_type,
+    Contrast = contrast,
+    `OR (95% CI)`,
+    z,
+    p
+  )
+
+order_contrasts_tbl %>% flextable() %>% autofit()
+```
+
+# Part 2: Response Time (RT) Analysis
+
+```{r rt_cleaning}
+filter_rt_outliers <- function(data, rt_col = "rt", lower_ms = 200, mad_cutoff = 2.5) {
+  data %>%
+    filter(.data[[rt_col]] >= lower_ms) %>%
+    mutate(log_rt = log(.data[[rt_col]])) %>%
+    group_by(PARTICIPANT) %>%
+    mutate(
+      med_log = median(log_rt, na.rm = TRUE),
+      mad_log = mad(log_rt, constant = 1, na.rm = TRUE)
+    ) %>%
+    ungroup() %>%
+    filter(abs(log_rt - med_log) <= mad_cutoff * mad_log) %>%
+    select(-log_rt, -med_log, -mad_log)
+}
+
+critical_rt <- critical %>%
+  filter(!is.na(rt)) %>%
+  filter_rt_outliers() %>%
+  mutate(rt_log = log(rt))
+```
+
+### Mixed-Effects Model (Log RT; Critical Trials)
+
+```{r}
+rt_model <- lmer(
+  rt_log ~ other_type * wants_first + tribe + (1 | participant) + (1 | item_id),
+  data = critical_rt
+)
+
+tab_model(rt_model)
+```
+```

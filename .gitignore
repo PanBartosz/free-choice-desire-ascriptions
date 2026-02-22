@@ -1,0 +1,35 @@
+.venv/
+tmp/
+
+# Python cache/build artifacts
+**/__pycache__/
+*.py[cod]
+*.so
+
+# R/Quarto cache and rendered support directories
+.Rhistory
+.RData
+.quarto/
+**/*_files/
+
+# Local/editor artifacts
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs and ad-hoc runtime outputs
+nohup.out
+*.log
+
+# Backups
+*.bak
+
+# Non-repository manuscript drafts
+Free Choice and Desire Ascriptions_draft.pdf
+OUTLINE.md
+*_IMRAD.md
+*_results_rewrite.md
+
+# Rendered analysis outputs (keep source .Rmd/.qmd/.py)
+Study*/results/*.html

@@ -1,0 +1,954 @@
+---
+title: "Entailment Free-Choice (Study 1)"
+author: "Bartosz"
+output:
+  html_document:
+    theme: readable
+    toc: true
+    toc_float: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE)
+
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(forcats)
+library(scales)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(scico)
+library(flextable)
+library(glue)
+library(sjPlot)
+library(broom.mixed)
+library(writexl)
+
+# cleaner global theme
+theme_set(theme_minimal(base_size = 12))
+```
+
+# Overview
+
+- Task: judge whether a Conclusion follows from a Premise (keys: `B` = follows, `N` = does not follow).
+- Design: 8 practice trials (controls with feedback) + 96 experimental trials (48 critical modal/want; 48 control fillers; no feedback).
+- Stimuli metadata fields in `results.csv`: `domain` (`modal`, `want`, `control`), `pair_type` (e.g., `allowed_and`, `want_single`), `conclusion_form` (`A`, `B`, `AND`, or empty for controls), and validity (`STIMULUS_VALID`: `Y`, `N`, or `?` for unknown/critical).
+
+# Data Preparation
+
+```{r data-prep}
+data_raw <- read_csv("results.csv", show_col_types = FALSE)
+
+n_participants <- n_distinct(data_raw$PARTICIPANT)
+table_session <- table(data_raw$SESSION)
+
+data_main <- data_raw %>%
+  mutate(
+    resp = case_when(
+      response %in% c("b", "B") ~ 1,
+      response %in% c("n", "N") ~ 0,
+      TRUE ~ NA_real_
+    ),
+    valid_flag = if_else(STIMULUS_VALID %in% c("Y", "N"), STIMULUS_VALID, NA_character_),
+    accuracy = case_when(
+      valid_flag == "Y" & resp == 1 ~ 1,
+      valid_flag == "N" & resp == 0 ~ 1,
+      is.na(valid_flag) ~ NA_real_,
+      TRUE ~ 0
+    ),
+    domain = factor(domain, levels = c("control", "modal", "want")),
+    pair_type = fct_inorder(pair_type),
+    conclusion_form = fct_inorder(conclusion_form),
+    participant = factor(PARTICIPANT),
+    rt_sec = rt / 1000,
+    log_rt = log(rt_sec)
+  )
+
+practice <- filter(data_main, SESSION == "PRACTICE")
+experimental <- filter(data_main, SESSION == "EXPERIMENTAL")
+
+data_prep_summary <- glue(
+  "Data include {n_participants} participant(s) with {nrow(practice)} practice trials and ",
+  "{nrow(experimental)} experimental trials. Session counts: practice = {table_session[['PRACTICE']]}, ",
+  "experimental = {table_session[['EXPERIMENTAL']]}. Responses recoded to binary (B=1, N=0) and accuracy ",
+  "computed where validity was known."
+)
+```
+
+Data summary: `r data_prep_summary`
+
+# Stimuli inventory (paper methods)
+
+```{r stimuli-inventory}
+unique_practice_items <- practice %>% distinct(item) %>% nrow()
+unique_experimental_items <- experimental %>% distinct(item) %>% nrow()
+
+stimuli_experimental <- experimental %>%
+  distinct(item, domain, pair_type, conclusion_form, STIMULUS_VALID)
+
+stimuli_practice <- practice %>%
+  distinct(item, domain, pair_type, conclusion_form, STIMULUS_VALID)
+
+stimuli_inventory_text <- glue(
+  "Unique stimuli counts: practice = {unique_practice_items} item(s), ",
+  "experimental = {unique_experimental_items} item(s)."
+)
+
+stimuli_counts_by_domain <- stimuli_experimental %>%
+  count(domain, name = "N items") %>%
+  arrange(domain)
+
+stimuli_counts_practice <- stimuli_practice %>%
+  count(pair_type, STIMULUS_VALID, name = "N items") %>%
+  arrange(pair_type, STIMULUS_VALID)
+
+stimuli_counts_controls <- stimuli_experimental %>%
+  filter(domain == "control") %>%
+  count(pair_type, STIMULUS_VALID, name = "N items") %>%
+  arrange(pair_type, STIMULUS_VALID)
+
+stimuli_counts_critical <- stimuli_experimental %>%
+  filter(domain %in% c("modal", "want")) %>%
+  count(domain, pair_type, conclusion_form, name = "N items") %>%
+  arrange(domain, pair_type, conclusion_form)
+
+list(
+  stimuli_inventory_text = stimuli_inventory_text,
+  stimuli_counts_by_domain = stimuli_counts_by_domain,
+  stimuli_counts_practice = stimuli_counts_practice,
+  stimuli_counts_controls = stimuli_counts_controls,
+  stimuli_counts_critical = stimuli_counts_critical
+)
+```
+
+`r stimuli_inventory_text`
+
+Experimental items by domain (unique stimuli):
+
+```{r stimuli-inventory-domain, results='asis'}
+stimuli_counts_by_domain %>% flextable() %>% autofit()
+```
+
+Practice items (unique stimuli):
+
+```{r stimuli-inventory-practice, results='asis'}
+stimuli_counts_practice %>% flextable() %>% autofit()
+```
+
+Experimental control items (unique stimuli):
+
+```{r stimuli-inventory-controls, results='asis'}
+stimuli_counts_controls %>% flextable() %>% autofit()
+```
+
+Experimental critical items (unique stimuli):
+
+```{r stimuli-inventory-critical, results='asis'}
+stimuli_counts_critical %>% flextable() %>% autofit()
+```
+
+# Manipulation Checks
+
+```{r manipulation-checks}
+trial_counts <- experimental %>%
+  count(participant, domain, pair_type) %>%
+  arrange(participant, domain, pair_type)
+
+mc_summary <- trial_counts %>%
+  group_by(participant) %>%
+  summarise(total = sum(n), .groups = "drop") %>%
+  summarise(
+    min_trials = min(total),
+    max_trials = max(total),
+    mean_trials = mean(total)
+  )
+
+mc_text <- glue(
+  "Participants contributed between {mc_summary$min_trials} and {mc_summary$max_trials} experimental trials ",
+  "(mean = {round(mc_summary$mean_trials,1)}). Trial counts cover all domains and pair types."
+)
+```
+
+Manipulation check: `r mc_text`
+
+# Demographics
+
+```{r demographics}
+# Locate the Prolific export
+prolific_files <- list.files(".", pattern = "^prolific_export_.*\\.csv$", full.names = TRUE)
+if (length(prolific_files) == 0) stop("No Prolific export CSV found in the results folder.")
+prolific_path <- prolific_files[1]
+
+prolific <- read_csv(prolific_path, show_col_types = FALSE) %>%
+  rename(
+    PROLIFIC_PID = `Participant id`,
+    Age_years = Age,
+    Sex = Sex,
+    Ethnicity = `Ethnicity simplified`,
+    `Country of birth` = `Country of birth`,
+    `Country of residence` = `Country of residence`,
+    Nationality = Nationality,
+    Language = Language,
+    `Student status` = `Student status`,
+    `Employment status` = `Employment status`
+  ) %>%
+  mutate(Age_years = suppressWarnings(as.numeric(Age_years)))
+
+matched_ids <- unique(experimental$PARTICIPANT)
+demog <- prolific %>% filter(PROLIFIC_PID %in% matched_ids)
+missing_demog <- setdiff(matched_ids, demog$PROLIFIC_PID)
+
+demog_summary <- demog %>%
+  summarise(
+    `Matched participants` = n_distinct(PROLIFIC_PID),
+    `Participants in data` = length(matched_ids),
+    `Mean age` = mean(Age_years, na.rm = TRUE),
+    `SD age` = sd(Age_years, na.rm = TRUE),
+    `Min age` = min(Age_years, na.rm = TRUE),
+    `Max age` = max(Age_years, na.rm = TRUE)
+  )
+
+table_to_flex <- function(df) {
+  flextable(df) |> autofit()
+}
+
+sex_table <- demog %>% count(Sex, name = "Count") %>%
+  mutate(Percent = scales::percent(Count / sum(Count)))
+eth_table <- demog %>% count(Ethnicity, name = "Count") %>%
+  mutate(Percent = scales::percent(Count / sum(Count)))
+country_table <- demog %>% count(`Country of residence`, name = "Count") %>%
+  mutate(Percent = scales::percent(Count / sum(Count)))
+
+list(
+  demog_summary = demog_summary,
+  missing_demog = missing_demog
+)
+```
+
+Matched demographics summary:
+
+```{r demographics-tables, results='asis'}
+table_to_flex(demog_summary)
+```
+
+Sex distribution:
+
+```{r demographics-sex, results='asis'}
+table_to_flex(sex_table)
+```
+
+Ethnicity distribution:
+
+```{r demographics-ethnicity, results='asis'}
+table_to_flex(eth_table)
+```
+
+Country of residence distribution:
+
+```{r demographics-country, results='asis'}
+table_to_flex(country_table)
+```
+
+Unmatched participant IDs (if any):
+
+```{r demographics-missing, results='asis'}
+if (length(missing_demog) > 0) {
+  missing_tbl <- tibble(`Unmatched participant ID` = missing_demog)
+  missing_tbl %>% flextable() %>% autofit()
+} else {
+  cat("All participants with data matched to Prolific demographics.")
+}
+```
+
+# Response Patterns (Experimental Trials)
+
+### Group definitions
+
+```{r group-definitions}
+pair_order <- c(
+  "conjunction", "conditional", "quantifier", "presupposition",
+  "want_and", "want_mind_and", "want_single", "want_mind_single", "atleast_single_a", "atleast_single_b",
+  "allowed_and", "must_and", "allowed_single", "must_single",
+  "all_and", "all_single"
+)
+
+plot_group_levels <- c("Control (valid)", "Control (invalid)", "Want", "Modal: allowed/must", "Modal: all")
+
+plot_data <- experimental %>%
+  mutate(
+    plot_group = case_when(
+      domain == "control" & valid_flag == "Y" ~ "Control (valid)",
+      domain == "control" & valid_flag == "N" ~ "Control (invalid)",
+      domain == "want" ~ "Want",
+      domain == "modal" & pair_type %in% c("allowed_and", "allowed_single", "must_and", "must_single") ~ "Modal: allowed/must",
+      domain == "modal" & pair_type %in% c("all_and", "all_single") ~ "Modal: all",
+      TRUE ~ NA_character_
+    ),
+    plot_group = factor(plot_group, levels = plot_group_levels),
+    plot_pair_type = factor(pair_type, levels = pair_order)
+  ) %>%
+  filter(!is.na(plot_group))
+```
+
+### Proportion of "Follows" Responses (by grouping)
+
+```{r grouped-follows, fig.width=14, fig.height=9}
+resp_summary <- plot_data %>%
+  mutate(
+    cf = if_else(is.na(conclusion_form), "control", as.character(conclusion_form)),
+    cf = factor(cf, levels = c("AND", "A", "B", "control"))
+  ) %>%
+  group_by(plot_group, plot_pair_type, cf, participant) %>%
+  summarise(mean_resp = mean(resp, na.rm = TRUE), .groups = "drop") %>%
+  group_by(plot_group, plot_pair_type, cf) %>%
+  summarise(
+    mean = mean(mean_resp, na.rm = TRUE),
+    se = sd(mean_resp, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+ggplot(resp_summary, aes(plot_pair_type, mean, fill = cf)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se),
+                position = position_dodge(width = 0.8),
+                width = 0.2, linewidth = 0.6) +
+  facet_wrap(~ plot_group, scales = "free_x") +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  scale_fill_scico_d(palette = "batlow", name = "Conclusion form", na.value = "grey80") +
+  labs(
+    title = "Proportion of 'Follows' Responses by Group",
+    x = "Pair Type",
+    y = "Mean 'Follows' Rate"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1, size = 10),
+    strip.text = element_text(size = 12),
+    legend.position = "bottom"
+  )
+```
+
+Underlying descriptives:
+
+```{r grouped-follows-table, results='asis'}
+resp_tbl <- resp_summary %>%
+  mutate(
+    `Mean follows` = scales::percent(mean, accuracy = 0.1),
+    `SE` = round(se, 3)
+  ) %>%
+  select(Group = plot_group, `Pair type` = plot_pair_type, `Conclusion form` = cf,
+         `Mean follows`, SE, n)
+
+resp_tbl %>% flextable() %>% autofit()
+```
+
+## Paper-ready summary: want_single vs invalid controls
+
+Primary contrast for the paper: the extent to which participants accept the FC-style inference
+from a *want + disjunction* premise to a *single-disjunct want* conclusion (`want_single`),
+compared to their tendency to accept clearly invalid control inferences.
+
+```{r paper-summary-want-single-vs-invalid, include=FALSE}
+paper_primary <- experimental %>%
+  mutate(
+    paper_group = case_when(
+      domain == "want" & pair_type == "want_single" ~ "Want: want_single",
+      domain == "control" & valid_flag == "N" ~ "Control: invalid",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(paper_group)) %>%
+  group_by(participant, paper_group) %>%
+  summarise(
+    mean_resp = mean(resp, na.rm = TRUE),
+    n_trials = n(),
+    .groups = "drop"
+  )
+
+paper_primary_wide <- paper_primary %>%
+  select(participant, paper_group, mean_resp) %>%
+  pivot_wider(names_from = paper_group, values_from = mean_resp)
+
+paper_primary_summary <- paper_primary %>%
+  group_by(paper_group) %>%
+  summarise(
+    n_participants = n_distinct(participant),
+    mean = mean(mean_resp, na.rm = TRUE),
+    sd = sd(mean_resp, na.rm = TRUE),
+    se = sd(mean_resp, na.rm = TRUE) / sqrt(n_participants),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    ci_mult = qt(0.975, df = n_participants - 1),
+    ci_low = mean - ci_mult * se,
+    ci_high = mean + ci_mult * se,
+    `Mean follows` = scales::percent(mean, accuracy = 0.1),
+    `SD` = scales::percent(sd, accuracy = 0.1),
+    `95% CI` = paste0(
+      "[",
+      scales::percent(ci_low, accuracy = 0.1),
+      ", ",
+      scales::percent(ci_high, accuracy = 0.1),
+      "]"
+    )
+  ) %>%
+  select(
+    Group = paper_group,
+    `Mean follows`,
+    SD,
+    `95% CI`,
+    `N participants` = n_participants
+  )
+
+paper_primary_t <- t.test(
+  paper_primary_wide$`Want: want_single`,
+  paper_primary_wide$`Control: invalid`,
+  paired = TRUE
+)
+paper_primary_diff <- paper_primary_wide$`Want: want_single` - paper_primary_wide$`Control: invalid`
+paper_primary_dz <- mean(paper_primary_diff, na.rm = TRUE) / sd(paper_primary_diff, na.rm = TRUE)
+
+paper_primary_text <- glue(
+  "Paired t-test on participant means: t({paper_primary_t$parameter}) = {round(paper_primary_t$statistic, 2)}, ",
+  "p = {format.pval(paper_primary_t$p.value, digits = 3, eps = .001)}, ",
+  "dz = {round(paper_primary_dz, 2)}."
+)
+
+list(
+  paper_primary_summary = paper_primary_summary,
+  paper_primary_text = paper_primary_text
+)
+```
+
+Primary descriptives:
+
+```{r paper-primary-table, results='asis'}
+paper_primary_summary %>% flextable() %>% autofit()
+```
+
+Primary comparison test:
+
+`r paper_primary_text`
+
+### Primary comparison (model-based): want_single vs invalid controls
+
+In addition to participant-mean descriptives, we estimate the same contrast using a
+mixed-effects logistic regression on trial-level responses.
+
+```{r paper-primary-model, include=FALSE}
+paper_primary_model_data <- experimental %>%
+  mutate(
+    paper_group = case_when(
+      domain == "want" & pair_type == "want_single" ~ "Want: want_single",
+      domain == "control" & valid_flag == "N" ~ "Control: invalid",
+      TRUE ~ NA_character_
+    ),
+    paper_group = factor(paper_group, levels = c("Control: invalid", "Want: want_single"))
+  ) %>%
+  filter(!is.na(paper_group)) %>%
+  droplevels()
+
+paper_primary_glmer <- glmer(
+  resp ~ paper_group + (1 | participant) + (1 | item),
+  data = paper_primary_model_data,
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa")
+)
+
+paper_primary_emm_resp <- summary(emmeans(paper_primary_glmer, ~ paper_group, type = "response"))
+paper_primary_contrast <- summary(
+  contrast(
+    emmeans(paper_primary_glmer, ~ paper_group),
+    method = list("Want: want_single - Control: invalid" = c(-1, 1))
+  ),
+  infer = c(TRUE, TRUE)
+)
+
+paper_primary_contrast_df <- as.data.frame(paper_primary_contrast) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    odds_ratio = exp(estimate),
+    or_low = exp(lcl),
+    or_high = exp(ucl)
+  )
+
+paper_primary_model_text <- glue(
+  "Mixed-effects logistic regression (random intercepts for participant and item): ",
+  "OR = {round(paper_primary_contrast_df$odds_ratio[1], 2)}, ",
+  "95% CI [{round(paper_primary_contrast_df$or_low[1], 2)}, {round(paper_primary_contrast_df$or_high[1], 2)}], ",
+  "z = {round(paper_primary_contrast_df$z.ratio[1], 2)}, ",
+  "p = {format.pval(paper_primary_contrast_df$p.value[1], digits = 3, eps = .001)}."
+)
+
+list(
+  paper_primary_emm_resp = paper_primary_emm_resp,
+  paper_primary_contrast = paper_primary_contrast,
+  paper_primary_model_text = paper_primary_model_text
+)
+```
+
+Model-based estimated “follows” rates:
+
+```{r paper-primary-emm-table, results='asis'}
+as.data.frame(paper_primary_emm_resp) %>% flextable() %>% autofit()
+```
+
+Model-based comparison:
+
+`r paper_primary_model_text`
+
+### Paper-ready summary: all conditions (collapsed over A/B where applicable)
+
+The table below collapses across `A`/`B` conclusion variants for single-disjunct conditions.
+
+```{r paper-summary-all-conditions, include=FALSE}
+paper_conditions <- experimental %>%
+  mutate(
+    paper_condition = case_when(
+      domain == "control" & valid_flag == "Y" ~ "Control: valid",
+      domain == "control" & valid_flag == "N" ~ "Control: invalid",
+      domain == "want" ~ paste0("Want: ", as.character(pair_type)),
+      domain == "modal" ~ paste0("Modal: ", as.character(pair_type)),
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(paper_condition)) %>%
+  group_by(participant, paper_condition) %>%
+  summarise(mean_resp = mean(resp, na.rm = TRUE), .groups = "drop")
+
+paper_conditions_summary <- paper_conditions %>%
+  group_by(paper_condition) %>%
+  summarise(
+    n_participants = n_distinct(participant),
+    mean = mean(mean_resp, na.rm = TRUE),
+    sd = sd(mean_resp, na.rm = TRUE),
+    se = sd(mean_resp, na.rm = TRUE) / sqrt(n_participants),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    ci_mult = qt(0.975, df = n_participants - 1),
+    ci_low = mean - ci_mult * se,
+    ci_high = mean + ci_mult * se,
+    `Mean follows` = scales::percent(mean, accuracy = 0.1),
+    `SD` = scales::percent(sd, accuracy = 0.1),
+    `95% CI` = paste0(
+      "[",
+      scales::percent(ci_low, accuracy = 0.1),
+      ", ",
+      scales::percent(ci_high, accuracy = 0.1),
+      "]"
+    )
+  ) %>%
+  select(
+    Condition = paper_condition,
+    `Mean follows`,
+    SD,
+    `95% CI`,
+    `N participants` = n_participants
+  )
+
+list(paper_conditions_summary = paper_conditions_summary)
+```
+
+Condition-level descriptives (participant means):
+
+```{r paper-conditions-table, results='asis'}
+paper_conditions_summary %>% flextable() %>% autofit()
+```
+
+## Additional comparisons: benchmark modal FC vs want FC
+
+The main text currently reports the primary contrast (`want_single` vs invalid controls). For interpretability, it is also useful to compare FC endorsement rates in *benchmark permission modals* (allowed) to FC endorsement rates under *want*.
+
+We focus on the four directly comparable conditions:
+
+- **Modal (allowed):** `allowed_single` and `allowed_and`
+- **Want:** `want_single` and `want_and`
+
+### Descriptives (participant means)
+
+```{r fc_modal_vs_want_descriptives, include=FALSE}
+fc_comp <- experimental %>%
+  filter(
+    (domain == "modal" & pair_type %in% c("allowed_single", "allowed_and")) |
+      (domain == "want" & pair_type %in% c("want_single", "want_and"))
+  ) %>%
+  mutate(
+    fc_domain = case_when(
+      domain == "modal" ~ "Modal: allowed",
+      domain == "want" ~ "Want",
+      TRUE ~ NA_character_
+    ),
+    fc_conclusion = case_when(
+      pair_type %in% c("allowed_single", "want_single") ~ "single",
+      pair_type %in% c("allowed_and", "want_and") ~ "and",
+      TRUE ~ NA_character_
+    ),
+    fc_domain = factor(fc_domain, levels = c("Modal: allowed", "Want")),
+    fc_conclusion = factor(fc_conclusion, levels = c("single", "and"))
+  ) %>%
+  filter(!is.na(fc_domain), !is.na(fc_conclusion))
+
+fc_subj_means <- fc_comp %>%
+  group_by(participant, fc_domain, fc_conclusion) %>%
+  summarise(mean_resp = mean(resp, na.rm = TRUE), .groups = "drop")
+
+fc_desc <- fc_subj_means %>%
+  group_by(fc_domain, fc_conclusion) %>%
+  summarise(
+    n_participants = n_distinct(participant),
+    mean = mean(mean_resp, na.rm = TRUE),
+    sd = sd(mean_resp, na.rm = TRUE),
+    se = sd / sqrt(n_participants),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    ci_mult = qt(0.975, df = n_participants - 1),
+    ci_low = mean - ci_mult * se,
+    ci_high = mean + ci_mult * se,
+    `Mean follows` = scales::percent(mean, accuracy = 0.1),
+    `SD` = scales::percent(sd, accuracy = 0.1),
+    `95% CI` = paste0(
+      "[",
+      scales::percent(ci_low, accuracy = 0.1),
+      ", ",
+      scales::percent(ci_high, accuracy = 0.1),
+      "]"
+    )
+  ) %>%
+  select(
+    Domain = fc_domain,
+    Conclusion = fc_conclusion,
+    `Mean follows`,
+    SD,
+    `95% CI`,
+    `N participants` = n_participants
+  )
+
+NULL
+```
+
+```{r fc_modal_vs_want_descriptives_table, results='asis'}
+fc_desc %>% flextable() %>% autofit()
+```
+
+### Model-based comparison (mixed-effects logistic regression)
+
+```{r fc_modal_vs_want_model, include=FALSE}
+fc_model <- glmer(
+  resp ~ fc_domain * fc_conclusion + (1 | participant) + (1 | item),
+  data = fc_comp,
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))
+)
+
+fc_emm <- emmeans(fc_model, ~ fc_domain * fc_conclusion, type = "response")
+
+# Key contrasts for the paper (on the logit scale, reported as OR):
+fc_contrast_domain_within_conclusion <- summary(
+  pairs(emmeans(fc_model, ~ fc_domain | fc_conclusion)),
+  infer = c(TRUE, TRUE)
+)
+
+fc_contrast_conclusion_within_domain <- summary(
+  pairs(emmeans(fc_model, ~ fc_conclusion | fc_domain)),
+  infer = c(TRUE, TRUE)
+)
+
+list(
+  fc_model = fc_model,
+  fc_emm = fc_emm,
+  fc_contrast_domain_within_conclusion = fc_contrast_domain_within_conclusion,
+  fc_contrast_conclusion_within_domain = fc_contrast_conclusion_within_domain
+)
+```
+
+Model-based predicted “follows” rates:
+
+```{r fc_modal_vs_want_emm_table, results='asis'}
+as.data.frame(summary(fc_emm, infer = c(TRUE, TRUE))) %>%
+  mutate(across(c(prob, asymp.LCL, asymp.UCL), ~ scales::percent(.x, accuracy = 0.1))) %>%
+  select(fc_domain, fc_conclusion, prob, asymp.LCL, asymp.UCL, z.ratio, p.value) %>%
+  rename(
+    Domain = fc_domain,
+    Conclusion = fc_conclusion,
+    `Predicted follows` = prob,
+    `95% CI (low)` = asymp.LCL,
+    `95% CI (high)` = asymp.UCL,
+    z = z.ratio,
+    p = p.value
+  ) %>%
+  flextable() %>%
+  autofit()
+```
+
+Domain contrasts (Want vs Modal: allowed), separately for `single` vs `and` conclusions:
+
+```{r fc_modal_vs_want_contrast_domain, results='asis'}
+as.data.frame(fc_contrast_domain_within_conclusion) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    `OR (95% CI)` = paste0(round(OR, 2), " [", round(OR_low, 2), ", ", round(OR_high, 2), "]"),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(
+    `Conclusion type` = fc_conclusion,
+    Contrast = contrast,
+    `OR (95% CI)`,
+    z,
+    p
+  ) %>%
+  flextable() %>%
+  autofit()
+```
+
+Conclusion-type contrasts (`and` vs `single`), separately within each domain:
+
+```{r fc_modal_vs_want_contrast_conclusion, results='asis'}
+as.data.frame(fc_contrast_conclusion_within_domain) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    `OR (95% CI)` = paste0(round(OR, 2), " [", round(OR_low, 2), ", ", round(OR_high, 2), "]"),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(
+    Domain = fc_domain,
+    Contrast = contrast,
+    `OR (95% CI)`,
+    z,
+    p
+  ) %>%
+  flextable() %>%
+  autofit()
+```
+
+### Controls: Accuracy (Known Validity Only)
+
+```{r control-accuracy}
+controls_only <- experimental %>%
+  filter(domain == "control", !is.na(valid_flag))
+
+acc_summary <- controls_only %>%
+  group_by(pair_type, valid_flag, participant) %>%
+  summarise(mean_acc = mean(accuracy, na.rm = TRUE), .groups = "drop") %>%
+  group_by(pair_type, valid_flag) %>%
+  summarise(
+    mean = mean(mean_acc, na.rm = TRUE),
+    se = sd(mean_acc, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+ggplot(acc_summary, aes(valid_flag, mean, fill = pair_type)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se),
+                position = position_dodge(width = 0.8),
+                width = 0.2, linewidth = 0.6) +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  labs(
+    title = "Accuracy on Control Trials",
+    x = "Ground Truth",
+    y = "Mean Accuracy",
+    fill = "Control Type"
+  )
+```
+
+# Response Time (Experimental Trials)
+
+Trim obvious outliers (e.g., <200 ms or >20 s) and reuse the grouping from above.
+
+```{r rt, fig.width=14, fig.height=9}
+rt_trimmed <- experimental %>%
+  filter(rt >= 200, rt <= 20000)
+
+rt_summary <- rt_trimmed %>%
+  mutate(
+    plot_group = case_when(
+      domain == "control" & valid_flag == "Y" ~ "Control (valid)",
+      domain == "control" & valid_flag == "N" ~ "Control (invalid)",
+      domain == "want" ~ "Want",
+      domain == "modal" & pair_type %in% c("allowed_and", "allowed_single", "must_and", "must_single") ~ "Modal: allowed/must",
+      domain == "modal" & pair_type %in% c("all_and", "all_single") ~ "Modal: all",
+      TRUE ~ NA_character_
+    ),
+    plot_group = factor(plot_group, levels = plot_group_levels),
+    plot_pair_type = factor(pair_type, levels = pair_order)
+  ) %>%
+  filter(!is.na(plot_group)) %>%
+  group_by(plot_group, plot_pair_type, participant) %>%
+  summarise(mean_rt = mean(rt_sec, na.rm = TRUE), .groups = "drop") %>%
+  group_by(plot_group, plot_pair_type) %>%
+  summarise(
+    mean = mean(mean_rt, na.rm = TRUE),
+    se = sd(mean_rt, na.rm = TRUE) / sqrt(n()),
+    n = n(),
+    .groups = "drop"
+  )
+
+ggplot(rt_summary, aes(plot_pair_type, mean, fill = plot_group)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se),
+                position = position_dodge(width = 0.8),
+                width = 0.2, linewidth = 0.6) +
+  facet_wrap(~ plot_group, scales = "free_x") +
+  scale_fill_scico_d(palette = "batlow", name = "Group") +
+  labs(
+    title = "Mean Response Times (s) by Group",
+    x = "Pair Type",
+    y = "Response Time (s)",
+    fill = "Group"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 30, hjust = 1, vjust = 1, size = 10),
+    strip.text = element_text(size = 12),
+    legend.position = "bottom"
+  )
+```
+
+Underlying descriptives:
+
+```{r rt-table, results='asis'}
+rt_tbl <- rt_summary %>%
+  mutate(
+    `Mean RT (s)` = round(mean, 2),
+    `SE` = round(se, 2)
+  ) %>%
+  select(Group = plot_group, `Pair type` = plot_pair_type, `Mean RT (s)`, SE, n)
+
+rt_tbl %>% flextable() %>% autofit()
+```
+
+# Modeling
+
+## Proportion of "Follows" Responses (by grouping)
+
+```{r}
+critical <- experimental %>% filter(domain %in% c("modal", "want"))
+glmer_critical <- glmer(
+  resp ~ domain * pair_type + (1 | participant) + (1| item),
+  data = critical,
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa")
+  )
+
+tab_model(glmer_critical)
+```
+
+```{r}
+glmer.emm <- emmeans(glmer_critical, ~ pair_type | domain, type = "response")
+format_pairs <- function(df) {
+  out <- df %>% mutate(across(where(is.numeric), ~ round(.x, 3)))
+  p_col <- intersect(c("adj.p.value", "p.value"), names(out))
+  if (length(p_col)) {
+    col <- p_col[1]
+    out <- out %>%
+      mutate(
+        !!col := ifelse(.data[[col]] < 0.001, "< 0.001", scales::number(.data[[col]], accuracy = 0.001)),
+        .bold_p = ifelse(.data[[col]] != "< 0.001" & suppressWarnings(as.numeric(.data[[col]])) < 0.05, TRUE,
+                         ifelse(.data[[col]] == "< 0.001", TRUE, FALSE))
+      )
+  } else {
+    out$.bold_p <- FALSE
+  }
+  out
+}
+
+emm_pairs_glmer <- format_pairs(tidy(pairs(glmer.emm)))
+ft_glmer <- flextable(emm_pairs_glmer)
+if (".bold_p" %in% names(emm_pairs_glmer)) {
+  bold_rows <- which(emm_pairs_glmer$.bold_p %in% TRUE)
+  pcol <- intersect(c("adj.p.value", "p.value"), names(emm_pairs_glmer))
+  if (length(pcol)) {
+    ft_glmer <- bold(ft_glmer, i = bold_rows, j = pcol, bold = TRUE)
+  }
+  ft_glmer <- delete_columns(ft_glmer, ".bold_p")
+}
+ft_glmer %>% autofit()
+plot(glmer.emm)
+```
+
+## Response Time (Experimental Trials)
+
+```{r}
+critical <- experimental %>% filter(domain %in% c("modal", "want"))
+lmer_critical <- lmer(
+  rt ~ domain * pair_type + (1 | participant) + (1| item),
+  data = critical,
+  control = lmerControl(optimizer = "bobyqa")
+  )
+tab_model(lmer_critical)
+```
+
+```{r}
+lmer.emm <- emmeans(lmer_critical, ~ pair_type | domain, type = "response")
+emm_pairs_lmer <- format_pairs(tidy(pairs(lmer.emm)))
+ft_lmer <- flextable(emm_pairs_lmer)
+if (".bold_p" %in% names(emm_pairs_lmer)) {
+  bold_rows <- which(emm_pairs_lmer$.bold_p %in% TRUE)
+  pcol <- intersect(c("adj.p.value", "p.value"), names(emm_pairs_lmer))
+  if (length(pcol)) {
+    ft_lmer <- bold(ft_lmer, i = bold_rows, j = pcol, bold = TRUE)
+  }
+  ft_lmer <- delete_columns(ft_lmer, ".bold_p")
+}
+ft_lmer %>% autofit()
+plot(lmer.emm)
+```
+
+# Per-Item "Follows" Rates
+
+```{r per-item-follows}
+per_item_summary <- experimental %>%
+  filter(domain != "control") %>%
+  group_by(item, domain, pair_type, conclusion_form) %>%
+  summarise(
+    Premise = first(premise),
+    Conclusion = first(conclusion),
+    follows_rate = mean(resp, na.rm = TRUE),
+    n = sum(!is.na(resp)),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    Conclusion_form = if_else(is.na(conclusion_form) | conclusion_form == "", "control/NA", as.character(conclusion_form))
+  ) %>%
+  select(
+    Item = item,
+    Premise,
+    Conclusion,
+    Domain = domain,
+    Condition = pair_type,
+    Conclusion_form,
+    follows_rate,
+    `N responses` = n
+  )
+
+per_item_display <- per_item_summary %>%
+  mutate(`Follows %` = scales::percent(follows_rate, accuracy = 0.1)) %>%
+  select(-follows_rate)
+```
+
+```{r per-item-follows-table, results='asis'}
+per_item_display %>% flextable() %>% autofit()
+```
+
+```{r per-item-follows-export}
+per_item_export_path <- "per_item_follows.xlsx"
+write_xlsx(per_item_summary, per_item_export_path)
+glue("Per-item follows proportions exported to: {per_item_export_path}")
+```

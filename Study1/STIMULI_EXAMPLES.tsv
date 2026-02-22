@@ -1,0 +1,21 @@
+domain	pair_type	STIMULUS_VALID	conclusion_form	item	premise	conclusion
+want	atleast_single_a	?	A	W40	Charlie wants to trim the hedges or at least stake the tomato vines.	Charlie wants to trim the hedges.
+want	atleast_single_b	?	B	W44	Harper wants to prepare the snack table or at least arrange the seating.	Harper wants to arrange the seating.
+want	want_and	?	AND	W24	Jordan wants to preheat the oven or grill the skewers.	Jordan wants to preheat the oven and wants to grill the skewers.
+want	want_mind_and	?	AND	W32	Elliot wants to check the bike tires or cool down after practice.	Elliot does not mind checking the bike tires, and does not mind cooling down after practice.
+want	want_mind_single	?	A	W36	Marley wants to refill the water bottles or set up the yoga mats.	Marley does not mind refilling the water bottles.
+want	want_single	?	A	W28	Alex wants to set up the tripod or test the shutter remote.	Alex wants to set up the tripod.
+modal	all_and	N	AND	M16	Everyone learned the bridge section or warmed up the scales.	Some people learned the bridge section, and some people warmed up the scales.
+modal	all_single	N	A	M20	Everyone edited the raw photos or charged the camera batteries.	Some people edited the raw photos.
+modal	allowed_and	?	AND	M00	Morgan is allowed to garnish the plates or bake the rolls.	Morgan is allowed to garnish the plates and is allowed to bake the rolls.
+modal	allowed_single	?	A	M04	Jules is allowed to dim the room lights or collect the RSVPs.	Jules is allowed to dim the room lights.
+modal	must_and	?	AND	M08	Eden should clean the air filter or replace the lightbulb.	Eden may clean the air filter, and may replace the lightbulb.
+modal	must_single	?	A	M12	Tegan should sew the fabric border or glue the pieces.	Tegan may sew the fabric border.
+control	conditional	N		C18	If the printer jams this morning, the reports will be delayed.	The device will power off on its own.
+control	conditional	Y		C12	Since the engine overheated, the car stopped on the roadside.	The engine became too hot.
+control	conjunction	N		C06	Sophie cleaned the guest room and changed all the bed linens.	Sophie attended a music festival.
+control	conjunction	Y		C00	Emma walked to the lake and fed the ducks.	Emma gave food to the ducks.
+control	presupposition	N		C42	Anne quit smoking last year.	Anne never smoked in the past.
+control	presupposition	Y		C36	John quit smoking last year.	John used to smoke in the past.
+control	quantifier	N		C30	Some birds have long legs.	Some birds have long beaks.
+control	quantifier	Y		C24	Some birds have long legs.	Some creatures with long legs are birds.

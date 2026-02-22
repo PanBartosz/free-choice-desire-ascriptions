@@ -1,0 +1,22 @@
+# Study 2: Example stimuli (one per item type)
+
+One concrete example per item type from the main-session stimuli as used in `Study2/results/results.csv` (unique items; `SESSION == "EXPERIMENTAL"`).
+
+| Item type | Condition | Verb | Correct | Order | Tribe | Item ID | Sentence |
+|---|---|---|---|---|---|---|---|
+| Single control: wants (true) | SINGLE_CONTROL | want | Y | single | Nomad | SC15 | Sandra-the-Nomad wants to eat a cherry |
+| Single control: accepts (false) | SINGLE_CONTROL | want | N | single | Nomad | SC12 | Linda-the-Nomad wants to eat a kebab |
+| Single control: dislikes (false) | SINGLE_CONTROL | want | N | single | Urbanite | SC0 | Charles-the-Urbanite wants to eat a strawberry |
+| Double control: wants ∨ wants (true) | DOUBLE_CONTROL | want | Y | AB | Urbanite | DC30 | Emily-the-Urbanite wants to eat a chocolate or a brownie |
+| Double control: accepts ∨ accepts (false) | DOUBLE_CONTROL | want | N | AB | Urbanite | DC24 | Joshua-the-Urbanite wants to eat a sausage or a meatball |
+| Double control: dislikes ∨ dislikes (false) | DOUBLE_CONTROL | want | N | AB | Urbanite | DC18 | Anthony-the-Urbanite wants to eat a plum or a mango |
+| Prefer different: wants > accepts (true) | PREFER_DIFFERENT | prefer | Y | AB | Urbanite | PD60 | Mary-the-Urbanite prefers to eat a chocolate rather than beef |
+| Prefer different: wants < accepts (false) | PREFER_DIFFERENT | prefer | N | BA | Urbanite | PD63 | Karen-the-Urbanite prefers to eat a kebab rather than a lollipop |
+| Prefer different: accepts > dislikes (true) | PREFER_DIFFERENT | prefer | Y | AB | Urbanite | PD54 | Matthew-the-Urbanite prefers to eat a sausage rather than an apple |
+| Prefer different: accepts < dislikes (false) | PREFER_DIFFERENT | prefer | N | BA | Urbanite | PD57 | Susan-the-Urbanite prefers to eat an orange rather than ribs |
+| Prefer same: wants = wants (false) | PREFER_SAME | prefer | N | AB | Urbanite | PS81 | Michael-the-Urbanite prefers to eat a cookie rather than a chocolate |
+| Prefer same: accepts = accepts (false) | PREFER_SAME | prefer | N | AB | Urbanite | PS78 | John-the-Urbanite prefers to eat pork rather than ribs |
+| Experimental: wants ∨ accepts (wants-first) | EXPERIMENTAL | want | Y/N | AB | Nomad | EX108 | Robert-the-Nomad wants to eat a plum or pork |
+| Experimental: wants ∨ accepts (wants-second) | EXPERIMENTAL | want | Y/N | BA | Urbanite | EX100 | Mary-the-Urbanite wants to eat a steak or a chocolate |
+| Experimental: wants ∨ dislikes (wants-first) | EXPERIMENTAL | want | Y/N | AB | Nomad | EX102 | Kimberly-the-Nomad wants to eat a cranberry or a biscuit |
+| Experimental: wants ∨ dislikes (wants-second) | EXPERIMENTAL | want | Y/N | BA | Nomad | EX105 | Steven-the-Nomad wants to eat a cake or a cherry |

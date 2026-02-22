@@ -1,0 +1,519 @@
+---
+title: "Weak Free Choice (2025) (wersja instrukcji: soft; z przypomnieniami)"
+author: "Bartosz"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r message=F}
+library(readr)
+library(tidyverse)
+library(ggpubr)
+library(flextable)
+library(lme4)
+library(lmerTest)
+library(sjPlot)
+library(emmeans)
+data_raw <- read.csv("results.csv")
+#table(data_raw$PARTICIPANT) 
+#table(data_raw$ITEM1_TYPE, useNA = "ifany")
+#table(data_raw$ITEM2_TYPE, useNA = "ifany")
+```
+
+```{r}
+data <- data_raw %>% 
+  mutate(
+    resp = case_when(
+      response %in% c("b", "B") ~ 1,
+      response %in% c("n", "N") ~ 0,
+  ),
+    trial_type = case_when(
+      (ITEM1_TYPE == "accepts" & ITEM2_TYPE == "wants")  ~ "W + A",
+      (ITEM1_TYPE == "wants" & ITEM2_TYPE == "accepts")  ~ "W + A",
+      (ITEM1_TYPE == "accepts" & ITEM2_TYPE == "dislikes")  ~ "D + A",
+      (ITEM1_TYPE == "dislikes" & ITEM2_TYPE == "accepts")  ~ "D + A",
+      (ITEM1_TYPE == "wants" & ITEM2_TYPE == "dislikes")  ~ "W + D",
+      (ITEM1_TYPE == "dislikes" & ITEM2_TYPE == "wants")  ~ "W + D",
+      
+      (ITEM1_TYPE == "wants" & ITEM2_TYPE == "")  ~ "W",
+      (ITEM1_TYPE == "dislikes" & ITEM2_TYPE == "")  ~ "D",
+      (ITEM1_TYPE == "accepts" & ITEM2_TYPE == "")  ~ "A",
+      
+      (ITEM1_TYPE == "wants" & ITEM2_TYPE == "wants")  ~ "W + W",
+      (ITEM1_TYPE == "dislikes" & ITEM2_TYPE == "dislikes")  ~ "D + D",
+      (ITEM1_TYPE == "accepts" & ITEM2_TYPE == "accepts")  ~ "A + A",
+    ),
+  condition = case_when(
+    condition %in% c("DOUBLE_CONTROL", "DOUBLE_CONTROL_MIND") ~ "DOUBLE_CONTROL",
+    condition %in% c("SINGLE_CONTROL", "SINGLE_CONTROL_MIND") ~ "SINGLE_CONTROL",
+    condition %in% c("EXPERIMENTAL", "EXPERIMENTAL_MIND") ~ "EXPERIMENTAL",
+  )
+  
+  ) %>% 
+  filter(condition %in% c("DOUBLE_CONTROL", "SINGLE_CONTROL", "EXPERIMENTAL",
+                          "SINGLE_CONTROL_MIND", "DOUBLE_CONTROL_MIND", "EXPERIMENTAL_MIND")) %>% 
+  filter(SESSION == "EXPERIMENTAL")
+```
+
+## Answers
+
+```{r}
+stats <- data %>% 
+  group_by(PARTICIPANT) %>% 
+  group_by(condition, verb, trial_type, correct) %>% 
+  summarise(M = mean(resp),
+            SD = sd(resp),
+            n = n()
+            )
+
+data_collapsed <- data %>% 
+  group_by(PARTICIPANT, condition, verb, trial_type, correct) %>% 
+  summarise(RESPONSE = mean(resp))
+```
+
+```{r fig.height=8}
+ggbarplot(data = data_collapsed,
+          x = "correct",
+          y = "RESPONSE",
+          fill = "trial_type",
+          facet.by = c("condition", "verb"),
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+```
+
+```{r}
+stats %>% flextable() %>% colformat_double(digits = 2) %>% autofit()
+```
+
+## Odpowiedzi przekodowane na 1 = Correct, 0 = Incorrect (oprócz experimental)
+
+```{r}
+data$condition <- factor(data$condition, levels = c("DOUBLE_CONTROL", "SINGLE_CONTROL", "EXPERIMENTAL"))
+data <- data %>% mutate(
+  resp_adj = case_when(
+    (resp == 1 & correct == "Y" ) ~ 1,
+    (resp == 0 & correct == "Y" ) ~ 0,
+    (resp == 1 & correct == "N" ) ~ 0,
+    (resp == 0 & correct == "N" ) ~ 1,
+    (resp == 1 & correct == "Y/N" ) ~ 1,
+    (resp == 0 & correct == "Y/N" ) ~ 0,
+  )
+)
+```
+
+```{r}
+data_collapsed <- data %>% 
+  filter(verb == "want") %>% 
+  group_by(PARTICIPANT, condition, correct, trial_type) %>% 
+  summarise(RESP_adj = mean(resp_adj))
+
+ggbarplot(data = data_collapsed,
+          x = "correct",
+          y = "RESP_adj",
+          fill = "trial_type",
+          add = "mean_se",
+          facet.by = "condition",
+          position = position_dodge(0.9)
+          )
+
+ggbarplot(data = data %>% filter(verb == "want"),
+          x = "correct",
+          y = "resp_adj",
+          fill = "trial_type",
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+```
+
+### Full model
+
+```{r}
+data <- data %>% mutate(
+  single_or_double = case_when(
+    condition == "SINGLE_CONTROL" ~ "SINGLE",
+    .default = "DOUBLE"
+  )
+)
+```
+
+```{r}
+fit <- glmer(resp_adj ~ trial_type * single_or_double + (1|PARTICIPANT), 
+             data = data %>% filter(verb == "want"),
+             control = glmerControl(optimizer = "Nelder_Mead", optCtrl = list(maxfun = 10e5)),
+             family = binomial)
+tab_model(fit)
+```
+
+### Model for EXPERIMENTAL trials
+
+```{r}
+fit <- glmer(resp_adj ~ trial_type + (trial_type|PARTICIPANT), 
+             data = data %>% filter(condition == "EXPERIMENTAL" & verb == "want"),
+             family = binomial)
+tab_model(fit)
+```
+
+### Participants' level distribution of responses
+
+```{r}
+want_exp <- data %>%                       # 1) keep only EXPERIMENTAL ‘want’ trials
+  filter(condition == "EXPERIMENTAL",
+         verb       == "want")
+
+prop_by_part <- want_exp %>%               # 2) participant-level response rate
+  group_by(PARTICIPANT, trial_type) %>% 
+  summarise(p = mean(resp_adj), n = n(), .groups = "drop")
+
+ggplot(prop_by_part, aes(p)) +             # 3) visualise
+  geom_histogram(bins = 10, colour = "grey30") +
+  geom_vline(xintercept = c(.10, .90), linetype = "dashed") +
+  scale_x_continuous(labels = scales::percent) +
+  facet_grid(. ~ trial_type) +
+  labs(x = "Participant mean (resp_adj)", 
+       y = "Number of participants",
+       title = "Distribution of individual response rates – EXPERIMENTAL condition")
+
+library(diptest)
+```
+
+### Test for bimodal distribution
+
+#### D + A
+```{r}
+dip.test(prop_by_part %>% filter(trial_type == "D + A") %>% pull(p))
+```
+
+#### W + A
+```{r}
+dip.test(prop_by_part %>% filter(trial_type == "W + A") %>% pull(p))
+```
+
+#### W + D
+```{r}
+dip.test(prop_by_part %>% filter(trial_type == "W + D") %>% pull(p))
+```
+
+## Response times
+
+```{r}
+# Filtering for outliers
+lower_ms   <- 200
+mad_cutoff <- 2.5 # Metoda Kontka
+#mad_cutoff <- 2
+filter_rt_outliers <- function(data, rt_col = "rt") {
+  data %>% 
+    filter(.data[[rt_col]] >= lower_ms) %>%                     
+    mutate(log_rt = log(.data[[rt_col]])) %>%                   
+    mutate(
+      med_log = median(log_rt,          na.rm = TRUE),
+      mad_log = mad   (log_rt, constant = 1, na.rm = TRUE)      
+    ) %>% 
+    filter(abs(log_rt - med_log) <= mad_cutoff * mad_log) %>%   
+    select(-log_rt, -med_log, -mad_log)
+}
+
+data_clean <- filter_rt_outliers(data, "rt")
+```
+
+### Raw RTs
+
+```{r}
+data_clean$resp_nom <- ifelse(data_clean$resp == 1, "TRUE", "FALSE")
+
+stats <- data_clean %>% 
+  group_by(PARTICIPANT) %>% 
+  group_by(resp_nom, condition, verb, trial_type, correct) %>% 
+  summarise(M = mean(rt),
+            SD = sd(rt),
+            n = n()
+            )
+
+data_collapsed <- data_clean %>% 
+  group_by(PARTICIPANT, resp_nom, condition, verb, trial_type, correct) %>% 
+  summarise(RT = mean(rt))
+```
+
+```{r}
+ggline(data = data_collapsed %>% filter(verb == "want"),
+          x = "resp_nom",
+          y = "RT",
+          color = "trial_type",
+          facet.by = c("condition", "correct"),
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+```
+
+```{r}
+stats %>% flextable() %>% colformat_double(digits = 2) %>% autofit()
+```
+
+```{r}
+data_clean$condition <- factor(data_clean$condition, levels = c("DOUBLE_CONTROL", "SINGLE_CONTROL", "EXPERIMENTAL"))
+data_clean <- data_clean %>% mutate(
+  resp_nom_adj = case_when(
+    (resp_nom == "TRUE" & correct == "Y" ) ~ "TRUE",
+    (resp_nom == "FALSE" & correct == "Y" ) ~ "FALSE",
+    (resp_nom == "TRUE" & correct == "N") ~ "FALSE",
+    (resp_nom == "FALSE" & correct == "N" ) ~ "TRUE",
+    (resp_nom == "TRUE" & correct == "Y/N" ) ~ "TRUE",
+    (resp_nom == "FALSE" & correct == "Y/N" ) ~ "FALSE",
+  )
+)
+```
+
+
+#### Full model
+
+```{r}
+data_collapsed <- data_clean %>% 
+  filter(verb == "want") %>% 
+  group_by(PARTICIPANT, trial_type, resp_nom_adj) %>% 
+  summarise(RT = mean(rt))
+
+ggline(data = data_collapsed,
+          x = "resp_nom_adj",
+          y = "RT",
+          color = "trial_type",
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+
+ggline(data = data_clean %>% filter(verb == "want"),
+          x = "resp_nom_adj",
+          y = "rt",
+          color = "trial_type",
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+```
+
+```{r}
+data_collapsed <- data_clean %>% 
+  filter(verb == "want") %>% 
+  group_by(PARTICIPANT, condition, trial_type, resp_nom_adj) %>% 
+  summarise(RT = mean(rt))
+
+ggline(data = data_collapsed,
+          x = "resp_nom_adj",
+          y = "RT",
+          color = "condition",
+          add = "mean_se",
+          facet.by = "trial_type",
+          position = position_dodge(0.9)
+          )
+
+ggline(data = data_clean %>% filter(verb == "want"),
+          x = "resp_nom_adj",
+          y = "rt",
+          color = "condition",
+          add = "mean_se",
+          facet.by = "trial_type",
+          position = position_dodge(0.9)
+          )
+```
+
+```{r}
+fit <- lmer(rt ~ resp_nom_adj * trial_type + (1|PARTICIPANT) + (1|item), 
+             data = data_clean %>% filter(verb == "want"))
+
+tab_model(fit)
+emm_resp_by_cond <- emmeans(fit, ~ resp_nom_adj | trial_type, lmer.df = "asymptotic")
+broom::tidy(pairs(emm_resp_by_cond, adjust = "tukey")) %>% flextable() %>% colformat_double(digits = 3) %>% autofit()
+```
+
+```{r fig.height=8}
+plot(emm_resp_by_cond, comparisons = TRUE)
+```
+
+#### Model for EXPERIMENTAL trials
+
+```{r}
+data_collapsed <- data_clean %>% 
+  filter(verb == "want", condition == "EXPERIMENTAL") %>% 
+  group_by(PARTICIPANT, trial_type, resp_nom_adj) %>% 
+  summarise(RT = mean(rt))
+
+ggline(data = data_collapsed,
+          x = "resp_nom_adj",
+          y = "RT",
+          color = "trial_type",
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+
+ggline(data = data_clean %>% filter(verb == "want",
+                                    condition == "EXPERIMENTAL"),
+          x = "resp_nom_adj",
+          y = "rt",
+          color = "trial_type",
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+```
+
+```{r}
+fit <- lmer(rt ~ trial_type * resp_nom + (1|PARTICIPANT) ,
+             data = data_clean %>% filter(verb == "want", condition == "EXPERIMENTAL"))
+
+tab_model(fit)
+emm_resp_by_cond <- emmeans(fit, ~ resp_nom | trial_type, lmer.df = "asymptotic")
+broom::tidy(pairs(emm_resp_by_cond, adjust = "tukey")) %>% flextable() %>% colformat_double(digits = 3) %>% autofit()
+```
+
+```{r fig.height=8}
+plot(emm_resp_by_cond, comparisons = TRUE)
+```
+
+### Log-transformed
+
+```{r}
+data_clean$rt_log <- log(data_clean$rt)
+data_clean$resp_nom <- ifelse(data_clean$resp == 1, "TRUE", "FALSE")
+
+stats <- data_clean %>% 
+  group_by(PARTICIPANT) %>% 
+  group_by(resp_nom, condition, verb, trial_type, correct) %>% 
+  summarise(M = mean(rt_log),
+            SD = sd(rt_log),
+            n = n()
+            )
+
+data_collapsed <- data_clean %>% 
+  group_by(PARTICIPANT, resp_nom, condition, verb, trial_type, correct) %>% 
+  summarise(RT_log = mean(rt_log))
+```
+
+```{r}
+ggline(data = data_collapsed %>% filter(verb == "want"),
+          x = "resp_nom",
+          y = "RT_log",
+          color = "trial_type",
+          facet.by = c("condition", "correct"),
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+```
+
+```{r}
+stats %>% flextable() %>% colformat_double(digits = 2) %>% autofit()
+```
+
+```{r}
+data_clean$condition <- factor(data_clean$condition, levels = c("DOUBLE_CONTROL", "SINGLE_CONTROL", "EXPERIMENTAL"))
+data_clean <- data_clean %>% mutate(
+  resp_nom_adj = case_when(
+    (resp_nom == "TRUE" & correct == "Y" ) ~ "TRUE",
+    (resp_nom == "FALSE" & correct == "Y" ) ~ "FALSE",
+    (resp_nom == "TRUE" & correct == "N") ~ "FALSE",
+    (resp_nom == "FALSE" & correct == "N" ) ~ "TRUE",
+    (resp_nom == "TRUE" & correct == "Y/N" ) ~ "TRUE",
+    (resp_nom == "FALSE" & correct == "Y/N" ) ~ "FALSE",
+  )
+)
+```
+
+
+#### Full model
+
+```{r}
+data_collapsed <- data_clean %>% 
+  filter(verb == "want") %>% 
+  group_by(PARTICIPANT, trial_type, resp_nom_adj) %>% 
+  summarise(RT_log = mean(rt_log))
+
+ggline(data = data_collapsed,
+          x = "resp_nom_adj",
+          y = "RT_log",
+          color = "trial_type",
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+
+ggline(data = data_clean %>% filter(verb == "want"),
+          x = "resp_nom_adj",
+          y = "rt_log",
+          color = "trial_type",
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+```
+
+```{r}
+data_collapsed <- data_clean %>% 
+  filter(verb == "want") %>% 
+  group_by(PARTICIPANT, condition, trial_type, resp_nom_adj) %>% 
+  summarise(RT_log = mean(rt_log))
+
+ggline(data = data_collapsed,
+          x = "resp_nom_adj",
+          y = "RT_log",
+          color = "condition",
+          add = "mean_se",
+          facet.by = "trial_type",
+          position = position_dodge(0.9)
+          )
+
+ggline(data = data_clean %>% filter(verb == "want"),
+          x = "resp_nom_adj",
+          y = "rt_log",
+          color = "condition",
+          add = "mean_se",
+          facet.by = "trial_type",
+          position = position_dodge(0.9)
+          )
+```
+
+```{r}
+fit <- lmer(rt_log ~ resp_nom_adj * trial_type + (1|PARTICIPANT) + (1|item), 
+             data = data_clean %>% filter(verb == "want"))
+
+tab_model(fit)
+emm_resp_by_cond <- emmeans(fit, ~ resp_nom_adj | trial_type, lmer.df = "asymptotic")
+broom::tidy(pairs(emm_resp_by_cond, adjust = "tukey")) %>% flextable() %>% colformat_double(digits = 3) %>% autofit()
+```
+
+```{r fig.height=8}
+plot(emm_resp_by_cond, comparisons = TRUE)
+```
+
+#### Model for EXPERIMENTAL trials
+
+```{r}
+data_collapsed <- data_clean %>% 
+  filter(verb == "want", condition == "EXPERIMENTAL") %>% 
+  group_by(PARTICIPANT, trial_type, resp_nom_adj) %>% 
+  summarise(RT_log = mean(rt_log))
+
+ggline(data = data_collapsed,
+          x = "resp_nom_adj",
+          y = "RT_log",
+          color = "trial_type",
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+
+ggline(data = data_clean %>% filter(verb == "want",
+                                    condition == "EXPERIMENTAL"),
+          x = "resp_nom_adj",
+          y = "rt_log",
+          color = "trial_type",
+          add = "mean_se",
+          position = position_dodge(0.9)
+          )
+```
+
+```{r}
+fit <- lmer(rt_log ~ trial_type * resp_nom + (1|PARTICIPANT) + (1|item) ,
+             data = data_clean %>% filter(verb == "want", condition == "EXPERIMENTAL"))
+
+tab_model(fit)
+emm_resp_by_cond <- emmeans(fit, ~ resp_nom | trial_type, lmer.df = "asymptotic")
+broom::tidy(pairs(emm_resp_by_cond, adjust = "tukey")) %>% flextable() %>% colformat_double(digits = 3) %>% autofit()
+```
+
+```{r fig.height=8}
+plot(emm_resp_by_cond, comparisons = TRUE)
+```

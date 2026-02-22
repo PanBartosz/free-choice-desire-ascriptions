@@ -1,0 +1,12 @@
+# Shared Python dependencies for all scripts in `paper_analyses/`.
+#
+# Used by:
+# - `Study1/generate_stimuli.py`, `Study1/results/process_results.py`
+# - `Study2/generate_stimuli.py`, `Study2/results/process_results.py`
+# - `Study3/generate_stimuli.py`, `Study3/results/process_results.py`
+#
+# Notes:
+# - `openpyxl` is required for `pandas.DataFrame.to_excel(...)`.
+
+pandas
+openpyxl

@@ -1,0 +1,1484 @@
+---
+title: "Weak Free Choice (Study 3)"
+author: "Bartosz"
+output: 
+  html_document:
+    theme: readable
+    toc: true
+    toc_float: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+# This chunk loads all necessary packages for the entire analysis.
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+
+library(readr)
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(sjPlot)
+library(emmeans)
+library(flextable)
+library(scales)
+library(diptest)
+```
+
+# Introduction
+
+This report presents an analysis of the "Weak Free Choice" experiment, based on the version with soft instructions and reminders. The analysis is structured into two main parts:
+
+1.  **Response Analysis:** Examining participant response patterns, focusing on raw "TRUE" response rates, accuracy, and the distribution of choices in the experimental condition.
+2.  **Response Time (RT) Analysis:** Investigating the time taken to respond, both in raw milliseconds and after a log transformation.
+
+# Data Preparation
+
+We begin by loading the raw data and performing several cleaning and preparation steps. This includes standardizing response codes, creating a `trial_type` factor based on item combinations, and creating clean, descriptive labels for plotting.
+
+```{r data_preparation}
+# ----- 1) Load and Combine Data -----
+data_raw <- read.csv("results.csv")
+
+# ----- 2) Initial Cleaning and Tidying -----
+data_all <- data_raw %>%
+  mutate(
+    # Standardize response coding (1 for "b", 0 for "n")
+    resp = case_when(
+      response %in% c("b", "B") ~ 1,
+      response %in% c("n", "N") ~ 0,
+      TRUE ~ NA_real_
+    ),
+    # Keep original condition labels (useful for paper tables)
+    condition_full = condition,
+    # Some disjunction items include ITEM2 but have an empty ITEM2_TYPE in the results export
+    # (typically double-control disjunctions). In those cases, infer ITEM2_TYPE from ITEM1_TYPE.
+    ITEM2_TYPE = case_when(
+      ITEM2_TYPE == "" & ITEM2 != "" ~ ITEM1_TYPE,
+      TRUE ~ ITEM2_TYPE
+    ),
+    # Create a descriptive trial type factor
+    trial_type = factor(case_when(
+      (ITEM1_TYPE == "accepts" & ITEM2_TYPE == "wants") | (ITEM1_TYPE == "wants" & ITEM2_TYPE == "accepts") ~ "Wants + Accepts",
+      (ITEM1_TYPE == "accepts" & ITEM2_TYPE == "dislikes") | (ITEM1_TYPE == "dislikes" & ITEM2_TYPE == "accepts") ~ "Dislikes + Accepts",
+      (ITEM1_TYPE == "wants" & ITEM2_TYPE == "dislikes") | (ITEM1_TYPE == "dislikes" & ITEM2_TYPE == "wants") ~ "Wants + Dislikes",
+      (ITEM1_TYPE == "wants" & ITEM2_TYPE == "wants") ~ "Wants + Wants",
+      (ITEM1_TYPE == "dislikes" & ITEM2_TYPE == "dislikes") ~ "Dislikes + Dislikes",
+      (ITEM1_TYPE == "accepts" & ITEM2_TYPE == "accepts") ~ "Accepts + Accepts",
+      (ITEM1_TYPE == "wants" & ITEM2_TYPE == "") ~ "Wants",
+      (ITEM1_TYPE == "dislikes" & ITEM2_TYPE == "") ~ "Dislikes",
+      (ITEM1_TYPE == "accepts" & ITEM2_TYPE == "") ~ "Accepts"
+    )),
+    # Collapse 'MIND' conditions into their base versions
+    condition_raw = case_when(
+      condition_full %in% c("DOUBLE_CONTROL", "DOUBLE_CONTROL_MIND") ~ "DOUBLE_CONTROL",
+      condition_full %in% c("SINGLE_CONTROL", "SINGLE_CONTROL_MIND") ~ "SINGLE_CONTROL",
+      condition_full %in% c("EXPERIMENTAL", "EXPERIMENTAL_MIND") ~ "EXPERIMENTAL"
+    ),
+    # Create a separate column with pretty labels for plotting
+    condition_label = factor(
+      case_when(
+        condition_raw == "DOUBLE_CONTROL" ~ "Double Control",
+        condition_raw == "SINGLE_CONTROL" ~ "Single Control",
+        condition_raw == "EXPERIMENTAL" ~ "Experimental"
+      ),
+      levels = c("Double Control", "Single Control", "Experimental")
+    ),
+    # Create an adjusted response variable for correctness (1 = Correct, 0 = Incorrect)
+    resp_adj = case_when(
+      correct == "Y" & resp == 1 ~ 1,
+      correct == "N" & resp == 0 ~ 1,
+      correct == "Y/N" & resp == 1 ~ 1, # Treating Y/N as correct for 'TRUE'
+      TRUE ~ 0
+    ),
+    # Factorize key variables for modeling
+    condition = factor(condition_raw, levels = c("DOUBLE_CONTROL", "SINGLE_CONTROL", "EXPERIMENTAL")),
+    single_or_double = if_else(condition == "SINGLE_CONTROL", "SINGLE", "DOUBLE")
+  )
+
+data_practice <- data_all %>% filter(SESSION == "PRACTICE")
+data_main <- data_all %>% filter(SESSION == "EXPERIMENTAL")
+
+cat(paste0(
+  "Loaded ",
+  n_distinct(data_main$PARTICIPANT),
+  " participant(s) with ",
+  nrow(data_practice),
+  " practice trials and ",
+  nrow(data_main),
+  " main-session trials."
+))
+```
+
+# Demographics (Prolific export)
+
+```{r demographics_prolific}
+prolific_files <- list.files(".", pattern = "^prolific_export_.*\\.csv$", full.names = TRUE)
+if (length(prolific_files) == 0) stop("No Prolific export CSV found in the results folder.")
+prolific_path <- prolific_files[which.max(file.info(prolific_files)$mtime)]
+
+prolific <- read_csv(prolific_path, show_col_types = FALSE) %>%
+  rename(
+    PROLIFIC_PID = `Participant id`,
+    Status = Status,
+    Time_taken_sec = `Time taken`,
+    Age_years = Age,
+    Sex = Sex
+  ) %>%
+  mutate(
+    Age_years = suppressWarnings(as.numeric(Age_years)),
+    Time_taken_sec = suppressWarnings(as.numeric(Time_taken_sec))
+  )
+
+matched_ids <- unique(as.character(data_main$PARTICIPANT))
+demog <- prolific %>% filter(PROLIFIC_PID %in% matched_ids)
+missing_demog <- setdiff(matched_ids, demog$PROLIFIC_PID)
+
+approved_all <- prolific %>% filter(Status == "APPROVED")
+unmatched_rows <- prolific %>% filter(!(PROLIFIC_PID %in% matched_ids))
+unmatched_by_status <- unmatched_rows %>%
+  count(Status, name = "N") %>%
+  arrange(desc(N))
+
+sec_to_mmss <- function(sec) {
+  s <- as.integer(round(sec))
+  sprintf("%02d:%02d", s %/% 60, s %% 60)
+}
+
+median_matched_sec <- median(demog$Time_taken_sec, na.rm = TRUE)
+median_approved_sec <- median(approved_all$Time_taken_sec, na.rm = TRUE)
+
+demog_summary <- tibble(
+  `Matched participants` = n_distinct(demog$PROLIFIC_PID),
+  `Participants in data` = length(matched_ids),
+  `Mean age` = round(mean(demog$Age_years, na.rm = TRUE), 1),
+  `SD age` = round(sd(demog$Age_years, na.rm = TRUE), 1),
+  `Age range` = paste0(min(demog$Age_years, na.rm = TRUE), "-", max(demog$Age_years, na.rm = TRUE)),
+  `Median completion (matched, mm:ss)` = sec_to_mmss(median_matched_sec),
+  `Median completion (approved, mm:ss)` = sec_to_mmss(median_approved_sec)
+)
+
+sex_table <- demog %>%
+  count(Sex, name = "Count") %>%
+  mutate(Percent = percent(Count / sum(Count), accuracy = 0.1))
+
+paper_demog_text <- paste0(
+  "Matched participants = ", n_distinct(demog$PROLIFIC_PID),
+  "; age M = ", round(mean(demog$Age_years, na.rm = TRUE), 1),
+  " (SD = ", round(sd(demog$Age_years, na.rm = TRUE), 1),
+  ", range ", min(demog$Age_years, na.rm = TRUE), "-", max(demog$Age_years, na.rm = TRUE), "); ",
+  "median completion matched = ", sec_to_mmss(median_matched_sec),
+  "; median completion approved = ", sec_to_mmss(median_approved_sec), "."
+)
+```
+
+`r paper_demog_text`
+
+Matched demographics summary:
+
+```{r demog_summary_table, results='asis'}
+demog_summary %>% flextable() %>% autofit()
+```
+
+Sex distribution (matched participants):
+
+```{r demog_sex_table, results='asis'}
+sex_table %>% flextable() %>% autofit()
+```
+
+Prolific rows not matched to Study 3 trial data (by status):
+
+```{r demog_unmatched_status, results='asis'}
+if (nrow(unmatched_by_status) > 0) {
+  unmatched_by_status %>% flextable() %>% autofit()
+} else {
+  cat("No unmatched Prolific rows.")
+}
+```
+
+Missing demographics for participant IDs in trial data (if any):
+
+```{r demog_missing_ids, results='asis'}
+if (length(missing_demog) > 0) {
+  tibble(`Unmatched participant ID` = missing_demog) %>% flextable() %>% autofit()
+} else {
+  cat("All participants with trial data matched to Prolific demographics.")
+}
+```
+
+# Stimuli inventory (paper methods)
+
+```{r stimuli_inventory, include=FALSE}
+practice_stimuli <- data_practice %>%
+  distinct(
+    item, condition_full, condition_raw, condition_label, verb, correct, trial_type,
+    ITEM1_TYPE, ITEM2_TYPE, ITEM1, ITEM2
+  )
+
+main_stimuli <- data_main %>%
+  distinct(
+    item, condition_full, condition_raw, condition_label, verb, correct, trial_type,
+    ITEM1_TYPE, ITEM2_TYPE, ITEM1, ITEM2
+  )
+
+stimuli_inventory_text <- paste0(
+  "Unique stimuli counts: practice = ",
+  nrow(practice_stimuli),
+  " item(s), main session = ",
+  nrow(main_stimuli),
+  " item(s)."
+)
+
+main_counts_by_condition <- main_stimuli %>%
+  count(condition_full, verb, name = "N items") %>%
+  arrange(condition_full, verb)
+
+main_counts_by_condition_and_type <- main_stimuli %>%
+  count(condition_full, verb, trial_type, correct, name = "N items") %>%
+  arrange(condition_full, verb, trial_type, correct)
+
+want_disjunction_inventory <- main_stimuli %>%
+  filter(condition_full == "EXPERIMENTAL", verb == "want") %>%
+  mutate(
+    disjunction_type = case_when(
+      trial_type == "Wants + Accepts" ~ "wants ∨ accepts",
+      trial_type == "Wants + Dislikes" ~ "wants ∨ dislikes",
+      trial_type == "Dislikes + Accepts" ~ "accepts ∨ dislikes",
+      TRUE ~ NA_character_
+    ),
+    better_first = case_when(
+      disjunction_type %in% c("wants ∨ accepts", "wants ∨ dislikes") ~ ITEM1_TYPE == "wants",
+      disjunction_type == "accepts ∨ dislikes" ~ ITEM1_TYPE == "accepts",
+      TRUE ~ NA
+    )
+  ) %>%
+  filter(!is.na(disjunction_type)) %>%
+  count(disjunction_type, better_first, name = "N items") %>%
+  mutate(
+    better_first = if_else(better_first, "better-first", "better-second")
+  ) %>%
+  arrange(disjunction_type, better_first)
+
+mind_disjunction_inventory <- main_stimuli %>%
+  filter(condition_full == "EXPERIMENTAL", verb == "does not mind") %>%
+  mutate(
+    disjunction_type = case_when(
+      trial_type == "Dislikes + Accepts" ~ "accepts ∨ dislikes",
+      TRUE ~ NA_character_
+    ),
+    accepts_first = ITEM1_TYPE == "accepts"
+  ) %>%
+  filter(!is.na(disjunction_type)) %>%
+  count(disjunction_type, accepts_first, name = "N items") %>%
+  mutate(
+    accepts_first = if_else(accepts_first, "accepts-first", "accepts-second")
+  ) %>%
+  arrange(disjunction_type, accepts_first)
+
+NULL
+```
+
+`r stimuli_inventory_text`
+
+Main-session items by condition and verb (unique stimuli):
+
+```{r stimuli_inventory_main_by_condition, results='asis'}
+main_counts_by_condition %>% flextable() %>% autofit()
+```
+
+Main-session items by condition, verb, and item type (unique stimuli):
+
+```{r stimuli_inventory_main_detail, results='asis'}
+main_counts_by_condition_and_type %>% flextable() %>% autofit()
+```
+
+Want-disjunction items in the experimental set (unique stimuli):
+
+```{r stimuli_inventory_want_disjunctions, results='asis'}
+want_disjunction_inventory %>%
+  rename(
+    `Disjunction type` = disjunction_type,
+    `Order` = better_first
+  ) %>%
+  flextable() %>%
+  autofit()
+```
+
+Does-not-mind disjunction items in the experimental set (unique stimuli):
+
+```{r stimuli_inventory_mind_disjunctions, results='asis'}
+mind_disjunction_inventory %>%
+  rename(
+    `Disjunction type` = disjunction_type,
+    `Order` = accepts_first
+  ) %>%
+  flextable() %>%
+  autofit()
+```
+
+# Paper-ready summaries
+
+## Descriptive TRUE-response rates by item type (main session)
+
+```{r paper_descriptives, include=FALSE}
+paper_condition_levels <- c(
+  "Single control: wants (true)",
+  "Single control: accepts (false)",
+  "Single control: dislikes (false)",
+  "Double control: wants ∨ wants (true)",
+  "Double control: accepts ∨ accepts (false)",
+  "Double control: dislikes ∨ dislikes (false)",
+  "Experimental: wants ∨ accepts (wants-first)",
+  "Experimental: wants ∨ accepts (wants-second)",
+  "Experimental: wants ∨ dislikes (wants-first)",
+  "Experimental: wants ∨ dislikes (wants-second)",
+  "Experimental: accepts ∨ dislikes (accepts-first)",
+  "Experimental: accepts ∨ dislikes (accepts-second)",
+  "Single control (does not mind): accepts (true)",
+  "Single control (does not mind): dislikes (false)",
+  "Double control (does not mind): accepts ∨ accepts (true)",
+  "Double control (does not mind): dislikes ∨ dislikes (false)",
+  "Experimental (does not mind): accepts ∨ dislikes (accepts-first)",
+  "Experimental (does not mind): accepts ∨ dislikes (accepts-second)"
+)
+
+paper_conditions <- data_main %>%
+  mutate(
+    wants_first = ITEM1_TYPE == "wants",
+    accepts_first = ITEM1_TYPE == "accepts",
+    paper_condition = case_when(
+      # WANT: single controls
+      condition_full == "SINGLE_CONTROL" & verb == "want" & trial_type == "Wants" ~ "Single control: wants (true)",
+      condition_full == "SINGLE_CONTROL" & verb == "want" & trial_type == "Accepts" ~ "Single control: accepts (false)",
+      condition_full == "SINGLE_CONTROL" & verb == "want" & trial_type == "Dislikes" ~ "Single control: dislikes (false)",
+      # WANT: double controls
+      condition_full == "DOUBLE_CONTROL" & verb == "want" & trial_type == "Wants + Wants" ~ "Double control: wants ∨ wants (true)",
+      condition_full == "DOUBLE_CONTROL" & verb == "want" & trial_type == "Accepts + Accepts" ~ "Double control: accepts ∨ accepts (false)",
+      condition_full == "DOUBLE_CONTROL" & verb == "want" & trial_type == "Dislikes + Dislikes" ~ "Double control: dislikes ∨ dislikes (false)",
+      # WANT: experimental disjunctions
+      condition_full == "EXPERIMENTAL" & verb == "want" & trial_type == "Wants + Accepts" & wants_first ~ "Experimental: wants ∨ accepts (wants-first)",
+      condition_full == "EXPERIMENTAL" & verb == "want" & trial_type == "Wants + Accepts" & !wants_first ~ "Experimental: wants ∨ accepts (wants-second)",
+      condition_full == "EXPERIMENTAL" & verb == "want" & trial_type == "Wants + Dislikes" & wants_first ~ "Experimental: wants ∨ dislikes (wants-first)",
+      condition_full == "EXPERIMENTAL" & verb == "want" & trial_type == "Wants + Dislikes" & !wants_first ~ "Experimental: wants ∨ dislikes (wants-second)",
+      condition_full == "EXPERIMENTAL" & verb == "want" & trial_type == "Dislikes + Accepts" & accepts_first ~ "Experimental: accepts ∨ dislikes (accepts-first)",
+      condition_full == "EXPERIMENTAL" & verb == "want" & trial_type == "Dislikes + Accepts" & !accepts_first ~ "Experimental: accepts ∨ dislikes (accepts-second)",
+      # MIND: single controls
+      condition_full == "SINGLE_CONTROL_MIND" & verb == "does not mind" & trial_type == "Accepts" ~ "Single control (does not mind): accepts (true)",
+      condition_full == "SINGLE_CONTROL_MIND" & verb == "does not mind" & trial_type == "Dislikes" ~ "Single control (does not mind): dislikes (false)",
+      # MIND: double controls
+      condition_full == "DOUBLE_CONTROL_MIND" & verb == "does not mind" & trial_type == "Accepts + Accepts" ~ "Double control (does not mind): accepts ∨ accepts (true)",
+      condition_full == "DOUBLE_CONTROL_MIND" & verb == "does not mind" & trial_type == "Dislikes + Dislikes" ~ "Double control (does not mind): dislikes ∨ dislikes (false)",
+      # MIND: experimental disjunctions
+      condition_full == "EXPERIMENTAL" & verb == "does not mind" & trial_type == "Dislikes + Accepts" & accepts_first ~ "Experimental (does not mind): accepts ∨ dislikes (accepts-first)",
+      condition_full == "EXPERIMENTAL" & verb == "does not mind" & trial_type == "Dislikes + Accepts" & !accepts_first ~ "Experimental (does not mind): accepts ∨ dislikes (accepts-second)",
+      TRUE ~ NA_character_
+    ),
+    paper_condition = factor(paper_condition, levels = paper_condition_levels)
+  ) %>%
+  filter(!is.na(paper_condition)) %>%
+  group_by(PARTICIPANT, paper_condition) %>%
+  summarise(mean_true = mean(resp, na.rm = TRUE), .groups = "drop")
+
+paper_descriptives <- paper_conditions %>%
+  group_by(paper_condition) %>%
+  summarise(
+    n_participants = n_distinct(PARTICIPANT),
+    mean = mean(mean_true, na.rm = TRUE),
+    sd = sd(mean_true, na.rm = TRUE),
+    se = sd / sqrt(n_participants),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    ci_mult = qt(0.975, df = n_participants - 1),
+    ci_low = mean - ci_mult * se,
+    ci_high = mean + ci_mult * se,
+    `Mean TRUE` = percent(mean, accuracy = 0.1),
+    `SD` = percent(sd, accuracy = 0.1),
+    `95% CI` = paste0("[", percent(ci_low, accuracy = 0.1), ", ", percent(ci_high, accuracy = 0.1), "]")
+  ) %>%
+  select(
+    Condition = paper_condition,
+    `Mean TRUE`,
+    SD,
+    `95% CI`,
+    `N participants` = n_participants
+  )
+
+NULL
+```
+
+```{r paper_descriptives_table, results='asis'}
+paper_descriptives %>% flextable() %>% autofit()
+```
+
+```{r paper_descriptives_plot}
+paper_plot_data <- paper_conditions %>%
+  group_by(paper_condition) %>%
+  summarise(
+    mean = mean(mean_true, na.rm = TRUE),
+    se = sd(mean_true) / sqrt(n()),
+    .groups = "drop"
+  )
+
+ggplot(paper_plot_data, aes(paper_condition, mean)) +
+  geom_col(fill = "#5DADE2", width = 0.75) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2, linewidth = 0.6) +
+  coord_flip() +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  labs(
+    title = "TRUE-response rates by item type (main session)",
+    subtitle = "Participant means; error bars are SEM across participants",
+    x = NULL,
+    y = "Mean TRUE-response rate"
+  )
+```
+
+## Want disjunctions (order-collapsed): single overarching model
+
+```{r critical_model_want}
+want_disj <- data_main %>%
+  filter(
+    verb == "want",
+    trial_type %in% c(
+      "Wants + Wants",
+      "Accepts + Accepts",
+      "Dislikes + Dislikes",
+      "Wants + Accepts",
+      "Wants + Dislikes",
+      "Dislikes + Accepts"
+    )
+  ) %>%
+  mutate(
+    disj_type = case_when(
+      trial_type == "Wants + Wants" ~ "W+W",
+      trial_type == "Wants + Accepts" ~ "W+A",
+      trial_type == "Wants + Dislikes" ~ "W+D",
+      trial_type == "Dislikes + Accepts" ~ "A+D",
+      trial_type == "Accepts + Accepts" ~ "A+A",
+      trial_type == "Dislikes + Dislikes" ~ "D+D",
+      TRUE ~ NA_character_
+    ),
+    disj_type = factor(disj_type, levels = c("W+W", "W+A", "W+D", "A+D", "A+A", "D+D")),
+    participant = factor(PARTICIPANT),
+    item_id = factor(item)
+  ) %>%
+  filter(!is.na(resp), !is.na(disj_type))
+
+cat(paste0(
+  "Want-disjunction trials: ",
+  nrow(want_disj),
+  "; participants: ",
+  n_distinct(want_disj$participant),
+  "; items: ",
+  n_distinct(want_disj$item_id),
+  "."
+))
+
+critical_model <- glmer(
+  resp ~ disj_type + (1 | participant) + (1 | item_id),
+  data = want_disj,
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))
+)
+tab_model(critical_model)
+```
+
+```{r critical_model_emmeans}
+emm <- emmeans(critical_model, ~ disj_type, weights = "proportional", type = "response")
+as.data.frame(summary(emm, infer = c(TRUE, TRUE))) %>%
+  mutate(across(c(prob, asymp.LCL, asymp.UCL), ~ scales::percent(.x, accuracy = 0.1))) %>%
+  select(disj_type, prob, asymp.LCL, asymp.UCL, z.ratio, p.value) %>%
+  flextable() %>%
+  autofit()
+```
+
+### W+A vs W+D (order-collapsed; model-based)
+
+```{r critical_overall_contrast}
+emm_disj <- emmeans(critical_model, ~ disj_type, weights = "proportional")
+
+overall_contrast <- summary(
+  contrast(
+    emm_disj,
+    method = list(
+      "W+A - W+D" = c(0, 1, -1, 0, 0, 0)
+    )
+  ),
+  infer = c(TRUE, TRUE)
+)
+
+as.data.frame(overall_contrast) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    `OR (95% CI)` = paste0(
+      round(OR, 2),
+      " [",
+      round(OR_low, 2),
+      ", ",
+      round(OR_high, 2),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(contrast, `OR (95% CI)`, z, p) %>%
+  flextable() %>%
+  autofit()
+```
+
+### Midpoint (50%) tests (model-based; emmeans)
+
+```{r critical_model_midpoint_emmeans}
+# Midpoint tests on model-estimated marginal probabilities (averaged over disjunct order).
+# Note: tests are performed on the logit scale (so 0 corresponds to 50% on the response scale).
+emm_midpoint <- emmeans(critical_model, ~ disj_type, weights = "proportional")
+
+midpoint_model_tbl <- as.data.frame(summary(emm_midpoint, type = "response", infer = c(TRUE, TRUE))) %>%
+  mutate(
+    Direction = if_else(prob > 0.5, "above 50%", "below 50%"),
+    `Predicted TRUE` = percent(prob, accuracy = 0.1),
+    `95% CI` = paste0(
+      "[",
+      percent(asymp.LCL, accuracy = 0.1),
+      ", ",
+      percent(asymp.UCL, accuracy = 0.1),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  filter(disj_type %in% c("W+A", "W+D")) %>%
+  mutate(`Disjunction type` = recode(disj_type, `W+A` = "wants ∨ accepts (W+A)", `W+D` = "wants ∨ dislikes (W+D)")) %>%
+  select(`Disjunction type`, Direction, `Predicted TRUE`, `95% CI`, z, p)
+
+midpoint_model_tbl %>% flextable() %>% autofit()
+```
+
+## Benchmark: W+W (double control) vs W+A (experimental)
+
+This contrast targets the strong-FC-style prediction that `want (A or B)` is evaluated as a *conjunctive* requirement that **both** disjuncts are wanted. Under that reading, `wants ∨ accepts` (W+A) should be rejected relative to the `wants ∨ wants` (W+W) double-control disjunctions.
+
+```{r ww_vs_wa_contrast}
+emm_disj <- emmeans(critical_model, ~ disj_type, weights = "proportional")
+
+ww_vs_wa_contrast <- summary(
+  contrast(
+    emm_disj,
+    method = list(
+      "W+A - W+W" = c(-1, 1, 0, 0, 0, 0)
+    )
+  ),
+  infer = c(TRUE, TRUE)
+)
+
+as.data.frame(ww_vs_wa_contrast) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    `OR (95% CI)` = paste0(
+      round(OR, 2),
+      " [",
+      round(OR_low, 2),
+      ", ",
+      round(OR_high, 2),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(contrast, `OR (95% CI)`, z, p) %>%
+  flextable() %>%
+  autofit()
+```
+
+```{r wanted_domain_lists, include=FALSE}
+sweets_study3 <- c(
+  "a chocolate",
+  "a cookie",
+  "a biscuit",
+  "a lollipop",
+  "a cupcake",
+  "a cake",
+  "a muffin",
+  "caramel",
+  "a donut",
+  "a brownie"
+)
+
+fruits_study3 <- c(
+  "a strawberry",
+  "a grapefruit",
+  "a cranberry",
+  "an apple",
+  "a pear",
+  "a cherry",
+  "an orange",
+  "a mango",
+  "a plum",
+  "a peach"
+)
+```
+
+## Exploratory: item-level heterogeneity in W+W (double control)
+
+This diagnostic is useful if some true W+W control disjunctions are unexpectedly rejected. The table below lists W+W items ranked by their mean TRUE response rate (collapsed across participants).
+
+```{r ww_item_heterogeneity, results='asis'}
+ww_items <- data_main %>%
+  filter(
+    condition_full == "DOUBLE_CONTROL",
+    verb == "want",
+    trial_type == "Wants + Wants"
+  ) %>%
+  group_by(item, sentence, ITEM1, ITEM2) %>%
+  summarise(
+    mean_true = mean(resp, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    wanted_domain = case_when(
+      ITEM1 %in% sweets_study3 ~ "sweets",
+      ITEM1 %in% fruits_study3 ~ "fruits",
+      TRUE ~ "other"
+    )
+  ) %>%
+  arrange(mean_true)
+
+ww_items %>%
+  mutate(`Mean TRUE` = scales::percent(mean_true, accuracy = 0.1)) %>%
+  select(
+    Item = item,
+    `Wanted domain` = wanted_domain,
+    `Disjunct 1` = ITEM1,
+    `Disjunct 2` = ITEM2,
+    `Mean TRUE`
+  ) %>%
+  flextable() %>%
+  autofit()
+```
+
+### Exploratory: are W+W disjunction controls depressed relative to W single controls?
+
+If participants systematically interpret `or` as exclusive (or if disjunct pairs are pragmatically hard to satisfy jointly), then even true W+W disjunctions might be rejected more than true W single controls. We test this on participant-mean TRUE rates.
+
+```{r ww_vs_w_single_controls}
+want_controls_w <- data_main %>%
+  filter(
+    verb == "want",
+    (condition_full == "SINGLE_CONTROL" & trial_type == "Wants") |
+      (condition_full == "DOUBLE_CONTROL" & trial_type == "Wants + Wants")
+  ) %>%
+  mutate(
+    control_type = case_when(
+      condition_full == "SINGLE_CONTROL" ~ "W (single control)",
+      condition_full == "DOUBLE_CONTROL" ~ "W+W (double control)",
+      TRUE ~ NA_character_
+    ),
+    control_type = factor(control_type, levels = c("W (single control)", "W+W (double control)"))
+  ) %>%
+  filter(!is.na(control_type))
+
+subj_controls_w <- want_controls_w %>%
+  group_by(PARTICIPANT, control_type) %>%
+  summarise(mean_true = mean(resp, na.rm = TRUE), .groups = "drop") %>%
+  tidyr::pivot_wider(names_from = control_type, values_from = mean_true)
+
+tt_controls_w <- t.test(
+  subj_controls_w$`W+W (double control)`,
+  subj_controls_w$`W (single control)`,
+  paired = TRUE
+)
+
+controls_w_tbl <- tibble(
+  Contrast = "W+W (double) vs W (single)",
+  `Mean difference (W+W - W)` = scales::percent(mean(subj_controls_w$`W+W (double control)` - subj_controls_w$`W (single control)`), accuracy = 0.1),
+  t = round(unname(tt_controls_w$statistic), 2),
+  df = unname(tt_controls_w$parameter),
+  p = format.pval(tt_controls_w$p.value, digits = 3, eps = .001)
+)
+
+controls_w_tbl %>% flextable() %>% autofit()
+```
+
+## Between-study comparison (Study 2 vs Study 3): W+A acceptance
+
+Study 3 was designed to reduce “wants” endorsements for A-category options (accepted-but-not-wanted) via explicit training. A key diagnostic is therefore whether the critical W+A disjunctions (`wants ∨ accepts`) are endorsed *less often* in Study 3 than in Study 2.
+
+```{r between_studies_wa_model}
+# --- Study 2: load and extract W+A want-disjunction trials ---
+study2_path <- file.path("..", "..", "Study2", "results", "results.csv")
+stopifnot(file.exists(study2_path))
+
+study2_raw <- read.csv(study2_path)
+
+study2_wa <- study2_raw %>%
+  filter(
+    SESSION == "EXPERIMENTAL",
+    condition == "EXPERIMENTAL",
+    verb == "want",
+    subcondition == "wants|accepts"
+  ) %>%
+  mutate(
+    resp = case_when(
+      response %in% c("b", "B") ~ 1,
+      response %in% c("n", "N") ~ 0,
+      TRUE ~ NA_real_
+    ),
+    wants_first = item1_type == "wants",
+    study = "Study 2",
+    participant = factor(paste0("S2_", PARTICIPANT)),
+    item_id = factor(paste0("S2_", item))
+  ) %>%
+  select(study, resp, wants_first, participant, item_id) %>%
+  filter(!is.na(resp))
+
+# --- Study 3: extract W+A want-disjunction trials from the already-prepared main-session data ---
+study3_wa <- data_main %>%
+  filter(
+    SESSION == "EXPERIMENTAL",
+    condition_full == "EXPERIMENTAL",
+    verb == "want",
+    trial_type == "Wants + Accepts"
+  ) %>%
+  mutate(
+    wants_first = ITEM1_TYPE == "wants",
+    study = "Study 3",
+    participant = factor(paste0("S3_", PARTICIPANT)),
+    item_id = factor(paste0("S3_", item))
+  ) %>%
+  select(study, resp, wants_first, participant, item_id) %>%
+  filter(!is.na(resp))
+
+# --- Combine and model (between-subject; participants and items are distinct across studies) ---
+wa_between <- bind_rows(study2_wa, study3_wa) %>%
+  mutate(
+    study = factor(study, levels = c("Study 2", "Study 3"))
+  )
+
+# Participant-mean descriptives for W+A (collapsed over disjunct order)
+wa_subj_means <- wa_between %>%
+  group_by(study, participant) %>%
+  summarise(mean_true = mean(resp, na.rm = TRUE), .groups = "drop")
+
+wa_desc <- wa_subj_means %>%
+  group_by(study) %>%
+  summarise(
+    n_participants = n_distinct(participant),
+    mean = mean(mean_true, na.rm = TRUE),
+    sd = sd(mean_true, na.rm = TRUE),
+    se = sd / sqrt(n_participants),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    ci_mult = qt(0.975, df = n_participants - 1),
+    ci_low = mean - ci_mult * se,
+    ci_high = mean + ci_mult * se,
+    `Mean TRUE` = scales::percent(mean, accuracy = 0.1),
+    SD = scales::percent(sd, accuracy = 0.1),
+    `95% CI` = paste0(
+      "[",
+      scales::percent(ci_low, accuracy = 0.1),
+      ", ",
+      scales::percent(ci_high, accuracy = 0.1),
+      "]"
+    )
+  ) %>%
+  select(
+    Study = study,
+    `Mean TRUE`,
+    SD,
+    `95% CI`,
+    `N participants` = n_participants
+  )
+
+wa_desc %>% flextable() %>% autofit()
+
+wa_between_model <- glmer(
+  resp ~ study * wants_first + (1 | participant) + (1 | item_id),
+  data = wa_between,
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))
+)
+
+tab_model(wa_between_model)
+```
+
+```{r between_studies_wa_emmeans}
+# Model-based marginal predicted endorsement rates per study (averaged over disjunct order).
+emm_wa_study <- emmeans(wa_between_model, ~ study, weights = "proportional", type = "response")
+
+as.data.frame(summary(emm_wa_study, infer = c(TRUE, TRUE))) %>%
+  mutate(across(c(prob, asymp.LCL, asymp.UCL), ~ scales::percent(.x, accuracy = 0.1))) %>%
+  select(study, prob, asymp.LCL, asymp.UCL, z.ratio, p.value) %>%
+  flextable() %>%
+  autofit()
+```
+
+```{r between_studies_wa_contrast}
+# Study contrast on the logit scale (reports as OR).
+wa_study_contrast <- summary(
+  contrast(
+    emmeans(wa_between_model, ~ study),
+    method = list("Study 3 - Study 2" = c(-1, 1))
+  ),
+  infer = c(TRUE, TRUE)
+)
+
+as.data.frame(wa_study_contrast) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    `OR (95% CI)` = paste0(
+      round(OR, 2),
+      " [",
+      round(OR_low, 2),
+      ", ",
+      round(OR_high, 2),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(contrast, `OR (95% CI)`, z, p) %>%
+  flextable() %>%
+  autofit()
+```
+
+# Plotting Theme and Palettes
+
+To ensure a consistent visual style, we define a custom plot theme and a set of distinct, colorblind-friendly color palettes. 🎨
+
+```{r theme_and_palettes, echo=FALSE}
+# ----- 1) Consistent Color Palettes -----
+# *** NEW: A palette with more distinct, colorblind-friendly colors ***
+pal_trial_type <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", 
+                    "#0072B2", "#D55E00", "#CC79A7", "#999999", "#000000")
+
+
+# ----- 2) Unified Plot Theme -----
+theme_report <- function(base_size = 14) {
+  theme_minimal(base_size = base_size) +
+    theme(
+      panel.grid.minor = element_blank(),
+      panel.grid.major.x = element_blank(),
+      axis.line = element_line(colour = "grey40"),
+      strip.background = element_rect(fill = "grey95", colour = "grey80"),
+      strip.text = element_text(face = "bold", size = rel(0.7)),
+      legend.title = element_text(face = "bold"),
+      plot.title = element_text(face = "bold", size = rel(1.2)),
+      plot.subtitle = element_text(size = rel(0.9), color = "grey30"),
+      plot.caption = element_text(hjust = 0, size = rel(0.8), color = "grey50")
+    )
+}
+
+# Set the custom theme as the default for all subsequent plots
+theme_set(theme_report())
+```
+
+# Part 1: Response Analysis
+
+### Proportion of "TRUE" Responses (Raw Data)
+
+First, we visualize the proportion of raw "TRUE" responses (`resp`), without recoding for correctness. This shows the baseline response patterns for each verb and condition.
+
+```{r raw_response_plot}
+# ----- 1) Summarize Raw Data -----
+subject_means_raw <- data_main %>%
+  group_by(PARTICIPANT, condition_label, verb, trial_type, correct) %>%
+  summarise(mean_resp = mean(resp, na.rm = TRUE), .groups = "drop")
+
+summary_means_raw <- subject_means_raw %>%
+  group_by(condition_label, verb, trial_type, correct) %>%
+  summarise(
+    mean = mean(mean_resp),
+    se = sd(mean_resp) / sqrt(n()),
+    .groups = "drop"
+  )
+
+# ----- 2) Create the Plot -----
+ggplot(summary_means_raw, aes(x = correct, y = mean, fill = trial_type)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    position = position_dodge(width = 0.8),
+    width = 0.2,
+    linewidth = 0.6
+  ) +
+  facet_grid(vars(condition_label), vars(verb)) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  labs(
+    title = "Percentage of 'TRUE' Responses by Condition and Verb",
+    subtitle = "This plot uses the original, non-recoded responses.",
+    x = "Correctness Category",
+    y = "Mean 'TRUE' Response Rate"
+  )
+```
+
+### Proportion of "TRUE" Responses (Raw Data) (better plots)
+
+```{r}
+base <- ggplot(
+  summary_means_raw,
+  aes(x = correct, y = mean, fill = trial_type,
+      alpha = condition_label == "Experimental")
+) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se),
+                position = position_dodge(width = 0.8),
+                width = 0.2, linewidth = 0.6) +
+  facet_grid(vars(condition_label), vars(verb)) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_alpha_manual(values = c(`TRUE` = 1, `FALSE` = 0.25), guide = "none") +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), limits = c(0, 1)) +
+  labs(title = "Percentage of 'TRUE' Responses",
+       subtitle = "Experimental highlighted; controls ghosted",
+       x = "Correctness Category", y = "Mean 'TRUE' Response Rate")
+
+base
+```
+
+```{r}
+library(patchwork)
+
+p_exp <- ggplot(filter(summary_means_raw, condition_label == "Experimental"),
+                aes(correct, mean, fill = trial_type)) +
+  geom_col(position = position_dodge(0.8), width = 0.7) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se),
+                position = position_dodge(0.8), width = 0.2, linewidth = 0.6) +
+  facet_grid(. ~ verb) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  labs(title = "Percentage of 'TRUE' Responses (focus on Experimental)",
+       x = "Correctness Category", y = "Mean 'TRUE' Response Rate")
+
+p_ctrl <- ggplot(filter(summary_means_raw, condition_label != "Experimental"),
+                 aes(correct, mean, fill = trial_type)) +
+  geom_col(position = position_dodge(0.8), width = 0.7, alpha = 0.35) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se),
+                position = position_dodge(0.8), width = 0.2, linewidth = 0.4, alpha = 0.35) +
+  facet_grid(vars(condition_label), vars(verb)) +
+  scale_fill_manual(values = pal_trial_type, guide = "none") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  labs(x = NULL, y = NULL)
+
+(p_exp / p_ctrl) + plot_layout(heights = c(2.2, 1), guides = "collect") &
+  theme(legend.position = "right")
+```
+
+```{r}
+ctrl_bg <- summary_means_raw |>
+  dplyr::filter(condition_label != "Experimental") |>
+  dplyr::group_by(verb, trial_type, correct) |>
+  dplyr::summarise(ctrl_mean = mean(mean), .groups = "drop")
+
+exp_df <- dplyr::filter(summary_means_raw, condition_label == "Experimental")
+
+ggplot() +
+  # controls as ghost background
+  geom_col(data = ctrl_bg,
+           aes(correct, ctrl_mean, group = trial_type),
+           position = position_dodge(0.8), width = 0.7,
+           fill = "grey85", colour = NA) +
+  # experimental on top
+  geom_col(data = exp_df,
+           aes(correct, mean, fill = trial_type),
+           position = position_dodge(0.8), width = 0.55) +
+  geom_errorbar(data = exp_df,
+                aes(correct, ymin = mean - se, ymax = mean + se, group = trial_type),
+                position = position_dodge(0.8), width = 0.2, linewidth = 0.6) +
+  facet_grid(. ~ verb) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  labs(title = "Experimental vs. control reference",
+       subtitle = "Controls shown as pale background bars (mean of both controls)",
+       x = "Correctness Category", y = "Mean 'TRUE' Response Rate")
+```
+
+```{r}
+## 1) Prep: control background (average of both controls) + experimental
+ctrl_bg <- summary_means_raw %>%
+  filter(condition_label != "Experimental") %>%
+  group_by(verb, trial_type, correct, source = condition_label) %>%
+  summarise(mean = mean(mean), .groups = "drop")
+
+
+exp_df <- summary_means_raw %>%
+  filter(condition_label == "Experimental") %>%
+  mutate(source = "Experimental")
+
+## 2) Plot: same widths; alpha-driven legend for source
+ggplot() +
+  # faint control reference behind
+  geom_col(
+    data = ctrl_bg,
+    aes(correct, mean, fill = trial_type, alpha = source),
+    position = position_dodge(0.8),
+    width = 0.70,
+    colour = NA
+  ) +
+  # experimental on top (same width), partially transparent if you like
+  geom_col(
+    data = exp_df,
+    aes(correct, mean, fill = trial_type, alpha = source),
+    position = position_dodge(0.8),
+    width = 0.70
+  ) +
+  geom_errorbar(
+    data = exp_df,
+    aes(correct, ymin = mean - se, ymax = mean + se, group = trial_type),
+    position = position_dodge(0.8),
+    width = 0.20,
+    linewidth = 0.6,
+    show.legend = FALSE
+  ) +
+  facet_grid(. ~ verb) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_alpha_manual(
+    values = c("Experimental" = 0.95, "Single Control" = 0.5, "Double Control" = 0.25),
+    name = "Group",
+    guide = guide_legend(order = 1, override.aes = list(fill = "grey60", colour = NA))
+  ) +
+  #scale_alpha_manual(
+  #  values = c(
+  #    "Experimental" = 0.95,                           # you can set to 1 if you prefer
+  #    "Control reference (mean of Single & Double)" = 0.25
+  #  ),
+  #  name = "Group",
+  #  guide = guide_legend(order = 1,
+  #                       override.aes = list(fill = "grey60", colour = NA))
+  #) +
+  guides(fill = guide_legend(order = 2)) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  labs(
+    title = "Percentage of 'TRUE' Responses by Verb",
+    subtitle = "Experimental in color; faint bars show the mean of both control conditions.",
+    x = "Correctness Category", y = "Mean 'TRUE' Response Rate"
+  )
+
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# --- Constant dodging object (same for all layers) ---
+pd <- position_dodge2(width = 0.80, preserve = "single")
+
+# --- Control reference (avg of Single & Double) with SE ---
+ctrl_bg <- subject_means_raw %>%                             # per-participant cell means
+  filter(condition_label != "Experimental") %>%
+  group_by(PARTICIPANT, verb, trial_type, correct) %>%       # avg the two controls within participant
+  summarise(mean_resp = mean(mean_resp), .groups = "drop") %>%
+  group_by(verb, trial_type, correct) %>%                    # then mean & SE across participants
+  summarise(mean = mean(mean_resp),
+            se   = sd(mean_resp) / sqrt(n()), .groups = "drop") %>%
+  mutate(source = "Control (avg of Single + Double)")
+
+# --- Experimental with SE (already computed) ---
+exp_df <- summary_means_raw %>%
+  filter(condition_label == "Experimental") %>%
+  transmute(verb, trial_type, correct, mean, se,
+            source = "Experimental")
+
+# (Optional) lock factor order so dodging is consistent everywhere
+exp_df$trial_type  <- factor(exp_df$trial_type,  levels = levels(ctrl_bg$trial_type))
+ctrl_bg$trial_type <- factor(ctrl_bg$trial_type, levels = levels(exp_df$trial_type))
+
+ggplot() +
+  # control reference (faint) — bars + error bars
+  geom_col(data = ctrl_bg,
+           aes(correct, mean, fill = trial_type, alpha = source),
+           position = pd, width = 0.70, colour = NA) +
+  geom_errorbar(data = ctrl_bg,
+                aes(correct, ymin = mean - se, ymax = mean + se,
+                    alpha = source, group = trial_type),
+                position = pd, width = 0.20, linewidth = 0.5,
+                show.legend = FALSE) +
+  # experimental (on top) — bars + error bars
+  geom_col(data = exp_df,
+           aes(correct, mean, fill = trial_type, alpha = source),
+           position = pd, width = 0.70) +
+  geom_errorbar(data = exp_df,
+                aes(correct, ymin = mean - se, ymax = mean + se,
+                    alpha = source, group = trial_type),
+                position = pd, width = 0.20, linewidth = 0.6,
+                show.legend = FALSE) +
+  facet_grid(. ~ verb) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_alpha_manual(
+    values = c("Experimental" = 1, "Control (avg of Single + Double)" = 0.25),
+    name   = "Group",
+    guide  = guide_legend(order = 1,
+                          override.aes = list(fill = "grey60", colour = NA))
+  ) +
+  guides(fill = guide_legend(order = 2)) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  labs(
+    title = "Percentage of 'TRUE' Responses by Verb",
+    subtitle = "Experimental in color; faint bars show the mean of both control conditions (with SE).",
+    x = "Correctness Category", y = "Mean 'TRUE' Response Rate"
+  )
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# --- ensure consistent x-order (optional)
+summary_means_raw <- summary_means_raw %>%
+  mutate(correct = factor(correct, levels = c("N","Y","Y/N")))
+
+# Split data
+exp_df <- summary_means_raw %>%
+  filter(condition_label == "Experimental") %>%
+  mutate(source = "Experimental")
+
+ctrl_single <- summary_means_raw %>%
+  filter(condition_label == "Single Control") %>%
+  mutate(source = "Single Control")
+
+ctrl_double <- summary_means_raw %>%
+  filter(condition_label == "Double Control") %>%
+  mutate(source = "Double Control")
+
+# Use the same levels and one dodger everywhere (guarantees identical widths)
+lvl_tt <- levels(summary_means_raw$trial_type) %||% unique(summary_means_raw$trial_type)
+exp_df$trial_type      <- factor(exp_df$trial_type,      levels = lvl_tt)
+ctrl_single$trial_type <- factor(ctrl_single$trial_type, levels = lvl_tt)
+ctrl_double$trial_type <- factor(ctrl_double$trial_type, levels = lvl_tt)
+
+pd <- position_dodge2(width = 0.80, preserve = "single")  # <- key for equal widths
+bar_w <- 0.70
+
+ggplot() +
+  # controls in the background (draw the taller first so shorter is visible)
+  geom_col(data = ctrl_double,
+           aes(correct, mean, fill = trial_type, alpha = source),
+           position = pd, width = bar_w, colour = NA) +
+  geom_errorbar(data = ctrl_double,
+                aes(correct, ymin = mean - se, ymax = mean + se,
+                    alpha = source, group = trial_type),
+                position = pd, width = 0.20, linewidth = 0.45,
+                show.legend = FALSE) +
+
+  geom_col(data = ctrl_single,
+           aes(correct, mean, fill = trial_type, alpha = source),
+           position = pd, width = bar_w, colour = NA) +
+  geom_errorbar(data = ctrl_single,
+                aes(correct, ymin = mean - se, ymax = mean + se,
+                    alpha = source, group = trial_type),
+                position = pd, width = 0.20, linewidth = 0.45,
+                show.legend = FALSE) +
+
+  # experimental on top
+  geom_col(data = exp_df,
+           aes(correct, mean, fill = trial_type, alpha = source),
+           position = pd, width = bar_w) +
+  geom_errorbar(data = exp_df,
+                aes(correct, ymin = mean - se, ymax = mean + se,
+                    alpha = source, group = trial_type),
+                position = pd, width = 0.20, linewidth = 0.60,
+                show.legend = FALSE) +
+
+  facet_grid(. ~ verb) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_alpha_manual(
+    values = c("Experimental" = 1.0,
+               "Single Control" = 0.30,
+               "Double Control" = 0.18),
+    name = "Group",
+    guide = guide_legend(order = 1,
+                         override.aes = list(fill = "grey60", colour = NA))
+  ) +
+  guides(fill = guide_legend(order = 2)) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  labs(
+    title = "Percentage of 'TRUE' Responses by Verb",
+    subtitle = "Experimental highlighted; controls shown separately as faint reference (with SE).",
+    x = "Correctness Category", y = "Mean 'TRUE' Response Rate"
+  )
+
+```
+
+```{r}
+## 1) Prep: keep per-control stats (mean + se) and tag source
+pd <- position_dodge2(width = 0.10, preserve = "single")  # <- key for equal widths
+
+ctrl_bg <- summary_means_raw %>%
+  dplyr::filter(condition_label != "Experimental") %>%
+  dplyr::transmute(
+    verb, trial_type, correct,
+    mean, se,
+    source = condition_label   # "Single Control" / "Double Control"
+  )
+
+exp_df <- summary_means_raw %>%
+  dplyr::filter(condition_label == "Experimental") %>%
+  dplyr::mutate(source = "Experimental")
+
+## 2) Plot: add error bars for controls
+ggplot() +
+  # faint controls (bars + error bars)
+  geom_col(
+    data = ctrl_bg,
+    aes(correct, mean, fill = trial_type, alpha = source),
+    position = pd,
+    width = 1,
+    colour = NA
+  ) +
+  geom_errorbar(
+    data = ctrl_bg,
+    aes(correct, ymin = mean - se, ymax = mean + se,
+        alpha = source, group = trial_type),
+    position = pd,
+    width = 1,
+    linewidth = 0.45,
+    show.legend = FALSE
+  ) +
+  geom_col(
+    data = exp_df,
+    aes(correct, mean, fill = trial_type, alpha = source),
+    position = pd,
+    width = 1 
+  ) +
+  geom_errorbar(
+    data = exp_df,
+    aes(correct, ymin = mean - se, ymax = mean + se, group = trial_type),
+    position = pd,
+    width = 1.,
+    linewidth = 0.45,
+    show.legend = FALSE
+  ) +
+  facet_grid(. ~ verb) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_alpha_manual(
+    values = c("Experimental" = 0.95, "Single Control" = 0.5, "Double Control" = 0.25),
+    name = "Group",
+    guide = guide_legend(order = 1, override.aes = list(fill = "grey60", colour = NA))
+  ) +
+  guides(fill = guide_legend(order = 2)) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  labs(
+    title = "Percentage of 'TRUE' Responses by Verb",
+    subtitle = "Experimental in color; faint bars show Single and Double Control (with SE).",
+    x = "Correctness Category", y = "Mean 'TRUE' Response Rate"
+  )
+```
+
+### Response Accuracy by Condition
+
+Next, we visualize the proportion of **correct** responses (`resp_adj`) for the verb "want" across different conditions and trial types.
+
+```{r accuracy_plot}
+# ----- 1) Summarize Data -----
+subject_means <- data_main %>%
+  filter(verb == "want") %>%
+  group_by(PARTICIPANT, condition_label, correct, trial_type) %>%
+  summarise(mean_resp_adj = mean(resp_adj, na.rm = TRUE), .groups = "drop")
+
+summary_means <- subject_means %>%
+  group_by(condition_label, correct, trial_type) %>%
+  summarise(
+    mean = mean(mean_resp_adj),
+    se = sd(mean_resp_adj) / sqrt(n()),
+    .groups = "drop"
+  )
+
+# ----- 2) Create the Plot -----
+ggplot(summary_means, aes(x = correct, y = mean, fill = trial_type)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    position = position_dodge(width = 0.8),
+    width = 0.2,
+    linewidth = 0.6
+  ) +
+  facet_wrap(~condition_label) +
+  scale_fill_manual(values = pal_trial_type, name = "Trial Type") +
+  scale_y_continuous(labels = percent_format(accuracy = 1), limits = c(0, 1)) +
+  labs(
+    title = "Proportion of Correct Responses for 'want' Trials",
+    subtitle = "Error bars represent the standard error of the mean across participants.",
+    x = "Correctness Category",
+    y = "Mean Accuracy"
+  )
+```
+
+### Full Model (Logistic Mixed-Effects)
+
+A generalized linear mixed-effects model (`glmer`) is used to test the effects of `trial_type` and `condition` (single vs. double control) on response accuracy.
+
+```{r full_model_glmer}
+fit_glmer <- glmer(
+  resp_adj ~ trial_type * single_or_double + (1 | PARTICIPANT),
+  data = data_main %>% filter(verb == "want"),
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))
+)
+tab_model(fit_glmer)
+```
+
+## Distribution of Responses in Experimental Condition
+
+We now focus on the **EXPERIMENTAL** condition to see how individual participants behaved. A histogram of participant-level accuracy can reveal if there are distinct sub-groups.
+
+```{r distribution_plot}
+# ----- 1) Calculate Participant-level Accuracy -----
+prop_by_part <- data_main %>%
+  filter(
+    condition == "EXPERIMENTAL",
+    verb == "want"
+  ) %>%
+  group_by(PARTICIPANT, trial_type) %>%
+  summarise(p = mean(resp_adj, na.rm = TRUE), .groups = "drop")
+
+# ----- 2) Create the Plot -----
+ggplot(prop_by_part, aes(x = p)) +
+  geom_histogram(bins = 10, fill = "#5DADE2", color = "white", alpha = 0.9) +
+  geom_vline(xintercept = c(.10, .90), linetype = "dashed", color = "firebrick") +
+  scale_x_continuous(labels = percent_format()) +
+  facet_wrap(~trial_type) +
+  labs(
+    # *** UPDATED: More precise title ***
+    title = "Distribution of 'TRUE' Response Rates per Participant",
+    subtitle = "Verb: 'want'. Dashed lines at 10% and 90%.",
+    x = "Participant Mean Accuracy",
+    y = "Number of Participants"
+  )
+```
+
+### Test for Bimodality
+
+We use Hartigan's Dip Test to statistically assess whether the distributions observed above are significantly different from unimodal. A small p-value (e.g., < 0.05) suggests the distribution is not unimodal.
+
+```{r bimodal_test}
+# Function to run and print dip test for a given trial type
+run_dip_test <- function(df, type) {
+  cat(paste("--- Dip Test for:", type, "---\n"))
+  data_subset <- df %>% filter(trial_type == type) %>% pull(p)
+  print(dip.test(data_subset))
+}
+
+run_dip_test(prop_by_part, "Dislikes + Accepts")
+run_dip_test(prop_by_part, "Wants + Accepts")
+run_dip_test(prop_by_part, "Wants + Dislikes")
+```
+
+# Part 2: Response Time (RT) Analysis
+
+Before analyzing RTs, we filter out outliers to ensure the data is clean. We remove trials faster than 200ms and those beyond 2.5 median absolute deviations (MAD) from the median log-RT.
+
+```{r rt_cleaning}
+# ----- 1) Outlier Filtering Function -----
+filter_rt_outliers <- function(data, rt_col = "rt", lower_ms = 200, mad_cutoff = 2.5) {
+  data %>%
+    filter(.data[[rt_col]] >= lower_ms) %>%
+    mutate(log_rt = log(.data[[rt_col]])) %>%
+    group_by(PARTICIPANT) %>%
+    mutate(
+      med_log = median(log_rt, na.rm = TRUE),
+      mad_log = mad(log_rt, constant = 1, na.rm = TRUE)
+    ) %>%
+    ungroup() %>%
+    filter(abs(log_rt - med_log) <= mad_cutoff * mad_log) %>%
+    select(-log_rt, -med_log, -mad_log) # Clean up helper columns
+}
+
+# ----- 2) Apply Filter and Prepare RT Data -----
+data_rt_clean <- data_main %>%
+  filter(!is.na(rt)) %>%
+  filter_rt_outliers() %>%
+  mutate(
+    # Create a factor for the adjusted response (Correct/Incorrect)
+    resp_nom_adj = if_else(resp_adj == 1, "Correct", "Incorrect"),
+    rt_log = log(rt)
+  )
+```
+
+## Log-Transformed RT Analysis
+
+Log-transforming RTs often helps normalize their distribution. We will focus on the log-transformed data.
+
+### Full Model (Linear Mixed-Effects)
+
+We model log-RT as a function of response accuracy (`resp_nom_adj`) and `trial_type`, with random intercepts for participant and item.
+
+```{r full_model_lmer}
+fit_lmer_log <- lmer(
+  rt_log ~ resp_nom_adj * trial_type + (1 | PARTICIPANT) + (1 | item),
+  data = data_rt_clean %>% filter(verb == "want")
+)
+tab_model(fit_lmer_log)
+```
+
+### Post-hoc Comparisons
+
+We use `emmeans` to perform pairwise comparisons of the estimated marginal means from our model. This helps clarify the interaction between response accuracy and trial type.
+
+```{r posthoc_lmer, fig.height=9,fig.width=9}
+emm_log <- emmeans(fit_lmer_log, ~ resp_nom_adj | trial_type, lmer.df = "asymptotic")
+
+emm_log_for_plot <- emm_log
+
+# Rename the label for the 'trial_type' variable to an empty string
+# The plot function uses the names of this list to create panel labels
+names(emm_log_for_plot@levels)[names(emm_log_for_plot@levels) == "trial_type"] <- ""
+
+# Plot the modified object
+p <- plot(emm_log_for_plot, comparisons = TRUE) +
+  theme_report() +
+  labs(
+    title = "Estimated Marginal Means for Log Response Time",
+    subtitle = "Blue bars are confidence intervals; red arrows show pairwise comparisons.",
+    x = "Log(RT)",
+    y = "Response Correctness" 
+  )
+
+p$facet$params$labeller <- labeller(trial_type = label_value)
+p
+
+
+
+# Show the pairwise comparisons in a table
+broom::tidy(pairs(emm_log, adjust = "tukey")) %>%
+  flextable() %>%
+  colformat_double(digits = 3) %>%
+  set_caption("Pairwise Comparisons of EMMs for Log-RT") %>%
+  autofit()
+```
+
+### Log-RT Visualization
+
+A line plot helps visualize the interaction between response correctness and trial type on response times.
+
+```{r log_rt_plot}
+# ----- 1) Summarize Data -----
+rt_summary <- data_rt_clean %>%
+  filter(verb == "want") %>%
+  group_by(PARTICIPANT, condition_label, trial_type, resp_nom_adj) %>%
+  summarise(mean_rt_log = mean(rt_log, na.rm = TRUE), .groups = "drop")
+
+# ----- 2) Create the Plot -----
+ggplot(rt_summary, aes(x = resp_nom_adj, y = mean_rt_log, color = trial_type, group = trial_type)) +
+  stat_summary(fun.data = "mean_se", geom = "line", linewidth = 1) +
+  stat_summary(fun.data = "mean_se", geom = "pointrange", size = 0.8, pch = 19) +
+  facet_wrap(~condition_label) +
+  scale_color_manual(values = pal_trial_type, name = "Trial Type") +
+  labs(
+    title = "Log Response Time by Response Accuracy and Condition",
+    subtitle = "Verb: 'want'. Points are means; error bars are standard errors.",
+    x = "Response Accuracy",
+    y = "Mean Log Response Time"
+  )
+```

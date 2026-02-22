@@ -1,0 +1,282 @@
+---
+title: "Preferences Free-Choice (Study 2): Critical want disjunctions"
+author: "Bartosz"
+output:
+  html_document:
+    theme: readable
+    toc: true
+    toc_float: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+
+library(readr)
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(sjPlot)
+library(emmeans)
+library(flextable)
+library(scales)
+library(glue)
+```
+
+# Data preparation
+
+```{r data_preparation}
+data_raw <- read_csv("results.csv", show_col_types = FALSE)
+
+data_main <- data_raw %>%
+  mutate(
+    resp = case_when(
+      response %in% c("b", "B") ~ 1,
+      response %in% c("n", "N") ~ 0,
+      TRUE ~ NA_real_
+    ),
+    trial_type = factor(case_when(
+      (item1_type == "accepts" & item2_type == "wants") | (item1_type == "wants" & item2_type == "accepts") ~ "Wants + Accepts",
+      (item1_type == "accepts" & item2_type == "dislikes") | (item1_type == "dislikes" & item2_type == "accepts") ~ "Dislikes + Accepts",
+      (item1_type == "wants" & item2_type == "dislikes") | (item1_type == "dislikes" & item2_type == "wants") ~ "Wants + Dislikes",
+      (item1_type == "wants" & item2_type == "wants") ~ "Wants + Wants",
+      (item1_type == "dislikes" & item2_type == "dislikes") ~ "Dislikes + Dislikes",
+      (item1_type == "accepts" & item2_type == "accepts") ~ "Accepts + Accepts",
+      (item1_type == "wants" & (is.na(item2_type) | item2_type == "")) ~ "Wants",
+      (item1_type == "dislikes" & (is.na(item2_type) | item2_type == "")) ~ "Dislikes",
+      (item1_type == "accepts" & (is.na(item2_type) | item2_type == "")) ~ "Accepts"
+    )),
+    participant = factor(PARTICIPANT),
+    item_id = factor(item),
+    tribe = factor(tribe, levels = c("Urbanite", "Nomad"))
+  ) %>%
+  filter(SESSION == "EXPERIMENTAL")
+
+glue(
+  "Loaded {n_distinct(data_main$participant)} participant(s) and {nrow(data_main)} main-session trial(s)."
+)
+```
+
+# Want disjunctions (order-collapsed): single overarching model
+
+```{r critical_subset}
+want_disj <- data_main %>%
+  filter(
+    verb == "want",
+    trial_type %in% c(
+      "Wants + Wants",
+      "Accepts + Accepts",
+      "Dislikes + Dislikes",
+      "Wants + Accepts",
+      "Wants + Dislikes"
+    )
+  ) %>%
+  mutate(
+    disj_type = case_when(
+      trial_type == "Wants + Wants" ~ "W+W",
+      trial_type == "Wants + Accepts" ~ "W+A",
+      trial_type == "Wants + Dislikes" ~ "W+D",
+      trial_type == "Accepts + Accepts" ~ "A+A",
+      trial_type == "Dislikes + Dislikes" ~ "D+D",
+      TRUE ~ NA_character_
+    ),
+    disj_type = factor(disj_type, levels = c("W+W", "W+A", "W+D", "A+A", "D+D"))
+  ) %>%
+  filter(!is.na(resp), !is.na(disj_type))
+
+glue(
+  "Want-disjunction trials: {nrow(want_disj)}; participants: {n_distinct(want_disj$participant)}; items: {n_distinct(want_disj$item_id)}."
+)
+```
+
+## Mixed-effects model (want disjunctions)
+
+```{r critical_model}
+critical_model <- glmer(
+  resp ~ disj_type + tribe + (1 | participant) + (1 | item_id),
+  data = want_disj,
+  family = binomial,
+  control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 2e5))
+)
+
+tab_model(critical_model)
+```
+
+## Model-based estimates (emmeans)
+
+```{r critical_emmeans}
+emm <- emmeans(critical_model, ~ disj_type, weights = "proportional", type = "response")
+
+as.data.frame(summary(emm, infer = c(TRUE, TRUE))) %>%
+  mutate(across(c(prob, asymp.LCL, asymp.UCL), ~ scales::percent(.x, accuracy = 0.1))) %>%
+  select(disj_type, prob, asymp.LCL, asymp.UCL, z.ratio, p.value) %>%
+  flextable() %>%
+  autofit()
+```
+
+## W+A vs W+D (order-collapsed; model-based)
+
+```{r critical_overall_contrast}
+emm_disj <- emmeans(critical_model, ~ disj_type, weights = "proportional")
+
+overall_contrast <- summary(
+  contrast(
+    emm_disj,
+    method = list(
+      "W+A - W+D" = c(0, 1, -1, 0, 0)
+    )
+  ),
+  infer = c(TRUE, TRUE)
+)
+
+as.data.frame(overall_contrast) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    `OR (95% CI)` = paste0(
+      round(OR, 2),
+      " [",
+      round(OR_low, 2),
+      ", ",
+      round(OR_high, 2),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(contrast, `OR (95% CI)`, z, p) %>%
+  flextable() %>%
+  autofit()
+```
+
+## Midpoint (50%) tests (model-based; emmeans)
+
+```{r critical_midpoint_emmeans}
+# Midpoint tests on model-estimated marginal probabilities (averaged over tribe).
+# Note: tests are performed on the logit scale (so 0 corresponds to 50% on the response scale).
+emm_midpoint <- emmeans(critical_model, ~ disj_type, weights = "proportional")
+
+midpoint_model_tbl <- as.data.frame(summary(emm_midpoint, type = "response", infer = c(TRUE, TRUE))) %>%
+  mutate(
+    Direction = if_else(prob > 0.5, "above 50%", "below 50%"),
+    `Predicted TRUE` = percent(prob, accuracy = 0.1),
+    `95% CI` = paste0(
+      "[",
+      percent(asymp.LCL, accuracy = 0.1),
+      ", ",
+      percent(asymp.UCL, accuracy = 0.1),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  filter(disj_type %in% c("W+A", "W+D")) %>%
+  mutate(`Disjunction type` = recode(disj_type, `W+A` = "wants ∨ accepts (W+A)", `W+D` = "wants ∨ dislikes (W+D)")) %>%
+  select(`Disjunction type`, Direction, `Predicted TRUE`, `95% CI`, z, p)
+
+midpoint_model_tbl %>% flextable() %>% autofit()
+```
+
+# Benchmark: W+W vs W+A (order-collapsed; model-based)
+
+```{r ww_vs_wa_contrast}
+emm_disj <- emmeans(critical_model, ~ disj_type, weights = "proportional")
+
+ww_vs_wa_contrast <- summary(
+  contrast(
+    emm_disj,
+    method = list(
+      "W+A - W+W" = c(-1, 1, 0, 0, 0)
+    )
+  ),
+  infer = c(TRUE, TRUE)
+)
+
+as.data.frame(ww_vs_wa_contrast) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    `OR (95% CI)` = paste0(
+      round(OR, 2),
+      " [",
+      round(OR_low, 2),
+      ", ",
+      round(OR_high, 2),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(contrast, `OR (95% CI)`, z, p) %>%
+  flextable() %>%
+  autofit()
+```
+
+# Benchmark: W+W vs W+D (order-collapsed; model-based)
+
+```{r ww_vs_wd_contrast}
+emm_disj <- emmeans(critical_model, ~ disj_type, weights = "proportional")
+
+ww_vs_wd_contrast <- summary(
+  contrast(
+    emm_disj,
+    method = list(
+      "W+D - W+W" = c(-1, 0, 1, 0, 0)
+    )
+  ),
+  infer = c(TRUE, TRUE)
+)
+
+as.data.frame(ww_vs_wd_contrast) %>%
+  mutate(
+    lcl = if ("lower.CL" %in% names(.)) lower.CL else asymp.LCL,
+    ucl = if ("upper.CL" %in% names(.)) upper.CL else asymp.UCL,
+    OR = exp(estimate),
+    OR_low = exp(lcl),
+    OR_high = exp(ucl),
+    `OR (95% CI)` = paste0(
+      round(OR, 2),
+      " [",
+      round(OR_low, 2),
+      ", ",
+      round(OR_high, 2),
+      "]"
+    ),
+    z = round(z.ratio, 2),
+    p = format.pval(p.value, digits = 3, eps = .001)
+  ) %>%
+  select(contrast, `OR (95% CI)`, z, p) %>%
+  flextable() %>%
+  autofit()
+```
+
+## Tribe effect (Nomad vs Urbanite; model-based)
+
+```{r tribe_effect}
+beta <- fixef(critical_model)["tribeNomad"]
+se <- sqrt(vcov(critical_model)["tribeNomad", "tribeNomad"])
+ci <- beta + c(-1, 1) * 1.96 * se
+
+tribe_tbl <- tibble(
+  `Effect` = "Nomad vs Urbanite",
+  `OR (95% CI)` = paste0(
+    round(exp(beta), 2),
+    " [",
+    round(exp(ci[1]), 2),
+    ", ",
+    round(exp(ci[2]), 2),
+    "]"
+  ),
+  z = round(summary(critical_model)$coefficients["tribeNomad", "z value"], 2),
+  p = format.pval(summary(critical_model)$coefficients["tribeNomad", "Pr(>|z|)"], digits = 3, eps = .001)
+)
+
+tribe_tbl %>% flextable() %>% autofit()
+```

@@ -1,0 +1,1166 @@
+var stimuli_practice = [
+    {
+        "SEGMENTS": [
+            {
+                "text": "Charles-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a chocolate"
+            }
+        ],
+        "SENTENCE": "Charles-the-Urbanite wants to eat a chocolate",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "Y",
+        "ITEM1": "a chocolate",
+        "ITEM1_TYPE": "wants",
+        "GROUP": "all",
+        "ITEM": "S0"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Michael-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a strawberry"
+            }
+        ],
+        "SENTENCE": "Michael-the-Urbanite wants to eat a strawberry",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a strawberry",
+        "ITEM1_TYPE": "dislikes",
+        "GROUP": "all",
+        "ITEM": "S1"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Christopher-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a steak"
+            }
+        ],
+        "SENTENCE": "Christopher-the-Urbanite wants to eat a steak",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a steak",
+        "ITEM1_TYPE": "accepts",
+        "GROUP": "meat",
+        "ITEM": "S2"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Dorothy-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a strawberry"
+            }
+        ],
+        "SENTENCE": "Dorothy-the-Urbanite does not mind eating a strawberry",
+        "VERB": "does not mind",
+        "CONDITION": "SINGLE_CONTROL_MIND",
+        "CORRECT": "N",
+        "ITEM1": "a strawberry",
+        "ITEM1_TYPE": "dislikes",
+        "GROUP": "mind",
+        "ITEM": "F3"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Barbara-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a steak"
+            }
+        ],
+        "SENTENCE": "Barbara-the-Urbanite does not mind eating a steak",
+        "VERB": "does not mind",
+        "CONDITION": "SINGLE_CONTROL_MIND",
+        "CORRECT": "Y",
+        "ITEM1": "a steak",
+        "ITEM1_TYPE": "accepts",
+        "GROUP": "mind",
+        "ITEM": "F4"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Elizabeth-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cookie"
+            }
+        ],
+        "SENTENCE": "Elizabeth-the-Urbanite wants to eat a cookie",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "Y",
+        "ITEM1": "a cookie",
+        "ITEM1_TYPE": "wants",
+        "GROUP": "all",
+        "ITEM": "S5"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Nancy-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a grapefruit"
+            }
+        ],
+        "SENTENCE": "Nancy-the-Urbanite wants to eat a grapefruit",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a grapefruit",
+        "ITEM1_TYPE": "dislikes",
+        "GROUP": "all",
+        "ITEM": "S6"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Daniel-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a burger"
+            }
+        ],
+        "SENTENCE": "Daniel-the-Urbanite wants to eat a burger",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a burger",
+        "ITEM1_TYPE": "accepts",
+        "GROUP": "meat",
+        "ITEM": "S7"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "William-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a grapefruit"
+            }
+        ],
+        "SENTENCE": "William-the-Urbanite does not mind eating a grapefruit",
+        "VERB": "does not mind",
+        "CONDITION": "SINGLE_CONTROL_MIND",
+        "CORRECT": "N",
+        "ITEM1": "a grapefruit",
+        "ITEM1_TYPE": "dislikes",
+        "GROUP": "mind",
+        "ITEM": "F8"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Margaret-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a burger"
+            }
+        ],
+        "SENTENCE": "Margaret-the-Urbanite does not mind eating a burger",
+        "VERB": "does not mind",
+        "CONDITION": "SINGLE_CONTROL_MIND",
+        "CORRECT": "Y",
+        "ITEM1": "a burger",
+        "ITEM1_TYPE": "accepts",
+        "GROUP": "mind",
+        "ITEM": "F9"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Patricia-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cranberry"
+            }
+        ],
+        "SENTENCE": "Patricia-the-Nomad wants to eat a cranberry",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "Y",
+        "ITEM1": "a cranberry",
+        "ITEM1_TYPE": "wants",
+        "GROUP": "all",
+        "ITEM": "S10"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sarah-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a biscuit"
+            }
+        ],
+        "SENTENCE": "Sarah-the-Nomad wants to eat a biscuit",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a biscuit",
+        "ITEM1_TYPE": "dislikes",
+        "GROUP": "all",
+        "ITEM": "S11"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Linda-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a kebab"
+            }
+        ],
+        "SENTENCE": "Linda-the-Nomad wants to eat a kebab",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a kebab",
+        "ITEM1_TYPE": "accepts",
+        "GROUP": "meat",
+        "ITEM": "S12"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Andrew-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a biscuit"
+            }
+        ],
+        "SENTENCE": "Andrew-the-Nomad does not mind eating a biscuit",
+        "VERB": "does not mind",
+        "CONDITION": "SINGLE_CONTROL_MIND",
+        "CORRECT": "N",
+        "ITEM1": "a biscuit",
+        "ITEM1_TYPE": "dislikes",
+        "GROUP": "mind",
+        "ITEM": "F13"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Matthew-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a kebab"
+            }
+        ],
+        "SENTENCE": "Matthew-the-Nomad does not mind eating a kebab",
+        "VERB": "does not mind",
+        "CONDITION": "SINGLE_CONTROL_MIND",
+        "CORRECT": "Y",
+        "ITEM1": "a kebab",
+        "ITEM1_TYPE": "accepts",
+        "GROUP": "mind",
+        "ITEM": "F14"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sandra-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "an apple"
+            }
+        ],
+        "SENTENCE": "Sandra-the-Nomad wants to eat an apple",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "Y",
+        "ITEM1": "an apple",
+        "ITEM1_TYPE": "wants",
+        "GROUP": "all",
+        "ITEM": "S15"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Ashley-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a lollipop"
+            }
+        ],
+        "SENTENCE": "Ashley-the-Nomad wants to eat a lollipop",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a lollipop",
+        "ITEM1_TYPE": "dislikes",
+        "GROUP": "all",
+        "ITEM": "S16"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Susan-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatball"
+            }
+        ],
+        "SENTENCE": "Susan-the-Nomad wants to eat a meatball",
+        "VERB": "want",
+        "CONDITION": "SINGLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a meatball",
+        "ITEM1_TYPE": "accepts",
+        "GROUP": "meat",
+        "ITEM": "S17"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Anthony-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a lollipop"
+            }
+        ],
+        "SENTENCE": "Anthony-the-Nomad does not mind eating a lollipop",
+        "VERB": "does not mind",
+        "CONDITION": "SINGLE_CONTROL_MIND",
+        "CORRECT": "N",
+        "ITEM1": "a lollipop",
+        "ITEM1_TYPE": "dislikes",
+        "GROUP": "mind",
+        "ITEM": "F18"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Jennifer-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a meatball"
+            }
+        ],
+        "SENTENCE": "Jennifer-the-Nomad does not mind eating a meatball",
+        "VERB": "does not mind",
+        "CONDITION": "SINGLE_CONTROL_MIND",
+        "CORRECT": "Y",
+        "ITEM1": "a meatball",
+        "ITEM1_TYPE": "accepts",
+        "GROUP": "mind",
+        "ITEM": "F19"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Charles-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a strawberry or a peach"
+            }
+        ],
+        "SENTENCE": "Charles-the-Nomad wants to eat a strawberry or a peach",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "Y",
+        "ITEM1": "a strawberry",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a peach",
+        "GROUP": "all",
+        "ITEM": "D0"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Michael-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a chocolate or a brownie"
+            }
+        ],
+        "SENTENCE": "Michael-the-Nomad wants to eat a chocolate or a brownie",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a chocolate",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a brownie",
+        "GROUP": "all",
+        "ITEM": "D1"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Christopher-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a steak or beef"
+            }
+        ],
+        "SENTENCE": "Christopher-the-Nomad wants to eat a steak or beef",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a steak",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "beef",
+        "GROUP": "meat",
+        "ITEM": "D2"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Dorothy-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a steak or beef"
+            }
+        ],
+        "SENTENCE": "Dorothy-the-Nomad is does not mind eating a steak or beef",
+        "VERB": "does not mind",
+        "CONDITION": "DOUBLE_CONTROL_MIND",
+        "CORRECT": "Y",
+        "ITEM1": "a steak",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "beef",
+        "GROUP": "mind",
+        "ITEM": "E3"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Barbara-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a chocolate or a brownie"
+            }
+        ],
+        "SENTENCE": "Barbara-the-Nomad is does not mind eating a chocolate or a brownie",
+        "VERB": "does not mind",
+        "CONDITION": "DOUBLE_CONTROL_MIND",
+        "CORRECT": "N",
+        "ITEM1": "a chocolate",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a brownie",
+        "GROUP": "mind",
+        "ITEM": "E4"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Elizabeth-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a grapefruit or a strawberry"
+            }
+        ],
+        "SENTENCE": "Elizabeth-the-Nomad wants to eat a grapefruit or a strawberry",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "Y",
+        "ITEM1": "a grapefruit",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a strawberry",
+        "GROUP": "all",
+        "ITEM": "D5"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Nancy-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cookie or a chocolate"
+            }
+        ],
+        "SENTENCE": "Nancy-the-Nomad wants to eat a cookie or a chocolate",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a cookie",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a chocolate",
+        "GROUP": "all",
+        "ITEM": "D6"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Daniel-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a burger or a steak"
+            }
+        ],
+        "SENTENCE": "Daniel-the-Nomad wants to eat a burger or a steak",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a burger",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a steak",
+        "GROUP": "meat",
+        "ITEM": "D7"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "William-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a burger or a steak"
+            }
+        ],
+        "SENTENCE": "William-the-Nomad is does not mind eating a burger or a steak",
+        "VERB": "does not mind",
+        "CONDITION": "DOUBLE_CONTROL_MIND",
+        "CORRECT": "Y",
+        "ITEM1": "a burger",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a steak",
+        "GROUP": "mind",
+        "ITEM": "E8"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Margaret-the-Nomad",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a cookie or a chocolate"
+            }
+        ],
+        "SENTENCE": "Margaret-the-Nomad is does not mind eating a cookie or a chocolate",
+        "VERB": "does not mind",
+        "CONDITION": "DOUBLE_CONTROL_MIND",
+        "CORRECT": "N",
+        "ITEM1": "a cookie",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a chocolate",
+        "GROUP": "mind",
+        "ITEM": "E9"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Patricia-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a biscuit or a cookie"
+            }
+        ],
+        "SENTENCE": "Patricia-the-Urbanite wants to eat a biscuit or a cookie",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "Y",
+        "ITEM1": "a biscuit",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a cookie",
+        "GROUP": "all",
+        "ITEM": "D10"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sarah-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a cranberry or a grapefruit"
+            }
+        ],
+        "SENTENCE": "Sarah-the-Urbanite wants to eat a cranberry or a grapefruit",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a cranberry",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a grapefruit",
+        "GROUP": "all",
+        "ITEM": "D11"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Linda-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a kebab or a burger"
+            }
+        ],
+        "SENTENCE": "Linda-the-Urbanite wants to eat a kebab or a burger",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a kebab",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a burger",
+        "GROUP": "meat",
+        "ITEM": "D12"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Andrew-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a kebab or a burger"
+            }
+        ],
+        "SENTENCE": "Andrew-the-Urbanite is does not mind eating a kebab or a burger",
+        "VERB": "does not mind",
+        "CONDITION": "DOUBLE_CONTROL_MIND",
+        "CORRECT": "Y",
+        "ITEM1": "a kebab",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a burger",
+        "GROUP": "mind",
+        "ITEM": "E13"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Matthew-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a cranberry or a grapefruit"
+            }
+        ],
+        "SENTENCE": "Matthew-the-Urbanite is does not mind eating a cranberry or a grapefruit",
+        "VERB": "does not mind",
+        "CONDITION": "DOUBLE_CONTROL_MIND",
+        "CORRECT": "N",
+        "ITEM1": "a cranberry",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a grapefruit",
+        "GROUP": "mind",
+        "ITEM": "E14"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Sandra-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a lollipop or a biscuit"
+            }
+        ],
+        "SENTENCE": "Sandra-the-Urbanite wants to eat a lollipop or a biscuit",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "Y",
+        "ITEM1": "a lollipop",
+        "ITEM1_TYPE": "wants",
+        "ITEM2": "a biscuit",
+        "GROUP": "all",
+        "ITEM": "D15"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Ashley-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "an apple or a cranberry"
+            }
+        ],
+        "SENTENCE": "Ashley-the-Urbanite wants to eat an apple or a cranberry",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "an apple",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a cranberry",
+        "GROUP": "all",
+        "ITEM": "D16"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Susan-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "wants to",
+                "duration": 500
+            },
+            {
+                "text": "eat",
+                "duration": 250
+            },
+            {
+                "text": "a meatball or a kebab"
+            }
+        ],
+        "SENTENCE": "Susan-the-Urbanite wants to eat a meatball or a kebab",
+        "VERB": "want",
+        "CONDITION": "DOUBLE_CONTROL",
+        "CORRECT": "N",
+        "ITEM1": "a meatball",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a kebab",
+        "GROUP": "meat",
+        "ITEM": "D17"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Anthony-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "a meatball or a kebab"
+            }
+        ],
+        "SENTENCE": "Anthony-the-Urbanite is does not mind eating a meatball or a kebab",
+        "VERB": "does not mind",
+        "CONDITION": "DOUBLE_CONTROL_MIND",
+        "CORRECT": "Y",
+        "ITEM1": "a meatball",
+        "ITEM1_TYPE": "accepts",
+        "ITEM2": "a kebab",
+        "GROUP": "mind",
+        "ITEM": "E18"
+    },
+    {
+        "SEGMENTS": [
+            {
+                "text": "Jennifer-the-Urbanite",
+                "duration": 750
+            },
+            {
+                "text": "does not",
+                "duration": 500
+            },
+            {
+                "text": "mind",
+                "duration": 250
+            },
+            {
+                "text": "eating",
+                "duration": 250
+            },
+            {
+                "text": "an apple or a cranberry"
+            }
+        ],
+        "SENTENCE": "Jennifer-the-Urbanite is does not mind eating an apple or a cranberry",
+        "VERB": "does not mind",
+        "CONDITION": "DOUBLE_CONTROL_MIND",
+        "CORRECT": "N",
+        "ITEM1": "an apple",
+        "ITEM1_TYPE": "dislikes",
+        "ITEM2": "a cranberry",
+        "GROUP": "mind",
+        "ITEM": "E19"
+    }
+]

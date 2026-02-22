@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Entailment Experiment</title>
+  <script src="jspsych/jspsych.js"></script>
+  <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+  <script src="jspsych/plugin-html-keyboard-response.js"></script>
+  <script src="jspsych/plugin-canvas-keyboard-response.js"></script>
+  <script src="jspsych/plugin-instructions.js"></script>
+  <script src="jatos.js"></script>
+  <script src="stimuli_experimental.json"></script>
+  <script src="stimuli_practice.json"></script>
+  <style>
+    body { background-color: #999999; }
+    .jspsych-display-element { color: white; font-size: 5vh; }
+    .instruction { font-size: 3vh; max-width: 80vw; line-height: 1.5; text-align: left; }
+    .prompt { left: 0; right: 0; margin-inline: auto; width: fit-content; font-size: 3vh; position: absolute; }
+    .stimulus-container { text-align: left; max-width: 80vw; width: 80vw; margin: 0 auto; }
+    .stimulus-container p { margin: 0.4em 0; }
+    .stimulus-container p.label { margin-bottom: 0.1em; }
+  </style>
+</head>
+
+<body></body>
+<script>
+  var jsPsych = initJsPsych({
+    on_trial_start: function () {},
+    on_finish: function () { jatos.endStudy(jsPsych.data.get().json()); }
+  });
+
+  jatos.onLoad(function () {
+    stimuli_practice = jsPsych.randomization.repeat(stimuli_practice, 1);
+    stimuli_experimental = jsPsych.randomization.repeat(stimuli_experimental, 1);
+    const BREAK_TRIAL = Math.floor(stimuli_experimental.length / 2);
+
+    function drawRect(c) {
+      var ctx = c.getContext('2d'); var startX = 30, startY = 30, rectHeight = 50, fullWidth = 200; var startTime = null;
+      function animate(timestamp) { if (!startTime) startTime = timestamp; var progress = timestamp - startTime; var ratio = Math.min(progress / 1000, 1); var currentWidth = fullWidth * ratio; ctx.clearRect(0, 0, c.width, c.height); ctx.strokeStyle = 'white'; ctx.fillStyle = 'white'; ctx.beginPath(); ctx.fillRect(startX, startY, currentWidth, rectHeight); ctx.stroke(); if (ratio < 1) { window.requestAnimationFrame(animate); }}
+      window.requestAnimationFrame(animate);
+    }
+
+    var iti_trial = { type: jsPsychCanvasKeyboardResponse, canvas_size: [300, 300], stimulus: drawRect, trial_duration: 1000, choices: "NO_KEYS" };
+
+    var intro_instruction = {
+      type: jsPsychInstructions, css_classes: "instruction",
+      pages: [
+        `<p><strong>Welcome</strong></p>
+         <p>In this task, you will evaluate statements and decide whether each conclusion follows from its corresponding premise.</p>
+         <p>The task has about 100 items and should take around 15 minutes.</p>
+         <hr><p>Press <strong>N</strong> to continue.</p>`
+      ],
+      key_forward: "n", allow_backward: false
+    };
+
+    var instruction = {
+      type: jsPsychInstructions, css_classes: "instruction",
+      pages: [
+        `<p><strong>Reasoning Task</strong></p>
+         <p>You will see a Premise and a Conclusion together. Decide whether the Conclusion follows from the Premise based on the information given in the Premise. Ignore real-world plausibility; focus on how well the Conclusion is supported by the Premise.</p>
+         <p>Respond as quickly and accurately as you can.</p>
+         <hr><p>Press <strong>N</strong> to go to the next part of the instructions.</p>`,
+        `<p><strong>Keys and Structure</strong></p>
+         <p>For each pair:</p>
+         <ul>
+           <li>Press <strong>B</strong> for FOLLOWS</li>
+           <li>Press <strong>N</strong> for DOES NOT FOLLOW</li>
+         </ul>
+         <p>You will start with a short practice (with feedback). In the main part, there is no feedback. A short break will occur at the midpoint.</p>
+         <hr><p>Press <strong>N</strong> to begin practice.</p>`
+      ],
+      key_forward: "n", allow_backward: false
+    };
+
+    var instruction_after_practice = {
+      type: jsPsychInstructions, css_classes: "instruction",
+      pages: [
+        `<p><strong>End of Practice</strong></p>
+         <p>Now continue with the main part. Remember: judge whether the Conclusion follows from the Premise based on the information given in the Premise.</p>
+         <ul><li><strong>B</strong> = FOLLOWS</li><li><strong>N</strong> = DOES NOT FOLLOW</li></ul>
+         <p>A short break will occur at the midpoint.</p>
+         <hr><p>Press <strong>N</strong> to begin.</p>`
+      ],
+      key_forward: "n", allow_backward: false
+    };
+
+    var instruction_break = {
+      type: jsPsychInstructions, css_classes: "instruction",
+      pages: [
+        `<p><strong>Break</strong></p>
+         <p>You may take a short (about 1–2 minute) break now. The study will continue when you press <strong>B</strong>.</p>
+         <hr><p>Press <strong>B</strong> when ready to continue.</p>`
+      ],
+      key_forward: "b", allow_backward: false
+    };
+
+    var feedback_trial = {
+      type: jsPsychHtmlKeyboardResponse, choices: "b",
+      prompt: "<div class='prompt'> Press <strong>B</strong> to go to the next trial. </div>",
+      stimulus: function () {
+        var last = jsPsych.data.get().last(1).values()[0];
+        var resp = last.response; var rec = (resp==="b")?"Y":(resp==="n")?"N":"";
+        return rec === last.correct ? `<p>Your answer was correct</p>` : `<p>Your answer was not correct</p>`;
+      }
+    };
+
+    var trials = [];
+    trials.push(intro_instruction);
+    trials.push(instruction);
+
+    // Practice: single-screen trials matching the original study
+    for (let stimulus of stimuli_practice) {
+      trials.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class="stimulus-container">
+                     <p class="label"><strong>Premise:</strong></p>
+                     <p>${stimulus.PREMISE}</p>
+                     <p class="label"><strong>Conclusion:</strong></p>
+                     <p>${stimulus.CONCLUSION}</p>
+                   </div>`,
+        choices: ["b","n"],
+        prompt: "<div class='prompt'> B = FOLLOWS &nbsp;&nbsp;&nbsp;&nbsp; N = DOES NOT FOLLOW </div>",
+        data: {
+          'correct': stimulus.VALID,
+          'item': stimulus.ITEM,
+          'domain': stimulus.DOMAIN,
+          'pair_type': stimulus.PAIR_TYPE,
+          'conclusion_form': stimulus.CONCLUSION_FORM,
+          'scenario': stimulus.SCENARIO,
+          'template_id': stimulus.TEMPLATE_ID,
+          'premise': stimulus.PREMISE,
+          'conclusion': stimulus.CONCLUSION
+        }
+      });
+      trials.push(feedback_trial);
+      trials.push(iti_trial);
+    }
+
+    trials.push(instruction_after_practice);
+
+    // Main: single-screen trials
+    var counter = 0;
+    for (let stimulus of stimuli_experimental) {
+      counter += 1;
+      trials.push({
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<div class=\"stimulus-container\">\n                     <p class=\"label\"><strong>Premise:</strong></p>\n                     <p>${stimulus.PREMISE}</p>\n                     <p class=\"label\"><strong>Conclusion:</strong></p>\n                     <p>${stimulus.CONCLUSION}</p>\n                   </div>`,
+        choices: ["b","n"],
+        prompt: "<div class='prompt'> B = FOLLOWS &nbsp;&nbsp;&nbsp;&nbsp; N = DOES NOT FOLLOW </div>",
+        data: {
+          'correct': stimulus.VALID,
+          'item': stimulus.ITEM,
+          'domain': stimulus.DOMAIN,
+          'pair_type': stimulus.PAIR_TYPE,
+          'conclusion_form': stimulus.CONCLUSION_FORM,
+          'premise': stimulus.PREMISE,
+          'conclusion': stimulus.CONCLUSION
+        }
+      });
+      trials.push(iti_trial);
+      if (counter === BREAK_TRIAL) { trials.push(instruction_break); }
+    }
+
+    jsPsych.run(trials);
+  });
+</script>
+
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My experiment</title>
+    <script src="jspsych/jspsych.js"></script>
+    <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+    <script src="jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugin-canvas-keyboard-response.js"></script>
+    <script src="jspsych/plugin-instructions.js"></script>
+    <script src="jatos.js"></script>
+    <script src="stimuli_experimental.json"></script>
+    <script src="stimuli_practice.json"></script>
+    <style>
+        body {
+            background-color: #999999;
+        }
+
+        .jspsych-display-element {
+            color: white;
+            font-size: 5vh;
+        }
+
+        .instruction {
+            font-size: 3vh;
+            max-width: 80vw;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .prompt {
+            left: 0;
+            right: 0;
+            margin-inline: auto;
+            width: fit-content;
+            font-size: 3vh;
+            position: absolute;
+        }
+
+        .feedback-text {
+            font-size: 4vh;
+        }
+    </style>
+</head>
+
+<body></body>
+<script>
+    var jsPsych = initJsPsych({
+        on_trial_start: function () { },
+        on_finish: function () {
+            jatos.endStudy(jsPsych.data.get().json());
+        }
+    });
+
+    jatos.onLoad(function () {
+        stimuli_practice = jsPsych.randomization.repeat(stimuli_practice, 1)
+        stimuli_experimental = jsPsych.randomization.repeat(stimuli_experimental, 1)
+        stimuli_practice = stimuli_practice;
+        stimuli_experimental = stimuli_experimental;
+        const BREAK_TRIAL = Math.floor(stimuli_experimental.length / 2);
+
+        function drawRect(c) {
+            var ctx = c.getContext('2d');
+            var startX = 30, startY = 30, rectHeight = 50, fullWidth = 200;
+            var startTime = null;
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = timestamp - startTime;
+                var ratio = Math.min(progress / 1000, 1);
+                var currentWidth = fullWidth * ratio;
+                ctx.clearRect(0, 0, c.width, c.height);
+                ctx.strokeStyle = 'white';
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.fillRect(startX, startY, currentWidth, rectHeight);
+                ctx.stroke();
+                if (ratio < 1) {
+                    window.requestAnimationFrame(animate);
+                }
+            }
+            window.requestAnimationFrame(animate);
+        }
+
+        var iti_trial = {
+            type: jsPsychCanvasKeyboardResponse,
+            canvas_size: [300, 300],
+            stimulus: drawRect,
+            trial_duration: 1000,
+            choices: "NO_KEYS"
+        }
+
+        var instruction = {
+            type: jsPsychInstructions,
+            css_classes: "instruction",
+            pages: [
+                `<p><strong>The Magical Island Adventure</strong></p>
+             <p>
+                The experiment is divided into two parts. In each part, your task is to indicate whether the displayed sentence is true or false in light of the facts you have learned about the inhabitants of Magical Island. The sentences will be presented in segments. Try to provide your answers as quickly and as accurately as possible.
+             </p>
+             <p>
+                In the first part (training), you will demonstrate your general familiarity with the eating preferences and desires of the inhabitants of Magical Island. You will receive feedback after each sentence indicating whether your answer was correct. In the second part, you will evaluate a new set of sentences without any feedback. In total, you will evaluate approximately <strong>146 sentences</strong>, which should take about <strong>15 minutes</strong>. A short break will occur at the midpoint of the main part.
+             </p>
+             <hr>
+             <p>Press <strong>N</strong> to go to the next part of the instructions.</p>`,
+
+                `<p><strong>The Magical Island Adventure</strong></p>
+             <p>Imagine that you have taken part in a unique adventure on Magical Island. The islanders are divided into two groups that differ in eating habits and lifestyles: Urbanites and Nomads.</p>
+             <p><strong>Urbanites</strong>, who live in big cities, are very fond of sweets and would like to eat them all the time. They don’t mind meat dishes, but these are not their favorite food. They definitely don’t like fruit.</p>
+             <p><strong>Nomads</strong>, who live in the wilderness, love different kinds of fruits and are always eager to eat them. Like Urbanites, they don’t mind meat dishes, but these are not their favorite food. However, Nomads hate sweets.</p>
+             <p>Within each category, all items are treated the same: the inhabitants of Magical Island equally like particular kinds of fruits, sweets, or meat dishes. </p>
+             <hr>
+             <p>Press <strong>N</strong> to go to the next part of the instructions.</p>`,
+
+                `<p><strong>The Magical Island Adventure</strong></p>
+             <p>
+                To demonstrate your familiarity with the inhabitants of Magical Island, the Chief of Magical Island will ask you several questions about their eating habits. During your adventure, you have learned the following facts:
+             </p>
+             <ul>
+                <li><strong>Urbanites</strong> definitely want to eat sweets, do not mind meat dishes, but dislike fruit.</li>
+                <li><strong>Nomads</strong> definitely want to eat fruit, do not mind meat dishes, but dislike sweets.</li>
+             </ul>
+             <hr>
+             <p>Press <strong>N</strong> to begin the practice session.</p>`
+            ],
+            key_forward: "n",
+            allow_backward: false
+        }
+
+
+        var instruction_after_practice = {
+            type: jsPsychInstructions,
+            css_classes: "instruction",
+            pages: [
+                `<p><strong>The Magical Island Adventure</strong></p>
+             <p>
+                The practice session has ended. Now you will be asked to say whether the sentences are true or false, but no feedback will be given. Try to give answers as quickly and accurately as you can.
+             </p>
+             <p>
+                Remember:
+             </p>
+             <p>
+                <strong>Urbanites</strong> mostly prefer sweets, don’t mind different types of meat, but hate fruits.
+                <br>
+                <strong>Nomads</strong> mostly prefer fruits, don’t mind different types of meat, but hate sweets.
+             </p>
+             <p>
+                At the midpoint of the experiment, you will have a short break.
+             </p>
+             <hr>
+             <p>Press <strong>N</strong> to begin the main session.</p>`,
+            ],
+            key_forward: "n",
+            allow_backward: false
+        }
+
+        var instruction_break = {
+            type: jsPsychInstructions,
+            css_classes: "instruction",
+            pages: [
+                `<p>
+                <strong>The Magical Island Adventure </strong>
+             </p>
+             <p> 
+                You may take a 30-second break now.
+            </p> 
+            <p> 
+                The study will resume automatically after the break, but you can also manually continue sentence evaluation.
+            </p> 
+            <hr> 
+            <p>
+                Press <strong>B</strong> when you are ready to resume sentence evaluation. 
+            </p>`,
+            ],
+            key_forward: "b",
+            allow_backward: false
+        }
+
+        var feedback_trial = {
+            type: jsPsychHtmlKeyboardResponse,
+            choices: "b",
+            prompt: "<div class='prompt'> Press <strong>B</strong> to go to the next trial. </div>",
+            stimulus: function () {
+                var last = jsPsych.data.get().last(1).values()[0];
+                var recoded = last.response === "b" ? "Y" : "N";
+                if (recoded === last.correct) {
+                    return `<div class='feedback-text'><p>${last.feedback_correct || "Your answer was correct."}</p></div>`;
+                }
+                return `<div class='feedback-text'><p>${last.feedback_incorrect || "Your answer was not correct."}</p></div>`;
+            }
+        }
+
+        // Create a timeline array
+        var trials_timelines = [];
+        trials_timelines.push(instruction);
+
+        // Practice loop (with feedback)
+        var trial_n = 0;
+        for (let stimulus of stimuli_practice) {
+            trial_n += 1;
+            var single_trial = {
+                type: jsPsychHtmlKeyboardResponse,
+                timeline: []
+            }
+            for (let i = 0; i < stimulus.SEGMENTS.length - 1; i++) {
+                single_trial.timeline.push({
+                    stimulus: stimulus.SEGMENTS[i].text,
+                    trial_duration: stimulus.SEGMENTS[i].duration,
+                    choices: "NO_KEYS"
+                });
+            }
+            single_trial.timeline.push({
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus: stimulus.SEGMENTS[stimulus.SEGMENTS.length - 1].text,
+                choices: ["b", "n"],
+                prompt: "<div class='prompt'> B = TRUE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N = FALSE </div>",
+                data: {
+                    'correct': stimulus.CORRECT,
+                    'verb': stimulus.VERB,
+                    'item': stimulus.ITEM,
+                    'condition': stimulus.CONDITION,
+                    'sentence': stimulus.SENTENCE,
+                    'structure': stimulus.STRUCTURE,
+                    'subcondition': stimulus.SUBCONDITION,
+                    'order': stimulus.ORDER,
+                    'relation': stimulus.RELATION,
+                    'logical_truth': stimulus.LOGICAL_TRUTH,
+                    'item1': stimulus.ITEM1,
+                    'item2': stimulus.ITEM2,
+                    'item1_type': stimulus.ITEM1_TYPE,
+                    'item2_type': stimulus.ITEM2_TYPE,
+                    'tribe': stimulus.TRIBE,
+                    'feedback_correct': stimulus.FEEDBACK_CORRECT,
+                    'feedback_incorrect': stimulus.FEEDBACK_INCORRECT
+                }
+            });
+            trials_timelines.push(single_trial);
+            trials_timelines.push(feedback_trial);
+            trials_timelines.push(iti_trial);
+        }
+
+        trials_timelines.push(instruction_after_practice);
+
+        // Main loop (no feedback)
+        var trial_n = 0;
+        for (let stimulus of stimuli_experimental) {
+            trial_n += 1;
+            var single_trial = {
+                type: jsPsychHtmlKeyboardResponse,
+                timeline: []
+            }
+            for (let i = 0; i < stimulus.SEGMENTS.length - 1; i++) {
+                single_trial.timeline.push({
+                    stimulus: stimulus.SEGMENTS[i].text,
+                    trial_duration: stimulus.SEGMENTS[i].duration,
+                    choices: "NO_KEYS"
+                });
+            }
+            single_trial.timeline.push({
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus: stimulus.SEGMENTS[stimulus.SEGMENTS.length - 1].text,
+                choices: ["b", "n"],
+                prompt: "<div class='prompt'> B = TRUE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N = FALSE </div>",
+                data: {
+                    'correct': stimulus.CORRECT,
+                    'verb': stimulus.VERB,
+                    'item': stimulus.ITEM,
+                    'condition': stimulus.CONDITION,
+                    'sentence': stimulus.SENTENCE,
+                    'structure': stimulus.STRUCTURE,
+                    'subcondition': stimulus.SUBCONDITION,
+                    'order': stimulus.ORDER,
+                    'relation': stimulus.RELATION,
+                    'logical_truth': stimulus.LOGICAL_TRUTH,
+                    'item1': stimulus.ITEM1,
+                    'item2': stimulus.ITEM2,
+                    'item1_type': stimulus.ITEM1_TYPE,
+                    'item2_type': stimulus.ITEM2_TYPE,
+                    'tribe': stimulus.TRIBE
+                }
+            });
+            trials_timelines.push(single_trial);
+            trials_timelines.push(iti_trial);
+            if (trial_n == BREAK_TRIAL) {
+                trials_timelines.push(instruction_break);
+            }
+        }
+
+        jsPsych.run(trials_timelines);
+
+    });
+
+</script>
+
+</html>

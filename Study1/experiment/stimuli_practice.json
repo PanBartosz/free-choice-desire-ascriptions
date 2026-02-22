@@ -1,0 +1,90 @@
+var stimuli_practice = [
+    {
+        "PREMISE": "Sophia stopped by the bakery and bought fresh bread.",
+        "CONCLUSION": "Sophia went to the bakery.",
+        "DOMAIN": "control",
+        "PAIR_TYPE": "conjunction",
+        "CONCLUSION_FORM": "",
+        "VALID": "Y",
+        "ITEM": "P00",
+        "SCENARIO": "",
+        "TEMPLATE_ID": 0
+    },
+    {
+        "PREMISE": "The tourist visited the castle and photographed the courtyard.",
+        "CONCLUSION": "The tourist visited the cathedral.",
+        "DOMAIN": "control",
+        "PAIR_TYPE": "conjunction",
+        "CONCLUSION_FORM": "",
+        "VALID": "N",
+        "ITEM": "P01",
+        "SCENARIO": "",
+        "TEMPLATE_ID": 0
+    },
+    {
+        "PREMISE": "Since heavy fog covered the valley, the hikers lost visibility.",
+        "CONCLUSION": "The hikers could no longer see their surroundings clearly.",
+        "DOMAIN": "control",
+        "PAIR_TYPE": "conditional",
+        "CONCLUSION_FORM": "",
+        "VALID": "Y",
+        "ITEM": "P02",
+        "SCENARIO": "",
+        "TEMPLATE_ID": 0
+    },
+    {
+        "PREMISE": "If Laura finishes preparing the detailed report today, she will send it to the entire team.",
+        "CONCLUSION": "Laura will send the report to the team.",
+        "DOMAIN": "control",
+        "PAIR_TYPE": "conditional",
+        "CONCLUSION_FORM": "",
+        "VALID": "N",
+        "ITEM": "P03",
+        "SCENARIO": "",
+        "TEMPLATE_ID": 0
+    },
+    {
+        "PREMISE": "Some blondes have dark eyes.",
+        "CONCLUSION": "Some people with dark eyes are blondes.",
+        "DOMAIN": "control",
+        "PAIR_TYPE": "quantifier",
+        "CONCLUSION_FORM": "",
+        "VALID": "Y",
+        "ITEM": "P04",
+        "SCENARIO": "",
+        "TEMPLATE_ID": 0
+    },
+    {
+        "PREMISE": "Some blondes have dark eyes.",
+        "CONCLUSION": "Some blondes have dark clothes.",
+        "DOMAIN": "control",
+        "PAIR_TYPE": "quantifier",
+        "CONCLUSION_FORM": "",
+        "VALID": "N",
+        "ITEM": "P05",
+        "SCENARIO": "",
+        "TEMPLATE_ID": 0
+    },
+    {
+        "PREMISE": "Alice won a car race.",
+        "CONCLUSION": "Alice participated in a car race.",
+        "DOMAIN": "control",
+        "PAIR_TYPE": "presupposition",
+        "CONCLUSION_FORM": "",
+        "VALID": "Y",
+        "ITEM": "P06",
+        "SCENARIO": "",
+        "TEMPLATE_ID": 0
+    },
+    {
+        "PREMISE": "Mark won a car race.",
+        "CONCLUSION": "Mark has never participated in a car race.",
+        "DOMAIN": "control",
+        "PAIR_TYPE": "presupposition",
+        "CONCLUSION_FORM": "",
+        "VALID": "N",
+        "ITEM": "P07",
+        "SCENARIO": "",
+        "TEMPLATE_ID": 0
+    }
+]
