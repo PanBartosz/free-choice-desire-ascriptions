@@ -1,6 +1,5 @@
 **Paper mapping**
-- This folder is the copy used for paper prep: **Study 3** in `paper_analyses/Free Choice and Desire Ascriptions_draft.pdf`.
-- Source in the original project layout (kept intact there): `Exp5_weak_freechoice_soft_with_reminders/`.
+- This folder contains **Study 3** materials and analysis assets for the paper (forthcoming).
 
 **Python environment**
 - Use the shared env defined in `paper_analyses/requirements.txt` (setup instructions: `paper_analyses/PYTHON_ENV.md`).
@@ -33,6 +32,7 @@
 **Regenerating stimuli**
 - Run `python generate_stimuli.py` from this directory.
 - Outputs written at the study root (and/or `experiment/` depending on script version): `stimuli_experimental.json/.xlsx`, `stimuli_practice.json/.xlsx`.
+- In `experiment/`, `stimuli_*.json` are JavaScript variable assignments loaded via `<script src=\"...\">` (not strict standalone JSON files).
 
 **Processing results + report**
 - Put the JATOS export (`jatos_results_*.jrzip`) into `results/`.

@@ -1,6 +1,5 @@
 **Paper mapping**
-- This folder is the copy used for paper prep: **Study 2** in `paper_analyses/Free Choice and Desire Ascriptions_draft.pdf`.
-- Source in the original project layout (kept intact there): `Exp5a_preferences_freechoice/` (directory name differs from the paper study numbering).
+- This folder contains **Study 2** materials and analysis assets for the paper (forthcoming).
 
 **Python environment**
 - Use the shared env defined in `paper_analyses/requirements.txt` (setup instructions: `paper_analyses/PYTHON_ENV.md`).

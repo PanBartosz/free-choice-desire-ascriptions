@@ -9,7 +9,7 @@ except Exception:
     pd = None
     HAS_PANDAS = False
 
-# Exp5b generator:
+# Study 2 stimulus generator:
 # - Only want/prefer items (no modals or "does not mind").
 # - Emits two JSON files: stimuli_experimental.json (main, 114 items) and stimuli_practice.json (training, 32 items).
 

@@ -154,7 +154,7 @@ def validate_counts(df: pd.DataFrame, stimuli_practice: Dict[str, dict], stimuli
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Process JATOS result archive for Exp5a (preferences free-choice).",
+        description="Process JATOS result archive for Study 2 (preferences free-choice).",
     )
     parser.add_argument("zipfile", type=Path, help="Path to jatos_results_*.jrzip file.")
     parser.add_argument("--stimuli-experimental", type=Path, default=None, help="Path to experimental stimuli JSON.")

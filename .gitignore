@@ -21,6 +21,7 @@ tmp/
 # Logs and ad-hoc runtime outputs
 nohup.out
 *.log
+/results.csv
 
 # Backups
 *.bak
@@ -30,9 +31,6 @@ Free Choice and Desire Ascriptions_draft.pdf
 OUTLINE.md
 *_IMRAD.md
 *_results_rewrite.md
-
-# Rendered analysis outputs (keep source .Rmd/.qmd/.py)
-Study*/results/*.html
 
 # Internal planning docs (kept out of public repo)
 docs/COMMIT_POLICY.md

@@ -1,28 +1,25 @@
 # File Index
 
-This file maps every tracked file in the repository to its purpose.
-
-- Scope: all files returned by `git ls-files`.
-- Purpose: complements `README.md` with a complete path-by-path inventory.
+This file lists every tracked file and its purpose.
 
 ## Inventory
 
-- `.gitignore`: Repository ignore rules for environments, generated artifacts, and manuscript-only files.
-- `CITATION.cff`: Machine-readable citation metadata for the repository.
-- `LICENSE`: License for code in this repository (MIT).
-- `LICENSE-data`: License and reuse terms for data/materials (CC BY 4.0 note).
-- `PYTHON_ENV.md`: Instructions for creating and using the Python environment.
-- `README.md`: Top-level project overview, scope, and navigation entry point.
-- `Study1/README.md`: Study-specific protocol, stimuli, and analysis workflow documentation.
-- `Study1/STIMULI_EXAMPLES.html`: HTML-rendered stimuli examples for visual inspection.
-- `Study1/STIMULI_EXAMPLES.md`: Markdown examples of generated stimuli for quick review.
-- `Study1/STIMULI_EXAMPLES.tsv`: Tabular export of stimuli examples.
+- `.gitignore`: Ignore rules for local artifacts and non-public/internal files.
+- `CITATION.cff`: Repository citation metadata.
+- `LICENSE`: Code license (MIT).
+- `LICENSE-data`: Data/materials licensing note (CC BY 4.0 statement).
+- `PYTHON_ENV.md`: Environment setup notes for Python tooling.
+- `README.md`: Top-level overview of repository scope, structure, and usage.
+- `Study1/README.md`: Study1 design, stimuli, and analysis workflow documentation.
+- `Study1/STIMULI_EXAMPLES.html`: Stimuli example export for manual review.
+- `Study1/STIMULI_EXAMPLES.md`: Stimuli example export for manual review.
+- `Study1/STIMULI_EXAMPLES.tsv`: Stimuli example export for manual review.
 - `Study1/experiment/experiment.html`: Browser experiment runtime (jsPsych + JATOS integration).
 - `Study1/experiment/jspsych/extension-mouse-tracking.js`: Vendored jsPsych extension module (mouse-tracking).
 - `Study1/experiment/jspsych/extension-record-video.js`: Vendored jsPsych extension module (record-video).
 - `Study1/experiment/jspsych/extension-webgazer.js`: Vendored jsPsych extension module (webgazer).
-- `Study1/experiment/jspsych/jspsych.css`: Vendored jsPsych default stylesheet.
-- `Study1/experiment/jspsych/jspsych.js`: Vendored jsPsych core JavaScript library.
+- `Study1/experiment/jspsych/jspsych.css`: Vendored jsPsych base stylesheet.
+- `Study1/experiment/jspsych/jspsych.js`: Vendored jsPsych core library.
 - `Study1/experiment/jspsych/plugin-animation.js`: Vendored jsPsych plugin module (animation).
 - `Study1/experiment/jspsych/plugin-audio-button-response.js`: Vendored jsPsych plugin module (audio-button-response).
 - `Study1/experiment/jspsych/plugin-audio-keyboard-response.js`: Vendored jsPsych plugin module (audio-keyboard-response).
@@ -76,33 +73,30 @@ This file maps every tracked file in the repository to its purpose.
 - `Study1/experiment/jspsych/plugin-webgazer-calibrate.js`: Vendored jsPsych plugin module (webgazer-calibrate).
 - `Study1/experiment/jspsych/plugin-webgazer-init-camera.js`: Vendored jsPsych plugin module (webgazer-init-camera).
 - `Study1/experiment/jspsych/plugin-webgazer-validate.js`: Vendored jsPsych plugin module (webgazer-validate).
-- `Study1/experiment/jspsych/survey.css`: Vendored survey-related stylesheet used by jsPsych survey plugins.
-- `Study1/experiment/stimuli_experimental.json`: Experimental stimuli payload loaded by the browser task.
-- `Study1/experiment/stimuli_practice.json`: Practice stimuli payload loaded by the browser task.
-- `Study1/generate_stimuli.py`: Script to generate practice/experimental stimuli files for this study.
-- `Study1/results/analysis_entailment_fc.Rmd`: Primary analysis notebook for Study 1.
-- `Study1/results/jatos_results_20251127094830.jrzip`: Raw JATOS study export archive (source data snapshot).
-- `Study1/results/jatos_results_20251127110131.jrzip`: Raw JATOS study export archive (source data snapshot).
-- `Study1/results/jatos_results_20251127111915.jrzip`: Raw JATOS study export archive (source data snapshot).
-- `Study1/results/jatos_results_20251127171523.jrzip`: Raw JATOS study export archive (source data snapshot).
-- `Study1/results/per_item_follows.xlsx`: Per-item summary workbook for Study 1 entailment outcomes.
-- `Study1/results/process_results.py`: Script that parses raw JATOS exports into analysis-ready tables.
-- `Study1/results/prolific_export_692823107e98ad3a92b2fc8c.csv`: Raw Prolific export used for participant metadata joins and checks.
-- `Study1/results/results.csv`: Processed trial-level dataset used in analyses.
-- `Study1/results/test_process_results.py`: Tests for result-processing logic (Study 1).
-- `Study1/stimuli_experimental.csv`: Study-level exported experimental stimuli table (CSV).
-- `Study1/stimuli_experimental.xlsx`: Study-level exported experimental stimuli table (XLSX).
-- `Study1/stimuli_practice.xlsx`: Study-level exported practice stimuli table (XLSX).
-- `Study2/README.md`: Study-specific protocol, stimuli, and analysis workflow documentation.
-- `Study2/STIMULI_EXAMPLES.html`: HTML-rendered stimuli examples for visual inspection.
-- `Study2/STIMULI_EXAMPLES.md`: Markdown examples of generated stimuli for quick review.
-- `Study2/STIMULI_EXAMPLES.tsv`: Tabular export of stimuli examples.
+- `Study1/experiment/jspsych/survey.css`: Vendored survey stylesheet used by jsPsych survey plugins.
+- `Study1/experiment/stimuli_experimental.json`: Experimental stimuli payload loaded in the experiment runtime (JS assignment format).
+- `Study1/experiment/stimuli_practice.json`: Practice stimuli payload loaded in the experiment runtime (JS assignment format).
+- `Study1/generate_stimuli.py`: Stimulus generation script for this study.
+- `Study1/results/analysis_entailment_fc.Rmd`: R Markdown analysis source.
+- `Study1/results/analysis_entailment_fc.html`: Compiled HTML analysis report.
+- `Study1/results/jatos_results_20251127171523.jrzip`: Raw JATOS export archive used to produce the committed processed results.csv.
+- `Study1/results/per_item_follows.xlsx`: Supplementary analysis workbook output.
+- `Study1/results/process_results.py`: Processing script converting JATOS exports to analysis-ready CSV.
+- `Study1/results/prolific_export_692823107e98ad3a92b2fc8c.csv`: Raw Prolific export used for participant metadata joins/checks.
+- `Study1/results/results.csv`: Processed trial-level dataset used in analysis notebooks.
+- `Study1/results/test_process_results.py`: Tests for result-processing behavior.
+- `Study1/stimuli_experimental.xlsx`: Study-level experimental stimuli workbook corresponding to experiment stimuli.
+- `Study1/stimuli_practice.xlsx`: Study-level practice stimuli workbook corresponding to experiment stimuli.
+- `Study2/README.md`: Study2 design, stimuli, and analysis workflow documentation.
+- `Study2/STIMULI_EXAMPLES.html`: Stimuli example export for manual review.
+- `Study2/STIMULI_EXAMPLES.md`: Stimuli example export for manual review.
+- `Study2/STIMULI_EXAMPLES.tsv`: Stimuli example export for manual review.
 - `Study2/experiment/experiment.html`: Browser experiment runtime (jsPsych + JATOS integration).
 - `Study2/experiment/jspsych/extension-mouse-tracking.js`: Vendored jsPsych extension module (mouse-tracking).
 - `Study2/experiment/jspsych/extension-record-video.js`: Vendored jsPsych extension module (record-video).
 - `Study2/experiment/jspsych/extension-webgazer.js`: Vendored jsPsych extension module (webgazer).
-- `Study2/experiment/jspsych/jspsych.css`: Vendored jsPsych default stylesheet.
-- `Study2/experiment/jspsych/jspsych.js`: Vendored jsPsych core JavaScript library.
+- `Study2/experiment/jspsych/jspsych.css`: Vendored jsPsych base stylesheet.
+- `Study2/experiment/jspsych/jspsych.js`: Vendored jsPsych core library.
 - `Study2/experiment/jspsych/plugin-animation.js`: Vendored jsPsych plugin module (animation).
 - `Study2/experiment/jspsych/plugin-audio-button-response.js`: Vendored jsPsych plugin module (audio-button-response).
 - `Study2/experiment/jspsych/plugin-audio-keyboard-response.js`: Vendored jsPsych plugin module (audio-keyboard-response).
@@ -156,31 +150,31 @@ This file maps every tracked file in the repository to its purpose.
 - `Study2/experiment/jspsych/plugin-webgazer-calibrate.js`: Vendored jsPsych plugin module (webgazer-calibrate).
 - `Study2/experiment/jspsych/plugin-webgazer-init-camera.js`: Vendored jsPsych plugin module (webgazer-init-camera).
 - `Study2/experiment/jspsych/plugin-webgazer-validate.js`: Vendored jsPsych plugin module (webgazer-validate).
-- `Study2/experiment/jspsych/survey.css`: Vendored survey-related stylesheet used by jsPsych survey plugins.
-- `Study2/experiment/stimuli_experimental.csv`: CSV copy of experimental stimuli used for review/interchange.
-- `Study2/experiment/stimuli_experimental.json`: Experimental stimuli payload loaded by the browser task.
-- `Study2/experiment/stimuli_experimental.xlsx`: Spreadsheet copy of experimental stimuli for manual inspection.
-- `Study2/experiment/stimuli_practice.csv`: CSV copy of practice stimuli used for review/interchange.
-- `Study2/experiment/stimuli_practice.json`: Practice stimuli payload loaded by the browser task.
-- `Study2/experiment/stimuli_practice.xlsx`: Spreadsheet copy of practice stimuli for manual inspection.
-- `Study2/generate_stimuli.py`: Script to generate practice/experimental stimuli files for this study.
-- `Study2/results/analysis_preferences_freechoice.qmd`: Primary Quarto analysis notebook for Study 2.
-- `Study2/results/analysis_preferences_freechoice_critical.Rmd`: Supplementary/critical-condition analysis notebook for Study 2.
-- `Study2/results/jatos_results_20260119234506.jrzip`: Raw JATOS study export archive (source data snapshot).
-- `Study2/results/jatos_results_20260120020313.jrzip`: Raw JATOS study export archive (source data snapshot).
-- `Study2/results/jatos_results_20260120100546.jrzip`: Raw JATOS study export archive (source data snapshot).
-- `Study2/results/process_results.py`: Script that parses raw JATOS exports into analysis-ready tables.
-- `Study2/results/prolific_export_696e824812786c0f3a8b7680.csv`: Raw Prolific export used for participant metadata joins and checks.
-- `Study2/results/results.csv`: Processed trial-level dataset used in analyses.
-- `Study2/stimuli_experimental.xlsx`: Study-level exported experimental stimuli table (XLSX).
-- `Study2/stimuli_practice.xlsx`: Study-level exported practice stimuli table (XLSX).
-- `Study3/README.md`: Study-specific protocol, stimuli, and analysis workflow documentation.
+- `Study2/experiment/jspsych/survey.css`: Vendored survey stylesheet used by jsPsych survey plugins.
+- `Study2/experiment/stimuli_experimental.csv`: CSV copy of experimental stimuli used for inspection/export.
+- `Study2/experiment/stimuli_experimental.json`: Experimental stimuli payload loaded in the experiment runtime (JS assignment format).
+- `Study2/experiment/stimuli_experimental.xlsx`: Spreadsheet copy of experimental stimuli used for inspection/export.
+- `Study2/experiment/stimuli_practice.csv`: CSV copy of practice stimuli used for inspection/export.
+- `Study2/experiment/stimuli_practice.json`: Practice stimuli payload loaded in the experiment runtime (JS assignment format).
+- `Study2/experiment/stimuli_practice.xlsx`: Spreadsheet copy of practice stimuli used for inspection/export.
+- `Study2/generate_stimuli.py`: Stimulus generation script for this study.
+- `Study2/results/analysis_preferences_freechoice.html`: Compiled HTML analysis report.
+- `Study2/results/analysis_preferences_freechoice.qmd`: Quarto analysis source.
+- `Study2/results/analysis_preferences_freechoice_critical.Rmd`: R Markdown analysis source.
+- `Study2/results/analysis_preferences_freechoice_critical.html`: Compiled HTML analysis report.
+- `Study2/results/jatos_results_20260120100546.jrzip`: Raw JATOS export archive used to produce the committed processed results.csv.
+- `Study2/results/process_results.py`: Processing script converting JATOS exports to analysis-ready CSV.
+- `Study2/results/prolific_export_696e824812786c0f3a8b7680.csv`: Raw Prolific export used for participant metadata joins/checks.
+- `Study2/results/results.csv`: Processed trial-level dataset used in analysis notebooks.
+- `Study2/stimuli_experimental.xlsx`: Study-level experimental stimuli workbook corresponding to experiment stimuli.
+- `Study2/stimuli_practice.xlsx`: Study-level practice stimuli workbook corresponding to experiment stimuli.
+- `Study3/README.md`: Study3 design, stimuli, and analysis workflow documentation.
 - `Study3/experiment/experiment.html`: Browser experiment runtime (jsPsych + JATOS integration).
 - `Study3/experiment/jspsych/extension-mouse-tracking.js`: Vendored jsPsych extension module (mouse-tracking).
 - `Study3/experiment/jspsych/extension-record-video.js`: Vendored jsPsych extension module (record-video).
 - `Study3/experiment/jspsych/extension-webgazer.js`: Vendored jsPsych extension module (webgazer).
-- `Study3/experiment/jspsych/jspsych.css`: Vendored jsPsych default stylesheet.
-- `Study3/experiment/jspsych/jspsych.js`: Vendored jsPsych core JavaScript library.
+- `Study3/experiment/jspsych/jspsych.css`: Vendored jsPsych base stylesheet.
+- `Study3/experiment/jspsych/jspsych.js`: Vendored jsPsych core library.
 - `Study3/experiment/jspsych/plugin-animation.js`: Vendored jsPsych plugin module (animation).
 - `Study3/experiment/jspsych/plugin-audio-button-response.js`: Vendored jsPsych plugin module (audio-button-response).
 - `Study3/experiment/jspsych/plugin-audio-keyboard-response.js`: Vendored jsPsych plugin module (audio-keyboard-response).
@@ -234,21 +228,22 @@ This file maps every tracked file in the repository to its purpose.
 - `Study3/experiment/jspsych/plugin-webgazer-calibrate.js`: Vendored jsPsych plugin module (webgazer-calibrate).
 - `Study3/experiment/jspsych/plugin-webgazer-init-camera.js`: Vendored jsPsych plugin module (webgazer-init-camera).
 - `Study3/experiment/jspsych/plugin-webgazer-validate.js`: Vendored jsPsych plugin module (webgazer-validate).
-- `Study3/experiment/jspsych/survey.css`: Vendored survey-related stylesheet used by jsPsych survey plugins.
-- `Study3/experiment/stimuli_experimental.json`: Experimental stimuli payload loaded by the browser task.
-- `Study3/experiment/stimuli_practice.json`: Practice stimuli payload loaded by the browser task.
-- `Study3/generate_stimuli.py`: Script to generate practice/experimental stimuli files for this study.
-- `Study3/results/analiza_soft_with_reminders.Rmd`: Legacy Study 3 analysis notebook.
-- `Study3/results/analiza_soft_with_reminders_tidy.Rmd`: Primary tidy-analysis notebook for Study 3.
-- `Study3/results/jatos_results_20250602103841.jrzip`: Raw JATOS study export archive (source data snapshot).
-- `Study3/results/process_results.py`: Script that parses raw JATOS exports into analysis-ready tables.
-- `Study3/results/prolific_export_68389fe9a40f60baa50efa1e.csv`: Raw Prolific export used for participant metadata joins and checks.
-- `Study3/results/results.csv`: Processed trial-level dataset used in analyses.
-- `Study3/stimuli_experimental.json`: Study-level JSON stimuli archive for generation/review workflows.
-- `Study3/stimuli_experimental.xlsx`: Study-level exported experimental stimuli table (XLSX).
-- `Study3/stimuli_experimental_old.xlsx`: Archived older revision of Study 3 experimental stimuli workbook.
-- `Study3/stimuli_practice.json`: Study-level JSON practice stimuli archive for generation/review workflows.
-- `Study3/stimuli_practice.xlsx`: Study-level exported practice stimuli table (XLSX).
-- `Study3/stimuli_practice_old.xlsx`: Archived older revision of Study 3 practice stimuli workbook.
-- `requirements.txt`: Shared Python dependencies for study scripts.
-- `scripts/preflight_repo.sh`: Preflight scan for disallowed artifacts before commit/push.
+- `Study3/experiment/jspsych/survey.css`: Vendored survey stylesheet used by jsPsych survey plugins.
+- `Study3/experiment/stimuli_experimental.json`: Experimental stimuli payload loaded in the experiment runtime (JS assignment format).
+- `Study3/experiment/stimuli_practice.json`: Practice stimuli payload loaded in the experiment runtime (JS assignment format).
+- `Study3/generate_stimuli.py`: Stimulus generation script for this study.
+- `Study3/results/analiza_soft_with_reminders.Rmd`: R Markdown analysis source.
+- `Study3/results/analiza_soft_with_reminders.html`: Compiled HTML analysis report.
+- `Study3/results/analiza_soft_with_reminders_tidy.Rmd`: R Markdown analysis source.
+- `Study3/results/analiza_soft_with_reminders_tidy.html`: Compiled HTML analysis report.
+- `Study3/results/jatos_results_20250602103841.jrzip`: Raw JATOS export archive used to produce the committed processed results.csv.
+- `Study3/results/process_results.py`: Processing script converting JATOS exports to analysis-ready CSV.
+- `Study3/results/prolific_export_68389fe9a40f60baa50efa1e.csv`: Raw Prolific export used for participant metadata joins/checks.
+- `Study3/results/results.csv`: Processed trial-level dataset used in analysis notebooks.
+- `Study3/stimuli_experimental.json`: Study-level experimental stimuli JSON archive corresponding to experiment stimuli.
+- `Study3/stimuli_experimental.xlsx`: Study-level experimental stimuli workbook corresponding to experiment stimuli.
+- `Study3/stimuli_practice.json`: Study-level practice stimuli JSON archive corresponding to experiment stimuli.
+- `Study3/stimuli_practice.xlsx`: Study-level practice stimuli workbook corresponding to experiment stimuli.
+- `docs/FILE_INDEX.md`: Complete tracked-file inventory for the repository.
+- `requirements.txt`: Python dependency list for stimulus generation and processing scripts.
+- `scripts/preflight_repo.sh`: Repository helper script.

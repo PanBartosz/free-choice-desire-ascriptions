@@ -1,6 +1,5 @@
 **Paper mapping**
-- This folder is the copy used for paper prep: **Study 1 (Experiment 7)** in `Free Choice and Desire Ascriptions_draft.pdf`.
-- Source in repo root (kept intact): `Exp7_entailment_fc/`.
+- This folder contains **Study 1** materials and analysis assets for the paper (forthcoming).
 
 **Python environment**
 - Use the shared env defined in `paper_analyses/requirements.txt` (setup instructions: `paper_analyses/PYTHON_ENV.md`).
