@@ -27,8 +27,7 @@ paper_analyses/
     generate_stimuli.py
     README.md
   docs/
-    COMMIT_POLICY.md       # what to commit / what to exclude
-    OSF_SETUP.md           # GitHub <-> OSF workflow
+    FILE_INDEX.md          # complete path-by-path file inventory
   scripts/
     preflight_repo.sh      # repository hygiene checks
   requirements.txt
@@ -55,14 +54,6 @@ pip install -r requirements.txt
 - `Study2/README.md`
 - `Study3/README.md`
 
-## What Is Not Tracked
-
-- Local virtual environments and cache files.
-- Temporary exports and runtime logs.
-- Manuscript draft PDF and other writing artifacts not required for replication.
-
-See `docs/COMMIT_POLICY.md` for the full list.
-
 ## Complete File Map
 
 For a per-file inventory with purpose notes for every tracked path, see:
@@ -74,4 +65,4 @@ Use `CITATION.cff` when available in citation tooling.
 
 ## OSF Linkage
 
-Follow `docs/OSF_SETUP.md` to connect this GitHub repository to an OSF project/component.
+This GitHub repository is intended to be linked as the public code/data component in OSF.

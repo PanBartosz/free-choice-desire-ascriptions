@@ -33,3 +33,8 @@ OUTLINE.md
 
 # Rendered analysis outputs (keep source .Rmd/.qmd/.py)
 Study*/results/*.html
+
+# Internal planning docs (kept out of public repo)
+docs/COMMIT_POLICY.md
+docs/OSF_SETUP.md
+docs/CLEANING_CHECKLIST.md

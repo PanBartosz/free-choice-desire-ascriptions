@@ -3,7 +3,7 @@
 This file maps every tracked file in the repository to its purpose.
 
 - Scope: all files returned by `git ls-files`.
-- Policy alignment: complements `README.md` and `docs/COMMIT_POLICY.md`.
+- Purpose: complements `README.md` with a complete path-by-path inventory.
 
 ## Inventory
 
@@ -250,8 +250,5 @@ This file maps every tracked file in the repository to its purpose.
 - `Study3/stimuli_practice.json`: Study-level JSON practice stimuli archive for generation/review workflows.
 - `Study3/stimuli_practice.xlsx`: Study-level exported practice stimuli table (XLSX).
 - `Study3/stimuli_practice_old.xlsx`: Archived older revision of Study 3 practice stimuli workbook.
-- `docs/CLEANING_CHECKLIST.md`: Pre-release cleaning checklist for repository hygiene.
-- `docs/COMMIT_POLICY.md`: Rules for what must and must not be committed.
-- `docs/OSF_SETUP.md`: Procedure for linking the GitHub repository to OSF components.
 - `requirements.txt`: Shared Python dependencies for study scripts.
 - `scripts/preflight_repo.sh`: Preflight scan for disallowed artifacts before commit/push.
