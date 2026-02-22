@@ -1,0 +1,257 @@
+# File Index
+
+This file maps every tracked file in the repository to its purpose.
+
+- Scope: all files returned by `git ls-files`.
+- Policy alignment: complements `README.md` and `docs/COMMIT_POLICY.md`.
+
+## Inventory
+
+- `.gitignore`: Repository ignore rules for environments, generated artifacts, and manuscript-only files.
+- `CITATION.cff`: Machine-readable citation metadata for the repository.
+- `LICENSE`: License for code in this repository (MIT).
+- `LICENSE-data`: License and reuse terms for data/materials (CC BY 4.0 note).
+- `PYTHON_ENV.md`: Instructions for creating and using the Python environment.
+- `README.md`: Top-level project overview, scope, and navigation entry point.
+- `Study1/README.md`: Study-specific protocol, stimuli, and analysis workflow documentation.
+- `Study1/STIMULI_EXAMPLES.html`: HTML-rendered stimuli examples for visual inspection.
+- `Study1/STIMULI_EXAMPLES.md`: Markdown examples of generated stimuli for quick review.
+- `Study1/STIMULI_EXAMPLES.tsv`: Tabular export of stimuli examples.
+- `Study1/experiment/experiment.html`: Browser experiment runtime (jsPsych + JATOS integration).
+- `Study1/experiment/jspsych/extension-mouse-tracking.js`: Vendored jsPsych extension module (mouse-tracking).
+- `Study1/experiment/jspsych/extension-record-video.js`: Vendored jsPsych extension module (record-video).
+- `Study1/experiment/jspsych/extension-webgazer.js`: Vendored jsPsych extension module (webgazer).
+- `Study1/experiment/jspsych/jspsych.css`: Vendored jsPsych default stylesheet.
+- `Study1/experiment/jspsych/jspsych.js`: Vendored jsPsych core JavaScript library.
+- `Study1/experiment/jspsych/plugin-animation.js`: Vendored jsPsych plugin module (animation).
+- `Study1/experiment/jspsych/plugin-audio-button-response.js`: Vendored jsPsych plugin module (audio-button-response).
+- `Study1/experiment/jspsych/plugin-audio-keyboard-response.js`: Vendored jsPsych plugin module (audio-keyboard-response).
+- `Study1/experiment/jspsych/plugin-audio-slider-response.js`: Vendored jsPsych plugin module (audio-slider-response).
+- `Study1/experiment/jspsych/plugin-browser-check.js`: Vendored jsPsych plugin module (browser-check).
+- `Study1/experiment/jspsych/plugin-call-function.js`: Vendored jsPsych plugin module (call-function).
+- `Study1/experiment/jspsych/plugin-canvas-button-response.js`: Vendored jsPsych plugin module (canvas-button-response).
+- `Study1/experiment/jspsych/plugin-canvas-keyboard-response.js`: Vendored jsPsych plugin module (canvas-keyboard-response).
+- `Study1/experiment/jspsych/plugin-canvas-slider-response.js`: Vendored jsPsych plugin module (canvas-slider-response).
+- `Study1/experiment/jspsych/plugin-categorize-animation.js`: Vendored jsPsych plugin module (categorize-animation).
+- `Study1/experiment/jspsych/plugin-categorize-html.js`: Vendored jsPsych plugin module (categorize-html).
+- `Study1/experiment/jspsych/plugin-categorize-image.js`: Vendored jsPsych plugin module (categorize-image).
+- `Study1/experiment/jspsych/plugin-cloze.js`: Vendored jsPsych plugin module (cloze).
+- `Study1/experiment/jspsych/plugin-external-html.js`: Vendored jsPsych plugin module (external-html).
+- `Study1/experiment/jspsych/plugin-free-sort.js`: Vendored jsPsych plugin module (free-sort).
+- `Study1/experiment/jspsych/plugin-fullscreen.js`: Vendored jsPsych plugin module (fullscreen).
+- `Study1/experiment/jspsych/plugin-html-audio-response.js`: Vendored jsPsych plugin module (html-audio-response).
+- `Study1/experiment/jspsych/plugin-html-button-response.js`: Vendored jsPsych plugin module (html-button-response).
+- `Study1/experiment/jspsych/plugin-html-keyboard-response.js`: Vendored jsPsych plugin module (html-keyboard-response).
+- `Study1/experiment/jspsych/plugin-html-slider-response.js`: Vendored jsPsych plugin module (html-slider-response).
+- `Study1/experiment/jspsych/plugin-html-video-response.js`: Vendored jsPsych plugin module (html-video-response).
+- `Study1/experiment/jspsych/plugin-iat-html.js`: Vendored jsPsych plugin module (iat-html).
+- `Study1/experiment/jspsych/plugin-iat-image.js`: Vendored jsPsych plugin module (iat-image).
+- `Study1/experiment/jspsych/plugin-image-button-response.js`: Vendored jsPsych plugin module (image-button-response).
+- `Study1/experiment/jspsych/plugin-image-keyboard-response.js`: Vendored jsPsych plugin module (image-keyboard-response).
+- `Study1/experiment/jspsych/plugin-image-slider-response.js`: Vendored jsPsych plugin module (image-slider-response).
+- `Study1/experiment/jspsych/plugin-initialize-camera.js`: Vendored jsPsych plugin module (initialize-camera).
+- `Study1/experiment/jspsych/plugin-initialize-microphone.js`: Vendored jsPsych plugin module (initialize-microphone).
+- `Study1/experiment/jspsych/plugin-instructions.js`: Vendored jsPsych plugin module (instructions).
+- `Study1/experiment/jspsych/plugin-maxdiff.js`: Vendored jsPsych plugin module (maxdiff).
+- `Study1/experiment/jspsych/plugin-mirror-camera.js`: Vendored jsPsych plugin module (mirror-camera).
+- `Study1/experiment/jspsych/plugin-preload.js`: Vendored jsPsych plugin module (preload).
+- `Study1/experiment/jspsych/plugin-reconstruction.js`: Vendored jsPsych plugin module (reconstruction).
+- `Study1/experiment/jspsych/plugin-resize.js`: Vendored jsPsych plugin module (resize).
+- `Study1/experiment/jspsych/plugin-same-different-html.js`: Vendored jsPsych plugin module (same-different-html).
+- `Study1/experiment/jspsych/plugin-same-different-image.js`: Vendored jsPsych plugin module (same-different-image).
+- `Study1/experiment/jspsych/plugin-serial-reaction-time-mouse.js`: Vendored jsPsych plugin module (serial-reaction-time-mouse).
+- `Study1/experiment/jspsych/plugin-serial-reaction-time.js`: Vendored jsPsych plugin module (serial-reaction-time).
+- `Study1/experiment/jspsych/plugin-sketchpad.js`: Vendored jsPsych plugin module (sketchpad).
+- `Study1/experiment/jspsych/plugin-survey-html-form.js`: Vendored jsPsych plugin module (survey-html-form).
+- `Study1/experiment/jspsych/plugin-survey-likert.js`: Vendored jsPsych plugin module (survey-likert).
+- `Study1/experiment/jspsych/plugin-survey-multi-choice.js`: Vendored jsPsych plugin module (survey-multi-choice).
+- `Study1/experiment/jspsych/plugin-survey-multi-select.js`: Vendored jsPsych plugin module (survey-multi-select).
+- `Study1/experiment/jspsych/plugin-survey-text.js`: Vendored jsPsych plugin module (survey-text).
+- `Study1/experiment/jspsych/plugin-survey.js`: Vendored jsPsych plugin module (survey).
+- `Study1/experiment/jspsych/plugin-video-button-response.js`: Vendored jsPsych plugin module (video-button-response).
+- `Study1/experiment/jspsych/plugin-video-keyboard-response.js`: Vendored jsPsych plugin module (video-keyboard-response).
+- `Study1/experiment/jspsych/plugin-video-slider-response.js`: Vendored jsPsych plugin module (video-slider-response).
+- `Study1/experiment/jspsych/plugin-virtual-chinrest.js`: Vendored jsPsych plugin module (virtual-chinrest).
+- `Study1/experiment/jspsych/plugin-visual-search-circle.js`: Vendored jsPsych plugin module (visual-search-circle).
+- `Study1/experiment/jspsych/plugin-webgazer-calibrate.js`: Vendored jsPsych plugin module (webgazer-calibrate).
+- `Study1/experiment/jspsych/plugin-webgazer-init-camera.js`: Vendored jsPsych plugin module (webgazer-init-camera).
+- `Study1/experiment/jspsych/plugin-webgazer-validate.js`: Vendored jsPsych plugin module (webgazer-validate).
+- `Study1/experiment/jspsych/survey.css`: Vendored survey-related stylesheet used by jsPsych survey plugins.
+- `Study1/experiment/stimuli_experimental.json`: Experimental stimuli payload loaded by the browser task.
+- `Study1/experiment/stimuli_practice.json`: Practice stimuli payload loaded by the browser task.
+- `Study1/generate_stimuli.py`: Script to generate practice/experimental stimuli files for this study.
+- `Study1/results/analysis_entailment_fc.Rmd`: Primary analysis notebook for Study 1.
+- `Study1/results/jatos_results_20251127094830.jrzip`: Raw JATOS study export archive (source data snapshot).
+- `Study1/results/jatos_results_20251127110131.jrzip`: Raw JATOS study export archive (source data snapshot).
+- `Study1/results/jatos_results_20251127111915.jrzip`: Raw JATOS study export archive (source data snapshot).
+- `Study1/results/jatos_results_20251127171523.jrzip`: Raw JATOS study export archive (source data snapshot).
+- `Study1/results/per_item_follows.xlsx`: Per-item summary workbook for Study 1 entailment outcomes.
+- `Study1/results/process_results.py`: Script that parses raw JATOS exports into analysis-ready tables.
+- `Study1/results/prolific_export_692823107e98ad3a92b2fc8c.csv`: Raw Prolific export used for participant metadata joins and checks.
+- `Study1/results/results.csv`: Processed trial-level dataset used in analyses.
+- `Study1/results/test_process_results.py`: Tests for result-processing logic (Study 1).
+- `Study1/stimuli_experimental.csv`: Study-level exported experimental stimuli table (CSV).
+- `Study1/stimuli_experimental.xlsx`: Study-level exported experimental stimuli table (XLSX).
+- `Study1/stimuli_practice.xlsx`: Study-level exported practice stimuli table (XLSX).
+- `Study2/README.md`: Study-specific protocol, stimuli, and analysis workflow documentation.
+- `Study2/STIMULI_EXAMPLES.html`: HTML-rendered stimuli examples for visual inspection.
+- `Study2/STIMULI_EXAMPLES.md`: Markdown examples of generated stimuli for quick review.
+- `Study2/STIMULI_EXAMPLES.tsv`: Tabular export of stimuli examples.
+- `Study2/experiment/experiment.html`: Browser experiment runtime (jsPsych + JATOS integration).
+- `Study2/experiment/jspsych/extension-mouse-tracking.js`: Vendored jsPsych extension module (mouse-tracking).
+- `Study2/experiment/jspsych/extension-record-video.js`: Vendored jsPsych extension module (record-video).
+- `Study2/experiment/jspsych/extension-webgazer.js`: Vendored jsPsych extension module (webgazer).
+- `Study2/experiment/jspsych/jspsych.css`: Vendored jsPsych default stylesheet.
+- `Study2/experiment/jspsych/jspsych.js`: Vendored jsPsych core JavaScript library.
+- `Study2/experiment/jspsych/plugin-animation.js`: Vendored jsPsych plugin module (animation).
+- `Study2/experiment/jspsych/plugin-audio-button-response.js`: Vendored jsPsych plugin module (audio-button-response).
+- `Study2/experiment/jspsych/plugin-audio-keyboard-response.js`: Vendored jsPsych plugin module (audio-keyboard-response).
+- `Study2/experiment/jspsych/plugin-audio-slider-response.js`: Vendored jsPsych plugin module (audio-slider-response).
+- `Study2/experiment/jspsych/plugin-browser-check.js`: Vendored jsPsych plugin module (browser-check).
+- `Study2/experiment/jspsych/plugin-call-function.js`: Vendored jsPsych plugin module (call-function).
+- `Study2/experiment/jspsych/plugin-canvas-button-response.js`: Vendored jsPsych plugin module (canvas-button-response).
+- `Study2/experiment/jspsych/plugin-canvas-keyboard-response.js`: Vendored jsPsych plugin module (canvas-keyboard-response).
+- `Study2/experiment/jspsych/plugin-canvas-slider-response.js`: Vendored jsPsych plugin module (canvas-slider-response).
+- `Study2/experiment/jspsych/plugin-categorize-animation.js`: Vendored jsPsych plugin module (categorize-animation).
+- `Study2/experiment/jspsych/plugin-categorize-html.js`: Vendored jsPsych plugin module (categorize-html).
+- `Study2/experiment/jspsych/plugin-categorize-image.js`: Vendored jsPsych plugin module (categorize-image).
+- `Study2/experiment/jspsych/plugin-cloze.js`: Vendored jsPsych plugin module (cloze).
+- `Study2/experiment/jspsych/plugin-external-html.js`: Vendored jsPsych plugin module (external-html).
+- `Study2/experiment/jspsych/plugin-free-sort.js`: Vendored jsPsych plugin module (free-sort).
+- `Study2/experiment/jspsych/plugin-fullscreen.js`: Vendored jsPsych plugin module (fullscreen).
+- `Study2/experiment/jspsych/plugin-html-audio-response.js`: Vendored jsPsych plugin module (html-audio-response).
+- `Study2/experiment/jspsych/plugin-html-button-response.js`: Vendored jsPsych plugin module (html-button-response).
+- `Study2/experiment/jspsych/plugin-html-keyboard-response.js`: Vendored jsPsych plugin module (html-keyboard-response).
+- `Study2/experiment/jspsych/plugin-html-slider-response.js`: Vendored jsPsych plugin module (html-slider-response).
+- `Study2/experiment/jspsych/plugin-html-video-response.js`: Vendored jsPsych plugin module (html-video-response).
+- `Study2/experiment/jspsych/plugin-iat-html.js`: Vendored jsPsych plugin module (iat-html).
+- `Study2/experiment/jspsych/plugin-iat-image.js`: Vendored jsPsych plugin module (iat-image).
+- `Study2/experiment/jspsych/plugin-image-button-response.js`: Vendored jsPsych plugin module (image-button-response).
+- `Study2/experiment/jspsych/plugin-image-keyboard-response.js`: Vendored jsPsych plugin module (image-keyboard-response).
+- `Study2/experiment/jspsych/plugin-image-slider-response.js`: Vendored jsPsych plugin module (image-slider-response).
+- `Study2/experiment/jspsych/plugin-initialize-camera.js`: Vendored jsPsych plugin module (initialize-camera).
+- `Study2/experiment/jspsych/plugin-initialize-microphone.js`: Vendored jsPsych plugin module (initialize-microphone).
+- `Study2/experiment/jspsych/plugin-instructions.js`: Vendored jsPsych plugin module (instructions).
+- `Study2/experiment/jspsych/plugin-maxdiff.js`: Vendored jsPsych plugin module (maxdiff).
+- `Study2/experiment/jspsych/plugin-mirror-camera.js`: Vendored jsPsych plugin module (mirror-camera).
+- `Study2/experiment/jspsych/plugin-preload.js`: Vendored jsPsych plugin module (preload).
+- `Study2/experiment/jspsych/plugin-reconstruction.js`: Vendored jsPsych plugin module (reconstruction).
+- `Study2/experiment/jspsych/plugin-resize.js`: Vendored jsPsych plugin module (resize).
+- `Study2/experiment/jspsych/plugin-same-different-html.js`: Vendored jsPsych plugin module (same-different-html).
+- `Study2/experiment/jspsych/plugin-same-different-image.js`: Vendored jsPsych plugin module (same-different-image).
+- `Study2/experiment/jspsych/plugin-serial-reaction-time-mouse.js`: Vendored jsPsych plugin module (serial-reaction-time-mouse).
+- `Study2/experiment/jspsych/plugin-serial-reaction-time.js`: Vendored jsPsych plugin module (serial-reaction-time).
+- `Study2/experiment/jspsych/plugin-sketchpad.js`: Vendored jsPsych plugin module (sketchpad).
+- `Study2/experiment/jspsych/plugin-survey-html-form.js`: Vendored jsPsych plugin module (survey-html-form).
+- `Study2/experiment/jspsych/plugin-survey-likert.js`: Vendored jsPsych plugin module (survey-likert).
+- `Study2/experiment/jspsych/plugin-survey-multi-choice.js`: Vendored jsPsych plugin module (survey-multi-choice).
+- `Study2/experiment/jspsych/plugin-survey-multi-select.js`: Vendored jsPsych plugin module (survey-multi-select).
+- `Study2/experiment/jspsych/plugin-survey-text.js`: Vendored jsPsych plugin module (survey-text).
+- `Study2/experiment/jspsych/plugin-survey.js`: Vendored jsPsych plugin module (survey).
+- `Study2/experiment/jspsych/plugin-video-button-response.js`: Vendored jsPsych plugin module (video-button-response).
+- `Study2/experiment/jspsych/plugin-video-keyboard-response.js`: Vendored jsPsych plugin module (video-keyboard-response).
+- `Study2/experiment/jspsych/plugin-video-slider-response.js`: Vendored jsPsych plugin module (video-slider-response).
+- `Study2/experiment/jspsych/plugin-virtual-chinrest.js`: Vendored jsPsych plugin module (virtual-chinrest).
+- `Study2/experiment/jspsych/plugin-visual-search-circle.js`: Vendored jsPsych plugin module (visual-search-circle).
+- `Study2/experiment/jspsych/plugin-webgazer-calibrate.js`: Vendored jsPsych plugin module (webgazer-calibrate).
+- `Study2/experiment/jspsych/plugin-webgazer-init-camera.js`: Vendored jsPsych plugin module (webgazer-init-camera).
+- `Study2/experiment/jspsych/plugin-webgazer-validate.js`: Vendored jsPsych plugin module (webgazer-validate).
+- `Study2/experiment/jspsych/survey.css`: Vendored survey-related stylesheet used by jsPsych survey plugins.
+- `Study2/experiment/stimuli_experimental.csv`: CSV copy of experimental stimuli used for review/interchange.
+- `Study2/experiment/stimuli_experimental.json`: Experimental stimuli payload loaded by the browser task.
+- `Study2/experiment/stimuli_experimental.xlsx`: Spreadsheet copy of experimental stimuli for manual inspection.
+- `Study2/experiment/stimuli_practice.csv`: CSV copy of practice stimuli used for review/interchange.
+- `Study2/experiment/stimuli_practice.json`: Practice stimuli payload loaded by the browser task.
+- `Study2/experiment/stimuli_practice.xlsx`: Spreadsheet copy of practice stimuli for manual inspection.
+- `Study2/generate_stimuli.py`: Script to generate practice/experimental stimuli files for this study.
+- `Study2/results/analysis_preferences_freechoice.qmd`: Primary Quarto analysis notebook for Study 2.
+- `Study2/results/analysis_preferences_freechoice_critical.Rmd`: Supplementary/critical-condition analysis notebook for Study 2.
+- `Study2/results/jatos_results_20260119234506.jrzip`: Raw JATOS study export archive (source data snapshot).
+- `Study2/results/jatos_results_20260120020313.jrzip`: Raw JATOS study export archive (source data snapshot).
+- `Study2/results/jatos_results_20260120100546.jrzip`: Raw JATOS study export archive (source data snapshot).
+- `Study2/results/process_results.py`: Script that parses raw JATOS exports into analysis-ready tables.
+- `Study2/results/prolific_export_696e824812786c0f3a8b7680.csv`: Raw Prolific export used for participant metadata joins and checks.
+- `Study2/results/results.csv`: Processed trial-level dataset used in analyses.
+- `Study2/stimuli_experimental.xlsx`: Study-level exported experimental stimuli table (XLSX).
+- `Study2/stimuli_practice.xlsx`: Study-level exported practice stimuli table (XLSX).
+- `Study3/README.md`: Study-specific protocol, stimuli, and analysis workflow documentation.
+- `Study3/experiment/experiment.html`: Browser experiment runtime (jsPsych + JATOS integration).
+- `Study3/experiment/jspsych/extension-mouse-tracking.js`: Vendored jsPsych extension module (mouse-tracking).
+- `Study3/experiment/jspsych/extension-record-video.js`: Vendored jsPsych extension module (record-video).
+- `Study3/experiment/jspsych/extension-webgazer.js`: Vendored jsPsych extension module (webgazer).
+- `Study3/experiment/jspsych/jspsych.css`: Vendored jsPsych default stylesheet.
+- `Study3/experiment/jspsych/jspsych.js`: Vendored jsPsych core JavaScript library.
+- `Study3/experiment/jspsych/plugin-animation.js`: Vendored jsPsych plugin module (animation).
+- `Study3/experiment/jspsych/plugin-audio-button-response.js`: Vendored jsPsych plugin module (audio-button-response).
+- `Study3/experiment/jspsych/plugin-audio-keyboard-response.js`: Vendored jsPsych plugin module (audio-keyboard-response).
+- `Study3/experiment/jspsych/plugin-audio-slider-response.js`: Vendored jsPsych plugin module (audio-slider-response).
+- `Study3/experiment/jspsych/plugin-browser-check.js`: Vendored jsPsych plugin module (browser-check).
+- `Study3/experiment/jspsych/plugin-call-function.js`: Vendored jsPsych plugin module (call-function).
+- `Study3/experiment/jspsych/plugin-canvas-button-response.js`: Vendored jsPsych plugin module (canvas-button-response).
+- `Study3/experiment/jspsych/plugin-canvas-keyboard-response.js`: Vendored jsPsych plugin module (canvas-keyboard-response).
+- `Study3/experiment/jspsych/plugin-canvas-slider-response.js`: Vendored jsPsych plugin module (canvas-slider-response).
+- `Study3/experiment/jspsych/plugin-categorize-animation.js`: Vendored jsPsych plugin module (categorize-animation).
+- `Study3/experiment/jspsych/plugin-categorize-html.js`: Vendored jsPsych plugin module (categorize-html).
+- `Study3/experiment/jspsych/plugin-categorize-image.js`: Vendored jsPsych plugin module (categorize-image).
+- `Study3/experiment/jspsych/plugin-cloze.js`: Vendored jsPsych plugin module (cloze).
+- `Study3/experiment/jspsych/plugin-external-html.js`: Vendored jsPsych plugin module (external-html).
+- `Study3/experiment/jspsych/plugin-free-sort.js`: Vendored jsPsych plugin module (free-sort).
+- `Study3/experiment/jspsych/plugin-fullscreen.js`: Vendored jsPsych plugin module (fullscreen).
+- `Study3/experiment/jspsych/plugin-html-audio-response.js`: Vendored jsPsych plugin module (html-audio-response).
+- `Study3/experiment/jspsych/plugin-html-button-response.js`: Vendored jsPsych plugin module (html-button-response).
+- `Study3/experiment/jspsych/plugin-html-keyboard-response.js`: Vendored jsPsych plugin module (html-keyboard-response).
+- `Study3/experiment/jspsych/plugin-html-slider-response.js`: Vendored jsPsych plugin module (html-slider-response).
+- `Study3/experiment/jspsych/plugin-html-video-response.js`: Vendored jsPsych plugin module (html-video-response).
+- `Study3/experiment/jspsych/plugin-iat-html.js`: Vendored jsPsych plugin module (iat-html).
+- `Study3/experiment/jspsych/plugin-iat-image.js`: Vendored jsPsych plugin module (iat-image).
+- `Study3/experiment/jspsych/plugin-image-button-response.js`: Vendored jsPsych plugin module (image-button-response).
+- `Study3/experiment/jspsych/plugin-image-keyboard-response.js`: Vendored jsPsych plugin module (image-keyboard-response).
+- `Study3/experiment/jspsych/plugin-image-slider-response.js`: Vendored jsPsych plugin module (image-slider-response).
+- `Study3/experiment/jspsych/plugin-initialize-camera.js`: Vendored jsPsych plugin module (initialize-camera).
+- `Study3/experiment/jspsych/plugin-initialize-microphone.js`: Vendored jsPsych plugin module (initialize-microphone).
+- `Study3/experiment/jspsych/plugin-instructions.js`: Vendored jsPsych plugin module (instructions).
+- `Study3/experiment/jspsych/plugin-maxdiff.js`: Vendored jsPsych plugin module (maxdiff).
+- `Study3/experiment/jspsych/plugin-mirror-camera.js`: Vendored jsPsych plugin module (mirror-camera).
+- `Study3/experiment/jspsych/plugin-preload.js`: Vendored jsPsych plugin module (preload).
+- `Study3/experiment/jspsych/plugin-reconstruction.js`: Vendored jsPsych plugin module (reconstruction).
+- `Study3/experiment/jspsych/plugin-resize.js`: Vendored jsPsych plugin module (resize).
+- `Study3/experiment/jspsych/plugin-same-different-html.js`: Vendored jsPsych plugin module (same-different-html).
+- `Study3/experiment/jspsych/plugin-same-different-image.js`: Vendored jsPsych plugin module (same-different-image).
+- `Study3/experiment/jspsych/plugin-serial-reaction-time-mouse.js`: Vendored jsPsych plugin module (serial-reaction-time-mouse).
+- `Study3/experiment/jspsych/plugin-serial-reaction-time.js`: Vendored jsPsych plugin module (serial-reaction-time).
+- `Study3/experiment/jspsych/plugin-sketchpad.js`: Vendored jsPsych plugin module (sketchpad).
+- `Study3/experiment/jspsych/plugin-survey-html-form.js`: Vendored jsPsych plugin module (survey-html-form).
+- `Study3/experiment/jspsych/plugin-survey-likert.js`: Vendored jsPsych plugin module (survey-likert).
+- `Study3/experiment/jspsych/plugin-survey-multi-choice.js`: Vendored jsPsych plugin module (survey-multi-choice).
+- `Study3/experiment/jspsych/plugin-survey-multi-select.js`: Vendored jsPsych plugin module (survey-multi-select).
+- `Study3/experiment/jspsych/plugin-survey-text.js`: Vendored jsPsych plugin module (survey-text).
+- `Study3/experiment/jspsych/plugin-survey.js`: Vendored jsPsych plugin module (survey).
+- `Study3/experiment/jspsych/plugin-video-button-response.js`: Vendored jsPsych plugin module (video-button-response).
+- `Study3/experiment/jspsych/plugin-video-keyboard-response.js`: Vendored jsPsych plugin module (video-keyboard-response).
+- `Study3/experiment/jspsych/plugin-video-slider-response.js`: Vendored jsPsych plugin module (video-slider-response).
+- `Study3/experiment/jspsych/plugin-virtual-chinrest.js`: Vendored jsPsych plugin module (virtual-chinrest).
+- `Study3/experiment/jspsych/plugin-visual-search-circle.js`: Vendored jsPsych plugin module (visual-search-circle).
+- `Study3/experiment/jspsych/plugin-webgazer-calibrate.js`: Vendored jsPsych plugin module (webgazer-calibrate).
+- `Study3/experiment/jspsych/plugin-webgazer-init-camera.js`: Vendored jsPsych plugin module (webgazer-init-camera).
+- `Study3/experiment/jspsych/plugin-webgazer-validate.js`: Vendored jsPsych plugin module (webgazer-validate).
+- `Study3/experiment/jspsych/survey.css`: Vendored survey-related stylesheet used by jsPsych survey plugins.
+- `Study3/experiment/stimuli_experimental.json`: Experimental stimuli payload loaded by the browser task.
+- `Study3/experiment/stimuli_practice.json`: Practice stimuli payload loaded by the browser task.
+- `Study3/generate_stimuli.py`: Script to generate practice/experimental stimuli files for this study.
+- `Study3/results/analiza_soft_with_reminders.Rmd`: Legacy Study 3 analysis notebook.
+- `Study3/results/analiza_soft_with_reminders_tidy.Rmd`: Primary tidy-analysis notebook for Study 3.
+- `Study3/results/jatos_results_20250602103841.jrzip`: Raw JATOS study export archive (source data snapshot).
+- `Study3/results/process_results.py`: Script that parses raw JATOS exports into analysis-ready tables.
+- `Study3/results/prolific_export_68389fe9a40f60baa50efa1e.csv`: Raw Prolific export used for participant metadata joins and checks.
+- `Study3/results/results.csv`: Processed trial-level dataset used in analyses.
+- `Study3/stimuli_experimental.json`: Study-level JSON stimuli archive for generation/review workflows.
+- `Study3/stimuli_experimental.xlsx`: Study-level exported experimental stimuli table (XLSX).
+- `Study3/stimuli_experimental_old.xlsx`: Archived older revision of Study 3 experimental stimuli workbook.
+- `Study3/stimuli_practice.json`: Study-level JSON practice stimuli archive for generation/review workflows.
+- `Study3/stimuli_practice.xlsx`: Study-level exported practice stimuli table (XLSX).
+- `Study3/stimuli_practice_old.xlsx`: Archived older revision of Study 3 practice stimuli workbook.
+- `docs/CLEANING_CHECKLIST.md`: Pre-release cleaning checklist for repository hygiene.
+- `docs/COMMIT_POLICY.md`: Rules for what must and must not be committed.
+- `docs/OSF_SETUP.md`: Procedure for linking the GitHub repository to OSF components.
+- `requirements.txt`: Shared Python dependencies for study scripts.
+- `scripts/preflight_repo.sh`: Preflight scan for disallowed artifacts before commit/push.

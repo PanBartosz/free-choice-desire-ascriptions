@@ -5,6 +5,9 @@
 **Python environment**
 - Use the shared env defined in `paper_analyses/requirements.txt` (setup instructions: `paper_analyses/PYTHON_ENV.md`).
 
+**File inventory**
+- Complete per-file mapping (including this study) is in `paper_analyses/docs/FILE_INDEX.md`.
+
 **Overview**
 - Geurts et al. (2009)-style entailment task: judge whether a Conclusion logically follows from a Premise.
 - Purpose: test free-choice inferences under **want** (primary target) and (as a benchmark) under modals.

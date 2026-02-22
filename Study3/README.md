@@ -5,6 +5,9 @@
 **Python environment**
 - Use the shared env defined in `paper_analyses/requirements.txt` (setup instructions: `paper_analyses/PYTHON_ENV.md`).
 
+**File inventory**
+- Complete per-file mapping (including this study) is in `paper_analyses/docs/FILE_INDEX.md`.
+
 **Overview**
 - Truth-value judgment study (“Magical Island”) targeting free-choice readings under **want**.
 - Key manipulation vs Study 2: additional training/anchoring with **does not mind** items, intended to make the “accepted” category salient as *acceptable-but-not-wanted*.

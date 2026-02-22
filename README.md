@@ -63,6 +63,11 @@ pip install -r requirements.txt
 
 See `docs/COMMIT_POLICY.md` for the full list.
 
+## Complete File Map
+
+For a per-file inventory with purpose notes for every tracked path, see:
+- `docs/FILE_INDEX.md`
+
 ## Citation
 
 Use `CITATION.cff` when available in citation tooling.

@@ -5,6 +5,9 @@
 **Python environment**
 - Use the shared env defined in `paper_analyses/requirements.txt` (setup instructions: `paper_analyses/PYTHON_ENV.md`).
 
+**File inventory**
+- Complete per-file mapping (including this study) is in `paper_analyses/docs/FILE_INDEX.md`.
+
 **Overview**
 - Truth-value judgment study with strict food preference orders (no modals, no “does not mind” items). Participants judge segmented sentences with `B = TRUE` and `N = FALSE`. Practice gives feedback; the main block does not. Break occurs halfway through the main block.
 - Tribes: Urbanites sweets > meat > fruit; Nomads fruits > meat > sweets. The order is strict: wants > accepts > dislikes. For “prefers A to B,” equal categories make the sentence false.
